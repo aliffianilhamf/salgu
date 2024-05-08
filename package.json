@@ -5,6 +5,6 @@
   },
   "scripts": {
     "pre-commit": "pnpm run --filter \"*\" pre-commit",
-    "prepare": "husky install"
+    "prepare": "husky init"
   }
 }
