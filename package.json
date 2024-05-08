@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2"
+  },
+  "scripts": {
+    "pre-commit": "pnpm run --filter \"*\" pre-commit",
+    "prepare": "husky install"
+  }
+}
