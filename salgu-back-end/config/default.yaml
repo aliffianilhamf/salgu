@@ -1,0 +1,30 @@
+http:
+  host: 'localhost'
+  port: 4011
+
+  # If you are using a reverse proxy like Nginx,
+  # you can enable this option to get the client's IP address.
+  # Learn more at https://expressjs.com/en/guide/behind-proxies.html
+  trust_proxy: false
+
+db:
+  # Type of database setting to use.
+  type: 'mysql'
+
+  postgres:
+    host: 'localhost'
+    port: 3306
+    user: 'root'
+    password: ''
+    db: 'salgu'
+    synchronize: true
+    logging: false
+    ssl: false
+
+cors:
+  whitelist:
+    - 'http://localhost:4010'
+
+swagger:
+  enabled: true
+  path: '/api-docs'
