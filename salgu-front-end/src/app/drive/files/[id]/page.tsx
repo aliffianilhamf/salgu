@@ -1,10 +1,11 @@
 "use client";
 import Container from "react-bootstrap/Container";
 
-export default function Home() {
+export default function File({ params }: any) {
+  const id: string = params.id;
   return (
     <Container className="p-5">
-      <p>Halaman utama untuk user yang sudah login</p>
+      <p>Informasi file dengan id `{id}`</p>
     </Container>
   );
 }
