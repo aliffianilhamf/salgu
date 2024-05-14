@@ -5,9 +5,12 @@ Repository ini menyimpan
  - codebase front end SALGU (`./salgu-front-end`),
  - dan codebase back end SALGU (`./salgu-back-end`).
 
+Skillset yang diperlukan untuk SALGU dapat dilihat di [Learning.md](./Learning.md). Pakai Learning.md sebagai panduan mencari ilmu.
+
 # Prasyarat
  - Proyek ini membutuhkan npm versi minimal 10.1.0, dan node versi minimal 20.9.0. Untuk mengecek versi, jalankan `npm -v` dan `node -v`.
  - Proyek ini membutuhkan `pnpm` terinstall pada komputer. Ikuti petunjuk di [sini](https://pnpm.io/installation#using-npm:~:text=Node.js%20installed.-,npm%20install%20%2Dg%20pnpm,-or) untuk menginstallnya.
+ - Proyek ini membutuhkan pnpm versi minimal 9.1.1. Cek versinya dengan `pnpm -v`. Jalankan `npm update -g pnpm` untuk memperbarui pnpm Anda.
 
 ## Instalasi
 
