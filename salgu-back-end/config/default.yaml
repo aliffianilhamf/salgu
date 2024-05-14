@@ -11,7 +11,7 @@ db:
   # Type of database setting to use.
   type: 'mysql'
 
-  postgres:
+  mysql:
     host: 'localhost'
     port: 3306
     user: 'root'
