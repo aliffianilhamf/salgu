@@ -28,3 +28,7 @@ cors:
 swagger:
   enabled: true
   path: '/api-docs'
+
+drive:
+  path_length: 1024
+  name_length: 255
