@@ -8,7 +8,7 @@
 
 3. Ganti isi pengaturan file `local-development.yaml` agar sesuai dengan environment Anda. Pastikan pengaturan koneksi database yang ada di file tersebut itu cocok dengan database yang berjalan di mesin Anda.
 
-4. Jalankan
+4. Pastikan terminal Anda sedang di `/salgu-back-end`, dan jalankan
 
 ```bash
 $ pnpm install
