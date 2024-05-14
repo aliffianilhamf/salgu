@@ -9,11 +9,16 @@
 3. Ganti isi pengaturan file `local-development.yaml` agar sesuai dengan environment Anda. Pastikan pengaturan koneksi database yang ada di file tersebut itu cocok dengan database yang berjalan di mesin Anda.
 
 4. Jalankan
+
 ```bash
 $ pnpm install
 ```
 
 ## Menjalankan
+
+1. Pastikan Anda sudah menyediakan database untuk salgu-back-end dan mengisi pengaturan database di `local-development.yaml`.
+
+2. Jalankan
 
 ```bash
 # development
