@@ -4,6 +4,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { GENDERS, Gender } from '../types';
 
 @Entity({ name: 'user' })
 export class UserEntity {
@@ -18,6 +19,12 @@ export class UserEntity {
 
   @Column()
   email: string;
+
+  @Column({
+    type: 'enum',
+    enum: GENDERS,
+  })
+  gender: Gender;
 
   @CreateDateColumn()
   createdAt: Date;

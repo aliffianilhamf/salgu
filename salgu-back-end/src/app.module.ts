@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeormConfigFactory } from './utils/typeorm-config-factory';
+import { FilesModule } from './files/files.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { typeormConfigFactory } from './utils/typeorm-config-factory';
       useFactory: typeormConfigFactory,
       inject: [ConfigService],
     }),
+    FilesModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

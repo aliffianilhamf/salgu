@@ -12,6 +12,7 @@ export const setupSwagger = (app: INestApplication, path = 'api-docs') => {
   const config = new DocumentBuilder()
     .setTitle('SALGU API')
     .setVersion('0.0')
+    .addBearerAuth()
     .build();
   const options: SwaggerDocumentOptions = {};
   const document = SwaggerModule.createDocument(app, config, options);

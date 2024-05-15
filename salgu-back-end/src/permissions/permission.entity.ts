@@ -1,4 +1,4 @@
-import { FileEntity } from 'src/files/file.entity';
+import { FileEntity } from 'src/files/entities/file.entity';
 import {
   Column,
   CreateDateColumn,
@@ -33,5 +33,5 @@ export class PermissionEntity {
   @CreateDateColumn()
   createdAt: Date;
 
-  // TODO: Add directory ID (`dirId`)
+  // TODO: Add directory, and directory ID (`dirId`)
 }
