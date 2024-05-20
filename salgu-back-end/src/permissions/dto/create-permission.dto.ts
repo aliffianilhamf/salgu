@@ -6,13 +6,12 @@ import {
 } from '../entities/permission.entity';
 
 export class CreatePermissionDto {
-  // TODO fix this
   @IsNumber({}, { each: true })
-  @ApiProperty()
+  @ApiProperty({ type: [Number] })
   userIds: number[];
 
-  @IsString()
-  @ApiProperty()
+  @IsString({ each: true })
+  @ApiProperty({ type: [String] })
   domains: string[];
 
   @IsIn(PERMISSION_LEVELS)
