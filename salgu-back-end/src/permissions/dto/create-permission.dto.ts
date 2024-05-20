@@ -6,7 +6,8 @@ import {
 } from '../entities/permission.entity';
 
 export class CreatePermissionDto {
-  @IsNumber()
+  // TODO fix this
+  @IsNumber({}, { each: true })
   @ApiProperty()
   userIds: number[];
 
