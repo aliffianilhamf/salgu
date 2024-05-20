@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import LinkButton from "../../components/LinkButton";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const LINKS = [
   "/drive/home",
