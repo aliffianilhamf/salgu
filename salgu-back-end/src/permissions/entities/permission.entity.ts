@@ -1,3 +1,4 @@
+import { DirEntity } from 'src/dirs/entities/dir.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
 import {
   Column,
@@ -30,8 +31,12 @@ export class PermissionEntity {
   @ManyToOne(() => FileEntity)
   file: FileEntity;
 
+  @Column({ name: 'dir_id', comment: 'Dir that this permission applies to' })
+  dirId: number;
+
+  @ManyToOne(() => DirEntity)
+  dir: DirEntity;
+
   @CreateDateColumn()
   createdAt: Date;
-
-  // TODO: Add directory, and directory ID (`dirId`)
 }

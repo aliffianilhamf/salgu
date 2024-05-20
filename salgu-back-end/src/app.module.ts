@@ -10,6 +10,7 @@ import { FilesModule } from './files/files.module';
 import { UsersModule } from './users/users.module';
 import { DirsModule } from './dirs/dirs.module';
 import { UsageSnapshotsModule } from './usage-snapshots/usage-snapshots.module';
+import { PermissionsModule } from './permissions/permissions.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UsageSnapshotsModule } from './usage-snapshots/usage-snapshots.module';
     UsersModule,
     DirsModule,
     UsageSnapshotsModule,
+    PermissionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
