@@ -8,6 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeormConfigFactory } from './utils/typeorm-config-factory';
 import { FilesModule } from './files/files.module';
 import { UsersModule } from './users/users.module';
+import { DirsModule } from './dirs/dirs.module';
+import { UsageSnapshotsModule } from './usage-snapshots/usage-snapshots.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { UsersModule } from './users/users.module';
     }),
     FilesModule,
     UsersModule,
+    DirsModule,
+    UsageSnapshotsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
