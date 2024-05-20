@@ -10,7 +10,9 @@ import {
 import { DirsService } from './dirs.service';
 import { CreateDirDto } from './dto/create-dir.dto';
 import { UpdateDirDto } from './dto/update-dir.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('dirs')
 @Controller('dirs')
 export class DirsController {
   constructor(private readonly dirsService: DirsService) {}
