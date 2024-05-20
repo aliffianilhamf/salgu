@@ -1,28 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDirDto } from './dto/create-dir.dto';
 import { UpdateDirDto } from './dto/update-dir.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DirEntity } from './entities/dir.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class DirsService {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  constructor(
+    @InjectRepository(DirEntity)
+    private readonly dirRepo: Repository<DirEntity>,
+  ) {}
+
   create(createDirDto: CreateDirDto) {
-    return 'This action adds a new dir';
+    return this.dirRepo.save(createDirDto);
   }
 
   findAll() {
-    return `This action returns all dirs`;
+    return this.dirRepo.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} dir`;
+    return this.dirRepo.findOne({ where: { id } });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   update(id: number, updateDirDto: UpdateDirDto) {
-    return `This action updates a #${id} dir`;
+    return this.dirRepo.update({ id }, updateDirDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} dir`;
+    return this.dirRepo.delete({ id });
   }
 }
