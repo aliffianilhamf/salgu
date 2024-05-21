@@ -5,7 +5,7 @@ import { ACTION_LEVELS, ActionLevel } from '../entities/usage-snapshot.entity';
 export class CreateUsageSnapshotDto {
   @IsNumber()
   @ApiProperty()
-  size_delta: number;
+  sizeDelta: number;
 
   @IsIn(ACTION_LEVELS)
   @ApiProperty()
