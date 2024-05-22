@@ -15,5 +15,5 @@ export class CreateFileDto {
 
   @IsNumber()
   @ApiProperty()
-  userId: number;
+  ownerId: number;
 }
