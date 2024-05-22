@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { genSaltSync, hashSync } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -12,8 +13,14 @@ export class UsersService {
     private readonly userRepo: Repository<UserEntity>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return this.userRepo.save(createUserDto);
+  async create(createUserDto: CreateUserDto) {
+    const { password, ...rest } = createUserDto;
+    const salt = genSaltSync();
+    const passwordHash = hashSync(password, salt);
+    await this.userRepo.save({ ...rest, passwordHash, salt });
+
+    // We do it like this so we don't return the password hash and salt
+    return this.findByEmail(createUserDto.email);
   }
 
   findAll() {
@@ -22,6 +29,21 @@ export class UsersService {
 
   findOne(id: number) {
     return this.userRepo.findOne({ where: { id } });
+  }
+
+  findByEmail(email: string, withPasswordAndSalt = false) {
+    email = email.toLowerCase();
+
+    if (!withPasswordAndSalt) {
+      return this.userRepo.findOne({ where: { email } });
+    }
+
+    return this.userRepo
+      .createQueryBuilder('user')
+      .addSelect('user.passwordHash')
+      .addSelect('user.salt')
+      .where('user.email = :email', { email })
+      .getOne();
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

@@ -1,4 +1,10 @@
-import { IsEmail, IsEnum, IsString, MaxLength } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { GENDERS, Gender } from '../types';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -21,4 +27,10 @@ export class CreateUserDto {
   @IsEnum(GENDERS)
   @ApiProperty()
   gender: Gender;
+
+  @IsString()
+  @MaxLength(256)
+  @MinLength(8)
+  @ApiProperty()
+  password: string;
 }

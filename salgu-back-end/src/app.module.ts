@@ -11,6 +11,7 @@ import { UsersModule } from './users/users.module';
 import { DirsModule } from './dirs/dirs.module';
 import { UsageSnapshotsModule } from './usage-snapshots/usage-snapshots.module';
 import { PermissionsModule } from './permissions/permissions.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { PermissionsModule } from './permissions/permissions.module';
     DirsModule,
     UsageSnapshotsModule,
     PermissionsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

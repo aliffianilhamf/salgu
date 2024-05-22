@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -28,4 +29,18 @@ export class UserEntity {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @Column({ select: false })
+  passwordHash: string;
+
+  @Column({ select: false })
+  salt: string;
+
+  @Column({ default: false })
+  isAdmin: boolean;
+
+  @BeforeInsert()
+  emailToLowerCase() {
+    this.email = this.email.toLowerCase();
+  }
 }
