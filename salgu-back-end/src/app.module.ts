@@ -12,6 +12,7 @@ import { DirsModule } from './dirs/dirs.module';
 import { UsageSnapshotsModule } from './usage-snapshots/usage-snapshots.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { InvoicesModule } from './invoices/invoices.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { InvoicesModule } from './invoices/invoices.module';
     UsageSnapshotsModule,
     PermissionsModule,
     InvoicesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

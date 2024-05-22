@@ -21,6 +21,14 @@ db:
     logging: false
     ssl: false
 
+auth:
+  # This follows JwtModuleOptions from @nestjs/jwt.
+  jwt:
+    secret: 'DO NOT USE THIS SECRET IN PRODUCTION!'
+    signOptions:
+      # Change this to a shorter time in production.
+      expiresIn: '365d'
+
 cors:
   whitelist:
     - 'http://localhost:4010'
