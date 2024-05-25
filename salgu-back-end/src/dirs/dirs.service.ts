@@ -70,6 +70,7 @@ export class DirsService {
       relations: {
         parent: true,
         dirChildren: true,
+        fileChildren: true,
       },
     });
   }

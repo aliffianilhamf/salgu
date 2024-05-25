@@ -1,4 +1,5 @@
 import { DRIVE_CONSTANTS } from 'src/config/constants';
+import { FileEntity } from 'src/files/entities/file.entity';
 import {
   Column,
   CreateDateColumn,
@@ -35,6 +36,9 @@ export class DirEntity {
 
   @OneToMany(() => DirEntity, (dir) => dir.parent)
   dirChildren?: DirEntity[];
+
+  @OneToMany(() => FileEntity, (file) => file.dir)
+  fileChildren?: FileEntity[];
 
   @CreateDateColumn()
   createdAt: Date;
