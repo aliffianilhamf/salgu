@@ -69,7 +69,7 @@ export class DirsService {
       where: { id },
       relations: {
         parent: true,
-        children: true,
+        dirChildren: true,
       },
     });
   }
@@ -81,11 +81,13 @@ export class DirsService {
   async update(id: number, updateDirDto: UpdateDirDto) {
     // TODO: Handle directory move operations.
 
+    const newPath = updateDirDto.path;
+    if (!newPath) return;
+
     await this.dirRepo.manager.transaction(async (manager) => {
       const dir = await manager.findOneOrFail(DirEntity, { where: { id } });
 
       const oldPath = dir.path;
-      const newPath = updateDirDto.path;
 
       const oldPathPrefix = `${oldPath}/`;
       const newPathPrefix = `${newPath}/`;

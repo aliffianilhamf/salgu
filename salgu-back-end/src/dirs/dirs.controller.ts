@@ -38,7 +38,7 @@ export class DirsController {
   @Get(':id')
   async findOne(@Param('id') id: string, @User() user: UserEntity) {
     const dir = await this.dirsService.findOne(+id);
-    if (dir.ownerId !== user.id) return new UnauthorizedException();
+    if (dir?.ownerId !== user.id) return new UnauthorizedException();
     return dir;
   }
 
@@ -49,14 +49,14 @@ export class DirsController {
     @User() user: UserEntity,
   ) {
     const dir = await this.dirsService.findOne(+id);
-    if (dir.ownerId !== user.id) return new UnauthorizedException();
+    if (dir?.ownerId !== user.id) return new UnauthorizedException();
     return this.dirsService.update(+id, updateDirDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string, @User() user: UserEntity) {
     const dir = await this.dirsService.findOne(+id);
-    if (dir.ownerId !== user.id) return new UnauthorizedException();
+    if (dir?.ownerId !== user.id) return new UnauthorizedException();
     return this.dirsService.remove(+id);
   }
 }
