@@ -5,5 +5,6 @@ export const DRIVE_CONSTANTS = (() => {
   return {
     pathLength: loadedConfig.drive.path_length,
     nameLength: loadedConfig.drive.name_length,
+    root: loadedConfig.drive.root,
   };
 })();

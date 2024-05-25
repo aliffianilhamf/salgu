@@ -10,6 +10,7 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 import loadConfig from '../config/configuration';
 import { setupSwagger } from 'src/utils/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from 'src/errors/app-error.filter';
 
 export type CreationOptions = {
   expressInstance?: express.Express;
@@ -42,6 +43,7 @@ export const createAppInstance = async ({
       whitelist: true,
     }),
   );
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   const corsOptions: CorsOptions = {};
   if (config?.cors?.whitelist) {
