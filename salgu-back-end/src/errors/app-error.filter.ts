@@ -14,6 +14,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
+    const errorResponse: any = exception.getResponse();
 
     const resData = {
       message: exception.message,
@@ -21,6 +22,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       path: request.url,
     };
+
+    // Temporary hack to handle exceptions raised by ValidationPipe
+    // TODO: Find a better way to handle this with ValidationPipe
+    if (errorResponse?.message) resData.message = errorResponse.message;
 
     if (exception instanceof AppError) {
       resData['errorData'] = exception.data;

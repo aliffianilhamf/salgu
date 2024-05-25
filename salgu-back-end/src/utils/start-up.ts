@@ -29,6 +29,11 @@ export const createAppInstance = async ({
     new ExpressAdapter(expressInstance),
   );
 
+  // Currently we're using two different ways to load the configuration in this function.
+  // Ideally, we should use only one way to load the configuration.
+  // TODO: Refactor this function to use only one way to load the configuration
+  // const configService = app.get(ConfigService);
+
   if (config.http.trust_proxy)
     app.set('trust proxy', config.http.trust_proxy as boolean);
 

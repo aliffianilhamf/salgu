@@ -4,6 +4,7 @@ import { UpdateFileDto } from './dto/update-file.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FileEntity } from './entities/file.entity';
 import { Repository } from 'typeorm';
+import AppError from 'src/errors/app-error';
 
 @Injectable()
 export class FilesService {
@@ -12,16 +13,34 @@ export class FilesService {
     private readonly fileRepo: Repository<FileEntity>,
   ) {}
 
-  create(createFileDto: CreateFileDto) {
-    return this.fileRepo.save(createFileDto);
+  async create(createFileDto: CreateFileDto, userId: number) {
+    const existingFile = await this.fileRepo.findOne({
+      where: { name: createFileDto.name, dirId: createFileDto.dirId },
+      relations: ['dir'],
+    });
+
+    if (existingFile) {
+      throw new AppError(
+        'File already exists in the directory',
+        { fileName: createFileDto.name, dirPath: existingFile.dir.path },
+        'FILE_UPLOAD_DUPLICATE',
+      );
+    }
+
+    return this.fileRepo.save({ ...createFileDto, size: 0, ownerId: userId });
   }
 
-  findAll() {
-    return this.fileRepo.find();
+  findAll(userId: number) {
+    return this.fileRepo.find({ where: { ownerId: userId } });
   }
 
   findOne(id: number) {
-    return this.fileRepo.findOne({ where: { id } });
+    return this.fileRepo.findOne({
+      where: { id },
+      relations: {
+        dir: true,
+      },
+    });
   }
 
   update(id: number, updateFileDto: UpdateFileDto) {
