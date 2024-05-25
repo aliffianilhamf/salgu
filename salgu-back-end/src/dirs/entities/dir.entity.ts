@@ -34,7 +34,7 @@ export class DirEntity {
   parent?: DirEntity;
 
   @OneToMany(() => DirEntity, (dir) => dir.parent)
-  children?: DirEntity[];
+  dirChildren?: DirEntity[];
 
   @CreateDateColumn()
   createdAt: Date;

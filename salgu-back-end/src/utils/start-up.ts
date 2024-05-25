@@ -26,7 +26,7 @@ export const createAppInstance = async ({
 }: CreationOptions = {}) => {
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
-    expressInstance ? new ExpressAdapter(expressInstance) : undefined,
+    new ExpressAdapter(expressInstance),
   );
 
   if (config.http.trust_proxy)
