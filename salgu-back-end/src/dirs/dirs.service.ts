@@ -1,9 +1,13 @@
+import * as path from 'path';
 import { Injectable } from '@nestjs/common';
 import { CreateDirDto } from './dto/create-dir.dto';
 import { UpdateDirDto } from './dto/update-dir.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DirEntity } from './entities/dir.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
+import { DRIVE_CONSTANTS } from 'src/config/constants';
+import AppError from 'src/errors/app-error';
+import { getParentPath, stripTrailingSlashes } from 'src/utils/path';
 
 @Injectable()
 export class DirsService {
@@ -12,23 +16,121 @@ export class DirsService {
     private readonly dirRepo: Repository<DirEntity>,
   ) {}
 
-  create(createDirDto: CreateDirDto) {
-    return this.dirRepo.save(createDirDto);
+  async create(createDirDto: CreateDirDto, ownerId: number) {
+    let parentId: number | undefined;
+    let parentPath = getParentPath(createDirDto.path);
+
+    const dirPath = stripTrailingSlashes(createDirDto.path);
+    parentPath = stripTrailingSlashes(parentPath);
+
+    if (parentPath != DRIVE_CONSTANTS.root) {
+      const parentDir = await this.findOneByPath(parentPath, ownerId);
+
+      if (!parentDir) {
+        throw new AppError(
+          `Parent directory '${parentPath}' does not exist.`,
+          {
+            expectedParentPath: parentPath,
+          },
+          'DIR_PARENT_NOT_FOUND',
+        );
+      }
+
+      parentId = parentDir.id;
+    }
+
+    // If already exists, return the existing directory
+    const existingDir = await this.findOneByPath(createDirDto.path, ownerId);
+    if (existingDir) return existingDir;
+
+    const dirName = path.posix.basename(createDirDto.path);
+
+    return this.dirRepo.save({
+      path: dirPath,
+      name: dirName,
+      parentId: parentId,
+      ownerId,
+    });
   }
 
-  findAll() {
-    return this.dirRepo.find();
+  findAll(ownerId: number) {
+    return this.dirRepo.find({ where: { ownerId } });
+  }
+
+  findAllByPathPrefix(pathPrefix: string, ownerId: number) {
+    const pathSanitized = path.posix.normalize(pathPrefix);
+    return this.dirRepo.find({
+      where: { path: Like(`${pathSanitized}%`), ownerId },
+    });
   }
 
   findOne(id: number) {
-    return this.dirRepo.findOne({ where: { id } });
+    return this.dirRepo.findOne({
+      where: { id },
+      relations: {
+        parent: true,
+        children: true,
+      },
+    });
   }
 
-  update(id: number, updateDirDto: UpdateDirDto) {
-    return this.dirRepo.update({ id }, updateDirDto);
+  findOneByPath(path: string, ownerId: number) {
+    return this.dirRepo.findOneBy({ path, ownerId });
+  }
+
+  async update(id: number, updateDirDto: UpdateDirDto) {
+    // TODO: Handle directory move operations.
+
+    await this.dirRepo.manager.transaction(async (manager) => {
+      const dir = await manager.findOneOrFail(DirEntity, { where: { id } });
+
+      const oldPath = dir.path;
+      const newPath = updateDirDto.path;
+
+      const oldPathPrefix = `${oldPath}/`;
+      const newPathPrefix = `${newPath}/`;
+
+      // Only allow updating the last part of the path
+      if (!newPath.startsWith(getParentPath(oldPath))) {
+        throw new AppError(
+          'Cannot move a directory to a different directory.',
+          {
+            oldPath,
+            newPath,
+          },
+          'DIR_MOVE_NOT_ALLOWED',
+        );
+      }
+
+      const children = await manager.find(DirEntity, {
+        where: { path: Like(`${oldPathPrefix}%`), ownerId: dir.ownerId },
+      });
+
+      for (const child of children) {
+        child.path = newPathPrefix + child.path.slice(oldPathPrefix.length);
+      }
+
+      dir.path = newPath;
+      dir.name = path.posix.basename(newPath);
+
+      await manager.save(children);
+      await manager.save(dir);
+    });
   }
 
   remove(id: number) {
-    return this.dirRepo.delete({ id });
+    // Delete the directory and all its children
+    return this.dirRepo.manager.transaction(async (manager) => {
+      const dir = await manager.findOneOrFail(DirEntity, { where: { id } });
+
+      const pathPrefix = `${dir.path}/`;
+
+      const children = await manager.find(DirEntity, {
+        where: { path: Like(`${pathPrefix}%`), ownerId: dir.ownerId },
+      });
+
+      await manager.remove(children);
+      await manager.remove(dir);
+    });
   }
 }
