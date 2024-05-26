@@ -2,13 +2,12 @@
 import React from "react";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import Container from "react-bootstrap/Container";
-import Sidebar from "../../../../components/SideBar";
+import Sidebar from "../../../../components/Sidebar";
 import Homepage from "../../../../components/HomePage";
 
 export default function Home() {
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState<boolean>(false);
   const Toggle = () => {
     setToggle(!toggle);
   };
