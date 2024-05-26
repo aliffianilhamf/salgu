@@ -5,12 +5,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { genSaltSync, hashSync } from 'bcrypt';
+import { FileEntity } from 'src/files/entities/file.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
+    @InjectRepository(FileEntity)
+    private readonly fileRepo: Repository<FileEntity>,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -52,5 +55,13 @@ export class UsersService {
 
   remove(id: number) {
     return this.userRepo.delete({ id });
+  }
+
+  /**
+   * @returns Storage usage of a user in bytes.
+   */
+  async getUsage(id: number) {
+    const usage = await this.fileRepo.sum('size', { ownerId: id });
+    return usage;
   }
 }

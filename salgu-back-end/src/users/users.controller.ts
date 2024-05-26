@@ -62,4 +62,13 @@ export class UsersController {
     if (!user.isAdmin && user.id !== +id) throw new UnauthorizedException();
     return this.usersService.remove(+id);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/usage')
+  async getUsage(@Param('id') id: string, @User() user: UserEntity) {
+    if (!user.isAdmin && user.id !== +id) throw new UnauthorizedException();
+    return {
+      amount: await this.usersService.getUsage(+id),
+    };
+  }
 }
