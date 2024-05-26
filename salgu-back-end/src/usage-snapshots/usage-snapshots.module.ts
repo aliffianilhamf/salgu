@@ -8,5 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   controllers: [UsageSnapshotsController],
   providers: [UsageSnapshotsService],
   imports: [TypeOrmModule.forFeature([UsageSnapshotEntity])],
+  exports: [UsageSnapshotsService, TypeOrmModule],
 })
 export class UsageSnapshotsModule {}

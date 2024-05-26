@@ -1,9 +1,15 @@
 import { FileEntity } from 'src/files/entities/file.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-export const ACTION_LEVELS = ['upload', 'modify', 'delete'] as const;
-export type ActionLevel = (typeof ACTION_LEVELS)[number];
+export const ACTION = ['upload', 'modify', 'delete'] as const;
+export type Action = (typeof ACTION)[number];
 
 @Entity({ name: 'usage_snapshot' })
 export class UsageSnapshotEntity {
@@ -16,8 +22,8 @@ export class UsageSnapshotEntity {
   @CreateDateColumn()
   capturedAt: Date;
 
-  @Column({ type: 'enum', enum: ACTION_LEVELS })
-  level: ActionLevel;
+  @Column({ type: 'enum', enum: ACTION })
+  action: Action;
 
   @Column()
   userId: number;
