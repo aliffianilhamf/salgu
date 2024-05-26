@@ -13,6 +13,7 @@ import { UsageSnapshotsModule } from './usage-snapshots/usage-snapshots.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { InvoicesModule } from './invoices/invoices.module';
 import { AuthModule } from './auth/auth.module';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { AuthModule } from './auth/auth.module';
     PermissionsModule,
     InvoicesModule,
     AuthModule,
+    StorageModule.register(),
   ],
   controllers: [AppController],
   providers: [AppService],

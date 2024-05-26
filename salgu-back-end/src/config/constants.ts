@@ -5,6 +5,7 @@ export const DRIVE_CONSTANTS = (() => {
   return {
     pathLength: loadedConfig.drive.path_length,
     nameLength: loadedConfig.drive.name_length,
+    maxFileSize: loadedConfig.drive.max_file_size,
     root: loadedConfig.drive.root,
   };
 })();
