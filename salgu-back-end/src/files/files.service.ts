@@ -6,6 +6,7 @@ import { FileEntity } from './entities/file.entity';
 import { Repository } from 'typeorm';
 import AppError from 'src/errors/app-error';
 import { StorageService } from 'src/storage/storage.service';
+import { UsageSnapshotsService } from 'src/usage-snapshots/usage-snapshots.service';
 
 @Injectable()
 export class FilesService {
@@ -13,13 +14,10 @@ export class FilesService {
     @InjectRepository(FileEntity)
     private readonly fileRepo: Repository<FileEntity>,
     private readonly storageService: StorageService,
+    private readonly usageSnapshotsService: UsageSnapshotsService,
   ) {}
 
-  async create(
-    createFileDto: CreateFileDto,
-    userId: number,
-    file?: Express.Multer.File,
-  ) {
+  async create(createFileDto: CreateFileDto, userId: number) {
     const existingFile = await this.fileRepo.findOne({
       where: { name: createFileDto.name, dirId: createFileDto.dirId },
       relations: ['dir'],
@@ -33,19 +31,20 @@ export class FilesService {
       );
     }
 
-    const size = file ? file.size : 0;
-    if (file) {
-      this.storageService.saveFile(file, createFileDto.name);
-    }
+    const file = await this.fileRepo.save({
+      ...createFileDto,
+      size: 0,
+      ownerId: userId,
+    });
 
-    try {
-      return this.fileRepo.save({ ...createFileDto, size, ownerId: userId });
-    } catch (error) {
-      if (file) {
-        this.storageService.deleteFile(createFileDto.name);
-      }
-      throw error;
-    }
+    await this.usageSnapshotsService.create({
+      fileId: file.id,
+      sizeDelta: 0,
+      action: 'upload',
+      userId,
+    });
+
+    return file;
   }
 
   findAll(userId: number) {
@@ -70,16 +69,41 @@ export class FilesService {
   }
 
   async saveFileData(id: number, file: Express.Multer.File) {
+    const fileEntity = await this.fileRepo.findOneOrFail({ where: { id } });
+    const prevSize = fileEntity.size;
     const newSize = file.size;
+    const sizeDelta = newSize - prevSize;
 
+    // TODO: Make these atomic.
     await this.fileRepo.update({ id }, { size: newSize });
+    await this.usageSnapshotsService.create({
+      fileId: id,
+      sizeDelta,
+      action: 'modify',
+      userId: fileEntity.ownerId,
+    });
 
     // TODO: Handle possible mismatch that could happen when an exception
     // occured after the database was updated but before the file was saved.
     this.storageService.saveFile(file, id.toString(), { overwrite: true });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    const file = await this.fileRepo.findOneOrFail({
+      where: { id },
+      select: {
+        ownerId: true,
+        size: true,
+      },
+    });
+
+    // TODO: Make these atomic
+    await this.usageSnapshotsService.create({
+      fileId: id,
+      sizeDelta: -file.size,
+      action: 'delete',
+      userId: file.ownerId,
+    });
     return this.fileRepo.delete({ id });
   }
 }
