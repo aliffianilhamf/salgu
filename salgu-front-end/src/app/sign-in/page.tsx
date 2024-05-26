@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import Button from "../../../components/button";
-import Form from "../../../components/Input/form";
+import Button from "../../components/Button";
+import Form from "../../components/Input/Form";
 
 export default function SignIn() {
   return (
@@ -14,8 +14,8 @@ export default function SignIn() {
         <p className={`tw-font-medium tw-mb-3`}>
           Welcome, Please Sign In First!
         </p>
-        <Form name="username" type="text" placeholder="John Doe">
-          Username
+        <Form name="email" type="email" placeholder="johndoe@mail.com">
+          Email
         </Form>
         <Form name="password" type="password" placeholder="********">
           Password
