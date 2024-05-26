@@ -10,11 +10,19 @@ export default function Folder({ params }: any) {
 
   return (
     <Container className="p-5">
+      <div className="d-grid gap-2 d-md-flex justify-content-md-start">
+        <button className="btn btn-dark mr-1" type="button">
+          File
+        </button>
+        <button className="btn btn-dark" type="button">
+          Folder
+        </button>
+      </div>
       <h3 className="text-center">Halaman Folder</h3>
       <div className="card mt-3">
         <div className="card-body">
           {/* <!-- Button trigger modal --> */}
-          <div className="float-right mb-3">
+          <div className="d-grid gap-2 d-md-flex justify-content-md-end">
             <button type="button" className="btn btn-primary mr-1" data-bs-toggle="modal" data-bs-target="#Share">
               Share
             </button>
