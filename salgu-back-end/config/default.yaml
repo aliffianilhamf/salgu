@@ -40,3 +40,6 @@ swagger:
 drive:
   path_length: 1024
   name_length: 255
+
+  # Root prefix for all file/directory paths.
+  root: '/My Drive'

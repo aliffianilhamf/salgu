@@ -37,7 +37,7 @@ export default function Navbar({ Toggle }: NavbarProps) {
           <li className="nav-item">
             <a className="nav-link">
               <i className="bi bi-person-circle"></i>
-              <span className="ms-2">Username</span>
+              <span className="ms-2">Muna</span>
             </a>
           </li>
         </ul>

@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 4010",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 4010",
     "lint": "next lint",
     "pre-commit": "lint-staged"
   },
@@ -16,7 +16,8 @@
     "next": "14.2.3",
     "react": "^18",
     "react-bootstrap": "^2.10.2",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-icons": "^5.2.1"
   },
   "devDependencies": {
     "@types/node": "^20",

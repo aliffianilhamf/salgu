@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.list-group a:hover {
+  background-color: blue;
+  color: white;
+  cursor: pointer;
+}

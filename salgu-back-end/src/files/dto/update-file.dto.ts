@@ -1,4 +1,4 @@
-import { OmitType } from '@nestjs/swagger';
+import { PartialType } from '@nestjs/swagger';
 import { CreateFileDto } from './create-file.dto';
 
-export class UpdateFileDto extends OmitType(CreateFileDto, ['ownerId']) {}
+export class UpdateFileDto extends PartialType(CreateFileDto) {}

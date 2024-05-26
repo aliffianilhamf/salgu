@@ -10,6 +10,7 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 import loadConfig from '../config/configuration';
 import { setupSwagger } from 'src/utils/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from 'src/errors/app-error.filter';
 
 export type CreationOptions = {
   expressInstance?: express.Express;
@@ -25,8 +26,13 @@ export const createAppInstance = async ({
 }: CreationOptions = {}) => {
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
-    expressInstance ? new ExpressAdapter(expressInstance) : undefined,
+    new ExpressAdapter(expressInstance),
   );
+
+  // Currently we're using two different ways to load the configuration in this function.
+  // Ideally, we should use only one way to load the configuration.
+  // TODO: Refactor this function to use only one way to load the configuration
+  // const configService = app.get(ConfigService);
 
   if (config.http.trust_proxy)
     app.set('trust proxy', config.http.trust_proxy as boolean);
@@ -42,6 +48,7 @@ export const createAppInstance = async ({
       whitelist: true,
     }),
   );
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   const corsOptions: CorsOptions = {};
   if (config?.cors?.whitelist) {
