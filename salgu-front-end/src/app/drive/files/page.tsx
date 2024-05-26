@@ -6,7 +6,6 @@ import ModalOpenFile from "@/components/ModalOpenFile";
 import Container from "react-bootstrap/Container";
 
 export default function File({ params }: any) {
-  const id: string = params.id;
   return (
     <Container className="p-5">
       <div className="tw-flex tw-justify-end tw-mt-20 tw-max-w-full tw-px-10">
@@ -24,8 +23,6 @@ export default function File({ params }: any) {
         <ListFile id={"00000"}>namafile.jpg</ListFile>
         <ListFile id={"000000"}>namafile.jpg</ListFile>
       </div>
-
-      <ModalOpenFile></ModalOpenFile>
     </Container>
   );
 }

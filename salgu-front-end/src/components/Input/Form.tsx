@@ -3,7 +3,7 @@ import Label from "./Label";
 import Select from "./Select";
 
 type FormProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   name: string;
   type: string;
   placeholder?: string;
