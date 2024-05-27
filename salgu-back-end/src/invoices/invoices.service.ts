@@ -4,9 +4,7 @@ import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InvoiceEntity } from './entities/invoice.entity';
 import { Between, Repository } from 'typeorm';
-import { SchedulerRegistry } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
-import { CronJob } from 'cron';
 import { UsageSnapshotEntity } from 'src/usage-snapshots/entities/usage-snapshot.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { Duration, add } from 'date-fns';
@@ -27,7 +25,6 @@ export class InvoicesService {
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
     private readonly configService: ConfigService,
-    private readonly schedulerRegistry: SchedulerRegistry,
   ) {
     this.billingFactor = this.configService.getOrThrow<number>(
       'drive.billing_factor',
@@ -35,44 +32,6 @@ export class InvoicesService {
     this.billingPeriod = this.configService.getOrThrow<Duration>(
       'drive.billing_period',
     );
-
-    // TODO: Move cron job logic elsewhere.
-    let cronJobsRegistered = true;
-    try {
-      this.schedulerRegistry.getCronJob('updateAllNonfinalInvoices');
-    } catch (e) {
-      cronJobsRegistered = false;
-    }
-
-    if (
-      !cronJobsRegistered &&
-      this.configService.getOrThrow<boolean>(
-        'crons.updateAllNonfinalInvoices.enabled',
-      )
-    ) {
-      console.log('Registering cron job updateAllNonfinalInvoices');
-      const cronTime = this.configService.getOrThrow<string>(
-        'crons.updateAllNonfinalInvoices.cron_time',
-      );
-      const job = new CronJob(cronTime, () => this.updateAllNonfinalInvoices());
-      this.schedulerRegistry.addCronJob('updateAllNonfinalInvoices', job);
-      job.start();
-    }
-
-    if (
-      !cronJobsRegistered &&
-      this.configService.getOrThrow<boolean>(
-        'crons.createMissingInvoices.enabled',
-      )
-    ) {
-      console.log('Registering cron job createMissingInvoices');
-      const cronTime = this.configService.getOrThrow<string>(
-        'crons.createMissingInvoices.cron_time',
-      );
-      const job = new CronJob(cronTime, () => this.createMissingInvoices());
-      this.schedulerRegistry.addCronJob('createMissingInvoices', job);
-      job.start();
-    }
   }
 
   create(createInvoiceDto: CreateInvoiceDto) {
@@ -95,8 +54,19 @@ export class InvoicesService {
     return this.invoiceRepo.delete({ id });
   }
 
+  async updateInvoiceAmount(id: number) {
+    const invoice = await this.invoiceRepo.findOneOrFail({ where: { id } });
+
+    const amount = await this.calculateAmountOwed(
+      invoice.startedAt,
+      invoice.endedAt,
+      invoice.userId,
+    );
+
+    await this.invoiceRepo.update({ id }, { amount });
+  }
+
   async updateAllNonfinalInvoices() {
-    console.log('Updating all non-final invoices');
     const invoices = await this.invoiceRepo.find({
       where: { isFinal: false },
     });
@@ -126,8 +96,6 @@ export class InvoicesService {
    * Create missing invoices for all users.
    */
   async createMissingInvoices() {
-    console.log('Creating missing invoices');
-
     const now = new Date();
     const users = await this.userRepo.find({
       select: { id: true, createdAt: true },
@@ -203,6 +171,7 @@ export class InvoicesService {
     for (let i = 0; i < snaps.length; i++) {
       const snap = snaps[i];
       const sizeDelta = snap.sizeDelta;
+
       // Time delta in seconds
       const timeDelta = Math.floor(
         (i !== snaps.length - 1
