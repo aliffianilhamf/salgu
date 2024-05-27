@@ -8,8 +8,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-export const ACTION = ['upload', 'modify', 'delete'] as const;
-export type Action = (typeof ACTION)[number];
+export const ACTIONS = ['upload', 'modify', 'delete'] as const;
+export type Action = (typeof ACTIONS)[number];
 
 @Entity({ name: 'usage_snapshot' })
 export class UsageSnapshotEntity {
@@ -22,7 +22,7 @@ export class UsageSnapshotEntity {
   @CreateDateColumn()
   capturedAt: Date;
 
-  @Column({ type: 'enum', enum: ACTION })
+  @Column({ type: 'enum', enum: ACTIONS })
   action: Action;
 
   @Column()

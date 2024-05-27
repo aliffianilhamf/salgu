@@ -1,6 +1,7 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import loadConfig from './config/configuration';
 import { Module } from '@nestjs/common';
+import { ScheduleModule } from '@nestjs/schedule';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -31,6 +32,7 @@ import { StorageModule } from './storage/storage.module';
     InvoicesModule,
     AuthModule,
     StorageModule.register(),
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
