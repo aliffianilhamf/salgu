@@ -106,4 +106,8 @@ export class FilesService {
     });
     return this.fileRepo.delete({ id });
   }
+
+  getFileHistory(fileId?: number) {
+    return this.fileRepo.find({ where: { id: fileId } });
+  }
 }
