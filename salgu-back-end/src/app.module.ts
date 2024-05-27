@@ -15,6 +15,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { InvoicesModule } from './invoices/invoices.module';
 import { AuthModule } from './auth/auth.module';
 import { StorageModule } from './storage/storage.module';
+import { FileActionsModule } from './file-actions/file-actions.module';
 
 @Module({
   imports: [
@@ -33,8 +34,9 @@ import { StorageModule } from './storage/storage.module';
     AuthModule,
     StorageModule.register(),
     ScheduleModule.forRoot(),
+    FileActionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

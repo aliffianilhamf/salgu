@@ -106,4 +106,9 @@ export class FilesController {
     const readStream = this.filesService.getFile(+id);
     return new StreamableFile(readStream);
   }
+
+  @Get(':id/history')
+  getFileHistory(@Param('id') file: FileEntity) {
+    return this.filesService.findAll(file.id);
+  }
 }
