@@ -16,6 +16,7 @@ import { InvoicesModule } from './invoices/invoices.module';
 import { AuthModule } from './auth/auth.module';
 import { StorageModule } from './storage/storage.module';
 import { FileActionsModule } from './file-actions/file-actions.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { FileActionsModule } from './file-actions/file-actions.module';
     StorageModule.register(),
     ScheduleModule.forRoot(),
     FileActionsModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

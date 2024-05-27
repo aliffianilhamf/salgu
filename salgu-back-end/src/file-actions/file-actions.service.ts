@@ -30,8 +30,4 @@ export class FileActionsService {
   remove(id: number) {
     return this.fileActionRepo.delete({ id });
   }
-
-  get
-
-
 }

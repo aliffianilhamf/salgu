@@ -7,7 +7,6 @@ export class FileAction {}
 export const TYPE_FILE_ACTIONS = ['upload', 'modify', 'delete'] as const;
 export type TypeFileActions = (typeof TYPE_FILE_ACTIONS)[number];
 
-
 @Entity({ name: 'file-actions' })
 export class FileActionEntity {
     @PrimaryGeneratedColumn()
