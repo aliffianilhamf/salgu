@@ -3,7 +3,7 @@ import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import "bootstrap/dist/js/bootstrap.min.js";
-import Form from "@/components/Input/Form";
+import InputBlock from "@/components/Input/Form";
 import Link from "next/link";
 import Button from "@/components/Button";
 export default function Folder({ params }: any) {
@@ -69,7 +69,7 @@ export default function Folder({ params }: any) {
             </thead> */}
             <tbody>
               <tr>
-                <Form name="check" type="checkbox"></Form>
+                <InputBlock name="check" type="checkbox"></InputBlock>
                 <td>
                   <Link href="" className="tw-no-underline tw-text-black ">
                     Tugas_Cloud-Computing_Shiva-Augusta.pdf
@@ -77,7 +77,7 @@ export default function Folder({ params }: any) {
                 </td>
               </tr>
               <tr>
-                <Form name="check" type="checkbox"></Form>
+                <InputBlock name="check" type="checkbox"></InputBlock>
                 <td>
                   <Link href="" className="tw-no-underline tw-text-black">
                     Tugas_Cloud-Computing_Shiva-Augusta.pdf

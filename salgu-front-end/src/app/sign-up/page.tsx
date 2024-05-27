@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Button from "../../components/Button";
-import Form from "../../components/Input/Form";
+import InputBlock from "../../components/Input/Form";
 
 export default function SignIn() {
   return (
@@ -16,33 +16,37 @@ export default function SignIn() {
         </p>
         <div className="tw-flex">
           <div className="tw-mr-1">
-            <Form name="firstName" type="text" placeholder="John">
+            <InputBlock name="firstName" type="text" placeholder="John">
               First Name
-            </Form>
+            </InputBlock>
           </div>
           <div>
-            <Form name="lastName" type="text" placeholder="Doe">
+            <InputBlock name="lastName" type="text" placeholder="Doe">
               Last Name
-            </Form>
+            </InputBlock>
           </div>
         </div>
-        <Form name="username" type="email" placeholder="johndoe@mail.com">
+        <InputBlock name="username" type="email" placeholder="johndoe@mail.com">
           Email
-        </Form>
-        <Form
+        </InputBlock>
+        <InputBlock
           name="gender"
           type="radio"
           placeholder="Doe"
           options={["male", "female"]}
         >
           Gender
-        </Form>
-        <Form name="password" type="password" placeholder="********">
+        </InputBlock>
+        <InputBlock name="password" type="password" placeholder="********">
           Password
-        </Form>
-        <Form name="confirmPassword" type="password" placeholder="********">
+        </InputBlock>
+        <InputBlock
+          name="confirmPassword"
+          type="password"
+          placeholder="********"
+        >
           Confirm Password
-        </Form>
+        </InputBlock>
         <Button variant="tw-bg-gray-500 hover:tw-bg-gray-600">Sign Up</Button>
         <div className="tw-flex tw-justify-center">
           <p className="tw-mr-2">Have an account?</p>
