@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Form from "./Input/Form";
+import InputBlock from "./Input/Form";
 import Button from "./Button";
 
 export default function ListFile() {
@@ -47,7 +47,7 @@ export default function ListFile() {
         <table className="table table-hover">
           <tbody>
             <tr>
-              <Form name="check" type="checkbox"></Form>
+              <InputBlock name="check" type="checkbox"></InputBlock>
               <td>
                 <Link href="" className="tw-no-underline tw-text-black ">
                   Tugas_Cloud-Computing_Shiva-Augusta.pdf
@@ -55,7 +55,7 @@ export default function ListFile() {
               </td>
             </tr>
             <tr>
-              <Form name="check" type="checkbox"></Form>
+              <InputBlock name="check" type="checkbox"></InputBlock>
               <td>
                 <Link href="" className="tw-no-underline tw-text-black">
                   Tugas_Cloud-Computing_Shiva-Augusta.pdf

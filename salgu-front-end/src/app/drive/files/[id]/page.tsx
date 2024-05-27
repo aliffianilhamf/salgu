@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/components/Button";
-import Form from "@/components/Input/Form";
+import InputBlock from "@/components/Input/Form";
 import Container from "react-bootstrap/Container";
 
 export default function File({ params }: any) {
