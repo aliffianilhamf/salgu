@@ -15,7 +15,6 @@ export default function useSignIn() {
     try {
       res = await api.post("/auth/sign-in", props);
     } catch (err: any) {
-      if (err?.response) throw new Error(err.response.data.message);
       throw err;
     }
 

@@ -10,6 +10,16 @@ const api = axios.create({
   },
 });
 
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public status: number,
+    public originalError?: any,
+  ) {
+    super(message);
+  }
+}
+
 // https://github.com/vercel/next.js/discussions/49950#discussioncomment-6030100
 api.interceptors.request.use(async (config) => {
   if (isServer) {
@@ -32,5 +42,22 @@ api.interceptors.request.use(async (config) => {
 
   return config;
 });
+
+api.interceptors.response.use(
+  async (response) => {
+    return response;
+  },
+  async (error) => {
+    let newMessage: string = `HTTP Error ${error.response.status}`;
+    if (Array.isArray(error.response.data.message))
+      newMessage = error.response.data.message.join("\n");
+    else if (typeof error.response.data.message === "string")
+      newMessage = error.response.data.message;
+
+    const newError = new ApiError(newMessage, error.response.status, error);
+
+    return Promise.reject(newError);
+  },
+);
 
 export default api;
