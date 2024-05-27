@@ -54,41 +54,35 @@ export class InvoicesService {
     return this.invoiceRepo.delete({ id });
   }
 
-  async updateInvoiceAmount(id: number) {
+  async updateInvoice(id: number) {
     const invoice = await this.invoiceRepo.findOneOrFail({ where: { id } });
+    const invoicePatch = new InvoiceEntity();
+    let to = new Date();
+
+    if (invoice.endedAt.getTime() < Date.now()) {
+      invoicePatch.isFinal = true;
+      to = invoice.endedAt;
+    }
 
     const amount = await this.calculateAmountOwed(
       invoice.startedAt,
-      invoice.endedAt,
+      to,
       invoice.userId,
     );
 
-    await this.invoiceRepo.update({ id }, { amount });
+    invoicePatch.amount = amount;
+
+    await this.invoiceRepo.update({ id: invoice.id }, invoicePatch);
   }
 
   async updateAllNonfinalInvoices() {
     const invoices = await this.invoiceRepo.find({
       where: { isFinal: false },
+      select: { id: true },
     });
 
     for (const invoice of invoices) {
-      const invoicePatch = new InvoiceEntity();
-      let to = new Date();
-
-      if (invoice.endedAt.getTime() < Date.now()) {
-        invoicePatch.isFinal = true;
-        to = invoice.endedAt;
-      }
-
-      const amount = await this.calculateAmountOwed(
-        invoice.startedAt,
-        to,
-        invoice.userId,
-      );
-
-      invoicePatch.amount = amount;
-
-      await this.invoiceRepo.update({ id: invoice.id }, invoicePatch);
+      await this.updateInvoice(invoice.id);
     }
   }
 

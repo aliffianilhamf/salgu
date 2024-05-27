@@ -18,7 +18,7 @@ export class InvoicesController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    await this.invoicesService.updateInvoiceAmount(+id);
+    await this.invoicesService.updateInvoice(+id);
     return this.invoicesService.findOne(+id);
   }
 }
