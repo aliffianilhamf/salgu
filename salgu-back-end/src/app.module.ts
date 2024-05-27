@@ -17,6 +17,7 @@ import { AuthModule } from './auth/auth.module';
 import { StorageModule } from './storage/storage.module';
 import { FileActionsModule } from './file-actions/file-actions.module';
 import { PaymentModule } from './payment/payment.module';
+import { SchedulingService } from './scheduling/scheduling.service';
 
 @Module({
   imports: [
@@ -39,6 +40,6 @@ import { PaymentModule } from './payment/payment.module';
     PaymentModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SchedulingService],
 })
 export class AppModule { }

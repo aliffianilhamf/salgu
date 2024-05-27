@@ -67,6 +67,7 @@ storage:
       enabled: true
 
 # See https://devhints.io/cron for cron time format.
+# See JOB_FUNCTIONS in SchedulingService for supported jobs.
 crons:
   updateAllNonfinalInvoices:
     enabled: true
