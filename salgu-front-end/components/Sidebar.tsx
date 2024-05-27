@@ -4,7 +4,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default function Sidebar({}) {
   return (
-    <div className="d-flex flex-column bg-white sidebar p-2 min-vh-100">
+    <div className="d-flex flex-column bg-white sidebar p-2 min-vh-100 ">
       <div className="m-2">
         <span className="brand-name fs-4">SALGU</span>
       </div>
