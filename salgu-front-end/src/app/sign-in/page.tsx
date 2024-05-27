@@ -26,6 +26,7 @@ export default function SignIn() {
         setError(err?.message || "An error occurred");
       });
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="tw-flex tw-justify-center tw-items-center tw-min-h-screen tw-flex-col">
