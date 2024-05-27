@@ -4,8 +4,8 @@ import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import NavInvoice from "@/components/NavInvoice";
-import Sidebar from "../../../../../components/Sidebar";
-import Homepage from "../../../../../components/HomePage";
+import Sidebar from "../../../../components/Sidebar";
+import Homepage from "../../../../components/HomePage";
 import Link from "next/link";
 
 export default function Invoice({ params }: any) {
