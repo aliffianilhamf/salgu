@@ -3,14 +3,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Button from "react-bootstrap/Button";
 import useUser from "@/hooks/use-user";
-import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 
 type NavbarProps = {
   Toggle: () => void;
 };
 
 export default function Navbar({ Toggle }: NavbarProps) {
-  const user = useAuthUser();
+  const user = useUser();
   if (!user) return null;
 
   return (

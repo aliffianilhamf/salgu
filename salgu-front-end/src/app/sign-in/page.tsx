@@ -2,19 +2,14 @@
 import Link from "next/link";
 import Button from "../../components/Button";
 import InputBlock from "../../components/Input/Form";
-import useSignIn from "react-auth-kit/hooks/useSignIn";
-import api from "@/api";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+import useSignIn from "@/hooks/use-sign-in";
 
 export default function SignIn() {
   const signIn = useSignIn();
   const [error, setError] = useState<string | null>("");
   const router = useRouter();
-  const isAuthenticated = useIsAuthenticated();
-
-  console.log(isAuthenticated);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setError(null);
@@ -23,30 +18,12 @@ export default function SignIn() {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    api
-      .post("/auth/sign-in", { email, password })
-      .then((res) => {
-        console.log("inning2");
-        const signInSuccess = signIn({
-          auth: {
-            token: res.data.access_token,
-            type: "Bearer",
-          },
-          userState: res.data.payload,
-        });
-
-        if (!signInSuccess) {
-          setError("Unknown error occurred, please try again later.");
-          return;
-        }
-
-        console.log("sign in success");
-        // router.push("/");
+    signIn({ email, password })
+      .then(() => {
+        router.push("/");
       })
-
-      .catch((err: any) => {
-        setError(err.response.data.message);
-        console.error(err);
+      .catch((err) => {
+        setError(err?.message || "An error occurred");
       });
   };
   return (

@@ -1,7 +1,10 @@
 import { UserData } from "@/types";
-import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import Cookies from "js-cookie";
 
 export default function useUser() {
-  const user = useAuthUser<UserData>();
-  return user;
+  const userData = Cookies.get("user");
+
+  if (!userData) return null;
+
+  return JSON.parse(userData) as UserData;
 }
