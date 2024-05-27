@@ -13,7 +13,7 @@ export default function Home() {
   };
   return (
     <Container fluid className="d-flex">
-      <div className="container-fluid bg-secondary min-vh-100">
+      <div className="container-fluid tw-bg-white min-vh-100">
         <div className="row">
           {toggle && (
             <div className="col-2 bg-white vh-100">

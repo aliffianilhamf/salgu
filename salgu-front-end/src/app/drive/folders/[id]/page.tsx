@@ -1,8 +1,11 @@
-'use client';
-import Container from 'react-bootstrap/Container';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { useState } from 'react';
-import 'bootstrap/dist/js/bootstrap.min.js';
+"use client";
+import Container from "react-bootstrap/Container";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from "react";
+import "bootstrap/dist/js/bootstrap.min.js";
+import Form from "@/components/Input/Form";
+import Link from "next/link";
+import Button from "@/components/Button";
 
 export default function Folder({ params }: any) {
   const id: string = params.id;
@@ -10,31 +13,72 @@ export default function Folder({ params }: any) {
 
   return (
     <Container className="p-5">
-      <div className="d-grid gap-2 d-md-flex justify-content-md-start">
-        <button className="btn btn-dark mr-1" type="button">
+      <div className="tw-flex tw-border-2 tw-rounded-md tw-w-full tw-max-w-fit tw-p-5 tw-gap-4">
+        {/* <button className="btn btn-dark mr-1" type="button">
           File
         </button>
         <button className="btn btn-dark" type="button">
           Folder
-        </button>
+        </button> */}
+        <Link href="" className="btn btn-dark ">
+          Upload File
+        </Link>
+        <Link href="" className="btn btn-dark">
+          New Folder
+        </Link>
       </div>
       <h3 className="text-center">Halaman Folder</h3>
       <div className="card mt-3">
         <div className="card-body">
           {/* <!-- Button trigger modal --> */}
-          <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button type="button" className="btn btn-primary mr-1" data-bs-toggle="modal" data-bs-target="#Share">
-              Share
-            </button>
-            <button type="button" className="btn btn-primary mr-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">
-              Download
-            </button>
-            <button type="button" className="btn btn-primary mr-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">
-              Delete
-            </button>
-            <button type="button" className="btn btn-primary mr-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">
-              Copy Link
-            </button>
+          <div className="tw-flex tw-justify-between">
+            <div>
+              <button
+                type="button"
+                className="border-black btn btn-light"
+                data-bs-toggle="modal"
+                data-bs-target="#Share"
+              >
+                Select All
+              </button>
+            </div>
+            <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button
+                type="button"
+                className="btn btn-primary mr-1"
+                data-bs-toggle="modal"
+                data-bs-target="#Share"
+              >
+                Share
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary mr-1"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                data-bs-whatever="@fat"
+              >
+                Download
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary mr-1"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                data-bs-whatever="@getbootstrap"
+              >
+                Delete
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary mr-1"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                data-bs-whatever="@getbootstrap"
+              >
+                Copy Link
+              </button>
+            </div>
           </div>
           <table className="table table-hover">
             {/* <thead>
@@ -57,12 +101,22 @@ export default function Folder({ params }: any) {
 
           {/* <!-- Modal --> */}
 
-          <div className="modal fade" id="Share" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div
+            className="modal fade"
+            id="Share"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
                   <h1>Sharing</h1>
-                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
                 </div>
                 <div className="modal-body">
                   <h4>People</h4>
@@ -71,7 +125,9 @@ export default function Folder({ params }: any) {
                       <tr>
                         <td>
                           Lutfi Azis Hafiizhudin <br />
-                          <p className="text-secondary">lutfiazishafiizhudin@mail.ugm.ac.id</p>
+                          <p className="text-secondary">
+                            lutfiazishafiizhudin@mail.ugm.ac.id
+                          </p>
                         </td>
                         <td>(Owner)</td>
                       </tr>
@@ -79,14 +135,19 @@ export default function Folder({ params }: any) {
                         <td>
                           Gayuh
                           <br />
-                          <p className="text-secondary">GayuhGayuh@gayuh.gayuh.com</p>
+                          <p className="text-secondary">
+                            GayuhGayuh@gayuh.gayuh.com
+                          </p>
                         </td>
                         <td>(Editor)</td>
                       </tr>
                     </tbody>
                   </table>
                   <div className="d-grid gap-2 col-6 mx-auto ">
-                    <button className="btn bg-secondary bg-opacity-25 text-black rounded-pill" type="button">
+                    <button
+                      className="btn bg-secondary bg-opacity-25 text-black rounded-pill"
+                      type="button"
+                    >
                       Add User
                     </button>
                   </div>
@@ -110,7 +171,10 @@ export default function Folder({ params }: any) {
                     </tbody>
                   </table>
                   <div className="d-grid gap-2 pb-3 col-6 mx-auto ">
-                    <button className="btn bg-secondary bg-opacity-25 text-black rounded-pill" type="button">
+                    <button
+                      className="btn bg-secondary bg-opacity-25 text-black rounded-pill"
+                      type="button"
+                    >
                       Add Organizations
                     </button>
                   </div>

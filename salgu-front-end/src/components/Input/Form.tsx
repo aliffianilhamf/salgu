@@ -16,7 +16,7 @@ export default function Form(props: FormProps) {
     <>
       <div className="tw-block">
         <Label htmlFor={name}>{children}</Label>
-        {type === "radio" && options ? (
+        {type === "select" && options ? (
           <Select name={name} opts={options}></Select>
         ) : (
           // input biasa

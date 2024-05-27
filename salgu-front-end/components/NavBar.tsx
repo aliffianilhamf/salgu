@@ -9,11 +9,8 @@ type NavbarProps = {
 
 export default function Navbar({ Toggle }: NavbarProps) {
   return (
-    <nav className="navbar navbar-expand-sm navbar-dark tw-bg-white px-3">
-      <i
-        className="navbar-brand bi bi-justify-left fs-4 text-black"
-        onClick={Toggle}
-      ></i>
+    <nav className="navbar navbar-expand-sm navbar-dark bg-transparent px-3">
+      <i className="navbar-brand bi bi-justify-left fs-4 " onClick={Toggle}></i>
       <button
         className="navbar-toggler d-lg-none"
         type="button"
@@ -31,7 +28,7 @@ export default function Navbar({ Toggle }: NavbarProps) {
           type="text"
           placeholder="Enter search terms"
         />
-        <Button variant="secondary" className="my-2 my-sm-0" type="submit">
+        <Button variant="primary" className="my-2 my-sm-0" type="submit">
           Search
         </Button>
       </form>
@@ -39,8 +36,8 @@ export default function Navbar({ Toggle }: NavbarProps) {
         <ul className="navbar-nav ms-auto mt-2 mt-lg-0 ">
           <li className="nav-item">
             <a className="nav-link">
-              <i className="bi bi-person-circle text-black "></i>
-              <span className="ms-2 text-black">Muna</span>
+              <i className="bi bi-person-circle "></i>
+              <span className="ms-2 ">Muna</span>
             </a>
           </li>
         </ul>
