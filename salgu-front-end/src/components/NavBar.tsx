@@ -10,7 +10,7 @@ type NavbarProps = {
 export default function Navbar({ Toggle }: NavbarProps) {
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-transparent px-3">
-      <i className="navbar-brand bi bi-justify-left fs-4" onClick={Toggle}></i>
+      <i className="navbar-brand bi bi-justify-left fs-4 " onClick={Toggle}></i>
       <button
         className="navbar-toggler d-lg-none"
         type="button"
@@ -20,7 +20,7 @@ export default function Navbar({ Toggle }: NavbarProps) {
         aria-expanded="false"
         aria-label="Toggle navigation"
       >
-        <span className="navbar-toggler-icon"></span>
+        <span className="navbar-toggler-icon "></span>
       </button>
       <form className="d-flex my-2 my-lg-0">
         <input
@@ -33,11 +33,11 @@ export default function Navbar({ Toggle }: NavbarProps) {
         </Button>
       </form>
       <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
+        <ul className="navbar-nav ms-auto mt-2 mt-lg-0 ">
           <li className="nav-item">
             <a className="nav-link">
-              <i className="bi bi-person-circle"></i>
-              <span className="ms-2">Muna</span>
+              <i className="bi bi-person-circle "></i>
+              <span className="ms-2 ">Muna</span>
             </a>
           </li>
         </ul>
