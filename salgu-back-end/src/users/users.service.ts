@@ -62,6 +62,7 @@ export class UsersService {
    */
   async getUsage(id: number) {
     const usage = await this.fileRepo.sum('size', { ownerId: id });
+    if (!usage) return 0;
     return usage;
   }
 }

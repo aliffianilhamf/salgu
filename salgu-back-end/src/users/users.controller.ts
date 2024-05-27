@@ -16,11 +16,15 @@ import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from './user.decorator';
 import { UserEntity } from './entities/user.entity';
+import { InvoicesService } from 'src/invoices/invoices.service';
 
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly invoicesService: InvoicesService,
+  ) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -67,8 +71,10 @@ export class UsersController {
   @Get(':id/usage')
   async getUsage(@Param('id') id: string, @User() user: UserEntity) {
     if (!user.isAdmin && user.id !== +id) throw new UnauthorizedException();
+    const usage = await this.usersService.getUsage(+id);
     return {
-      amount: await this.usersService.getUsage(+id),
+      amount: usage,
+      spendingPerSecond: this.invoicesService.billingFactor * usage,
     };
   }
 }

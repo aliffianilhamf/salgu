@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsIn, IsNumber } from 'class-validator';
-import { ACTION, Action } from '../entities/usage-snapshot.entity';
+import { ACTIONS, Action } from '../entities/usage-snapshot.entity';
 
 export class CreateUsageSnapshotDto {
   @IsNumber()
   @ApiProperty()
   sizeDelta: number;
 
-  @IsIn(ACTION)
+  @IsIn(ACTIONS)
   @ApiProperty()
   action: Action;
 

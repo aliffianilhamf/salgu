@@ -1,26 +1,43 @@
-import { UserEntity } from "src/users/entities/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { UserEntity } from 'src/users/entities/user.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'invoice' })
 export class InvoiceEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({type: "datetime"})
-    startedAt: Date;
-    
-    @Column({ type: "datetime", nullable: true })
-    endedAt?: Date;
+  @Column({ type: 'datetime' })
+  startedAt: Date;
 
-    @Column()
-    amount: number;
+  @Column({ type: 'datetime' })
+  endedAt: Date;
 
-    @Column()
-    paid: boolean;
+  @Column()
+  amount: number;
 
-    @Column({ name: 'user_id', comment: 'user of the file' })
-    userId: number;
+  @Column()
+  paid: boolean;
 
-    @ManyToOne(() => UserEntity)
-    user: UserEntity;
+  @Column({
+    comment:
+      'Is the invoice amount final or not.\n' +
+      'An invoice can only be paid if this is true.',
+    default: false,
+  })
+  isFinal: boolean;
+
+  @UpdateDateColumn()
+  lastUpdatedAt: Date;
+
+  @Column({ name: 'user_id', comment: 'user of the invoice' })
+  userId: number;
+
+  @ManyToOne(() => UserEntity)
+  user: UserEntity;
 }
