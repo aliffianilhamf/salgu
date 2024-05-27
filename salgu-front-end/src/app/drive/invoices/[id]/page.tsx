@@ -8,7 +8,9 @@ import Sidebar from "../../../../../components/Sidebar";
 import Homepage from "../../../../../components/HomePage";
 import Link from "next/link";
 
-export default function Invoice() {
+export default function Invoice({ params }: any) {
+  const id: string = params.id;
+
   const [toggle, setToggle] = useState<boolean>(false);
   const Toggle = () => {
     setToggle(!toggle);
