@@ -1,15 +1,11 @@
 "use client";
-import type { Metadata } from "next";
 import "./globals.css";
 import { Container } from "react-bootstrap";
 import Sidebar from "@/components/Sidebar";
 import Homepage from "@/components/HomePage";
 import { useState } from "react";
-
-// export const metadata: Metadata = {
-//   title: "SALGU",
-//   description: "SALGU",
-// };
+import AuthProvider from "@/providers/auth-provider";
+import NoSsr from "@/components/NoSsr";
 
 export default function RootLayout({
   children,
@@ -21,27 +17,28 @@ export default function RootLayout({
     setToggle(!toggle);
   };
   return (
-    // <html>
-    //   <body>{children}</body>
-    // </html>
-    <html>
-      <body>
-        <Container fluid className="d-flex">
-          <div className="container-fluid tw-bg-white min-vh-100">
-            <div className="row">
-              {toggle && (
-                <div className="col-2 bg-white vh-100">
-                  <Sidebar />
+    <AuthProvider>
+      <html>
+        <body>
+          <Container fluid className="d-flex">
+            <div className="container-fluid tw-bg-white min-vh-100">
+              <div className="row">
+                {toggle && (
+                  <div className="col-2 bg-white vh-100">
+                    <Sidebar />
+                  </div>
+                )}
+                <div className="col">
+                  <NoSsr>
+                    <Homepage Toggle={Toggle} />
+                  </NoSsr>
+                  {children}
                 </div>
-              )}
-              <div className="col">
-                <Homepage Toggle={Toggle} />
-                {children}
               </div>
             </div>
-          </div>
-        </Container>
-      </body>
-    </html>
+          </Container>
+        </body>
+      </html>
+    </AuthProvider>
   );
 }

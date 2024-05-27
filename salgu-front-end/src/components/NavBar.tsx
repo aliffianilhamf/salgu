@@ -2,12 +2,17 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Button from "react-bootstrap/Button";
+import useUser from "@/hooks/use-user";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 
 type NavbarProps = {
   Toggle: () => void;
 };
 
 export default function Navbar({ Toggle }: NavbarProps) {
+  const user = useAuthUser();
+  if (!user) return null;
+
   return (
     <nav className="navbar navbar-expand-sm navbar-dark tw-bg-white px-3">
       <i
@@ -40,7 +45,7 @@ export default function Navbar({ Toggle }: NavbarProps) {
           <li className="nav-item">
             <a className="nav-link">
               <i className="bi bi-person-circle text-black "></i>
-              <span className="ms-2 text-black">Muna</span>
+              <span className="ms-2 text-black">{user.firstName}</span>
             </a>
           </li>
         </ul>
