@@ -15,6 +15,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { InvoicesModule } from './invoices/invoices.module';
 import { AuthModule } from './auth/auth.module';
 import { StorageModule } from './storage/storage.module';
+import { SchedulingService } from './scheduling/scheduling.service';
 
 @Module({
   imports: [
@@ -35,6 +36,6 @@ import { StorageModule } from './storage/storage.module';
     ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SchedulingService],
 })
 export class AppModule {}
