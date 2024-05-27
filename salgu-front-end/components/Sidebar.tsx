@@ -4,9 +4,9 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default function Sidebar({}) {
   return (
-    <div className="d-flex flex-column bg-white sidebar p-2 min-vh-100 ">
+    <div className="d-flex flex-column bg-white sidebar p-2 min-vh-100">
       <div className="m-2">
-        <span className="brand-name fs-4 tw-font-bold">SALGU</span>
+        <span className="brand-name fs-4">SALGU</span>
       </div>
       <hr className="text-dark" />
       <div className="flex-grow-1">
@@ -19,7 +19,7 @@ export default function Sidebar({}) {
             <i className="bi bi-speedometer fs-5 me-3"></i>
             <span className="fs-5">Dashboard</span>
           </Link>
-          <Link href="/drive/invoices" className="list-group-item py-1 mb-2 ">
+          <Link href="/drive/invoices" className="list-group-item py-1 mb-2">
             <i className="bi bi-bar-chart-line-fill fs-5 me-3"></i>
             <span className="fs-5">Statistics</span>
           </Link>
