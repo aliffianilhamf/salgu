@@ -4,7 +4,6 @@ import { Container } from "react-bootstrap";
 import Sidebar from "@/components/Sidebar";
 import Homepage from "@/components/HomePage";
 import { useState } from "react";
-import AuthProvider from "@/providers/auth-provider";
 import NoSsr from "@/components/NoSsr";
 
 export default function RootLayout({
@@ -17,28 +16,26 @@ export default function RootLayout({
     setToggle(!toggle);
   };
   return (
-    <AuthProvider>
-      <html>
-        <body>
-          <Container fluid className="d-flex">
-            <div className="container-fluid tw-bg-white min-vh-100">
-              <div className="row">
-                {toggle && (
-                  <div className="col-2 bg-white vh-100">
-                    <Sidebar />
-                  </div>
-                )}
-                <div className="col">
-                  <NoSsr>
-                    <Homepage Toggle={Toggle} />
-                  </NoSsr>
-                  {children}
+    <html>
+      <body>
+        <Container fluid className="d-flex">
+          <div className="container-fluid tw-bg-white min-vh-100">
+            <div className="row">
+              {toggle && (
+                <div className="col-2 bg-white vh-100">
+                  <Sidebar />
                 </div>
+              )}
+              <div className="col">
+                <NoSsr>
+                  <Homepage Toggle={Toggle} />
+                </NoSsr>
+                {children}
               </div>
             </div>
-          </Container>
-        </body>
-      </html>
-    </AuthProvider>
+          </div>
+        </Container>
+      </body>
+    </html>
   );
 }
