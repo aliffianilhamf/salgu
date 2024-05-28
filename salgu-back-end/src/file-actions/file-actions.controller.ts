@@ -1,8 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { FileActionsService } from './file-actions.service';
 import { CreateFileActionDto } from './dto/create-file-action.dto';
 import { UpdateFileActionDto } from './dto/update-file-action.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('file-actions')
 @Controller('file-actions')
 export class FileActionsController {
   constructor(private readonly fileActionsService: FileActionsService) {}
@@ -23,7 +33,10 @@ export class FileActionsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFileActionDto: UpdateFileActionDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateFileActionDto: UpdateFileActionDto,
+  ) {
     return this.fileActionsService.update(+id, updateFileActionDto);
   }
 
