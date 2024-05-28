@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   async signUp(createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    return this.usersService.register(createUserDto);
   }
 
   async signIn(email: string, password: string) {

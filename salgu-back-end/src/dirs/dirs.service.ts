@@ -19,11 +19,12 @@ export class DirsService {
   async create(createDirDto: CreateDirDto, ownerId: number) {
     let parentId: number | undefined;
     let parentPath = getParentPath(createDirDto.path);
-
-    const dirPath = stripTrailingSlashes(createDirDto.path);
     parentPath = stripTrailingSlashes(parentPath);
 
-    if (parentPath != DRIVE_CONSTANTS.root) {
+    const dirPath = stripTrailingSlashes(createDirDto.path);
+    const isRoot = dirPath === DRIVE_CONSTANTS.root;
+
+    if (!isRoot) {
       const parentDir = await this.findOneByPath(parentPath, ownerId);
 
       if (!parentDir) {

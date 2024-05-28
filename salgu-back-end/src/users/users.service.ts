@@ -6,21 +6,38 @@ import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { genSaltSync, hashSync } from 'bcrypt';
 import { FileEntity } from 'src/files/entities/file.entity';
+import { DirsService } from 'src/dirs/dirs.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsersService {
   constructor(
+    private readonly configService: ConfigService,
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
     @InjectRepository(FileEntity)
     private readonly fileRepo: Repository<FileEntity>,
+    private readonly dirsService: DirsService,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  /**
+   * Registers a new user, and creates a root directory for them.
+   */
+  async register(createUserDto: CreateUserDto) {
     const { password, ...rest } = createUserDto;
     const salt = genSaltSync();
     const passwordHash = hashSync(password, salt);
-    await this.userRepo.save({ ...rest, passwordHash, salt });
+
+    // We use Object.assign so the listeners like @BeforeInsert are called.
+    const user = await this.userRepo.save(
+      Object.assign(new UserEntity(), { ...rest, passwordHash, salt }),
+    );
+
+    // Create a root directory for the user
+    await this.dirsService.create(
+      { path: this.configService.getOrThrow('drive.root') },
+      user.id,
+    );
 
     // We do it like this so we don't return the password hash and salt
     return this.findByEmail(createUserDto.email);

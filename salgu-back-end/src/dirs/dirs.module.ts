@@ -8,5 +8,6 @@ import { DirEntity } from './entities/dir.entity';
   controllers: [DirsController],
   providers: [DirsService],
   imports: [TypeOrmModule.forFeature([DirEntity])],
+  exports: [DirsService, TypeOrmModule],
 })
 export class DirsModule {}

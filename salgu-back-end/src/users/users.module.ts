@@ -6,11 +6,17 @@ import { UserEntity } from './entities/user.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
 import { InvoicesService } from 'src/invoices/invoices.service';
 import { InvoicesModule } from 'src/invoices/invoices.module';
+import { DirsService } from 'src/dirs/dirs.service';
+import { DirsModule } from 'src/dirs/dirs.module';
 
 @Module({
   controllers: [UsersController],
-  providers: [UsersService, InvoicesService],
+  providers: [UsersService, InvoicesService, DirsService],
   exports: [UsersService],
-  imports: [TypeOrmModule.forFeature([UserEntity, FileEntity]), InvoicesModule],
+  imports: [
+    TypeOrmModule.forFeature([UserEntity, FileEntity]),
+    InvoicesModule,
+    DirsModule,
+  ],
 })
 export class UsersModule {}

@@ -53,6 +53,7 @@ drive:
     months: 1
 
   # Root prefix for all file/directory paths.
+  # It must not have a trailing slash.
   root: '/My Drive'
 
 storage:

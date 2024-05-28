@@ -4,10 +4,12 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 import { GENDERS, Gender } from '../types';
 
 @Entity({ name: 'user' })
+@Unique(['email'])
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
