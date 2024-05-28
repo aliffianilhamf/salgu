@@ -1,7 +1,9 @@
 import api from "@/api";
+import { AuthContext } from "@/providers/auth";
 import { UserData } from "@/types";
 import { AxiosResponse } from "axios";
 import Cookies from "js-cookie";
+import { useContext } from "react";
 
 type SignInProps = {
   email: string;
@@ -9,6 +11,7 @@ type SignInProps = {
 };
 
 export default function useSignIn() {
+  const { setToken } = useContext(AuthContext);
   const signIn = async (props: SignInProps) => {
     let res: AxiosResponse;
 
@@ -18,11 +21,7 @@ export default function useSignIn() {
       throw err;
     }
 
-    const access_token: string = res.data.access_token;
-    const userData: UserData = res.data.payload;
-
-    Cookies.set("token", access_token);
-    Cookies.set("user", JSON.stringify(userData));
+    setToken(res.data.access_token);
 
     return true;
   };

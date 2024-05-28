@@ -1,9 +1,10 @@
-import Cookies from "js-cookie";
+import { AuthContext } from "@/providers/auth";
+import { useContext } from "react";
 
 export default function useSignOut() {
+  const { setToken } = useContext(AuthContext);
   const signOut = () => {
-    Cookies.remove("token");
-    Cookies.remove("user");
+    setToken(null);
   };
 
   return signOut;
