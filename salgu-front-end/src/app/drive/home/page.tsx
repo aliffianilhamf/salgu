@@ -1,5 +1,12 @@
-"use client";
+import api from "@/api";
+import { redirect } from "next/navigation";
 
-import Folder from "../folders/[id]/page";
+export default async function Home() {
+  const rootDirId = await api
+    .get("dirs", {
+      params: { path: process.env.NEXT_PUBLIC_ROOT_DIR, recursive: false },
+    })
+    .then((res) => res.data[0].id);
 
-export default Folder;
+  redirect(`/drive/folders/${rootDirId}`);
+}
