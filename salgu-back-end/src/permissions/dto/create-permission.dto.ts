@@ -1,15 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsIn, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsIn, IsNumber, IsString } from 'class-validator';
 import {
   PERMISSION_LEVELS,
   PermissionLevel,
 } from '../entities/permission.entity';
 
 export class CreatePermissionDto {
+  @IsArray()
   @IsNumber({}, { each: true })
   @ApiProperty({ type: [Number] })
   userIds: number[];
 
+  @IsArray()
   @IsString({ each: true })
   @ApiProperty({ type: [String] })
   domains: string[];
@@ -17,12 +19,4 @@ export class CreatePermissionDto {
   @IsIn(PERMISSION_LEVELS)
   @ApiProperty()
   level: PermissionLevel;
-
-  @IsNumber()
-  @ApiProperty()
-  fileId: number;
-
-  @IsNumber()
-  @ApiProperty()
-  dirId: number;
 }

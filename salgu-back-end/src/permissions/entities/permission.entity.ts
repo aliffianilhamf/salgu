@@ -6,6 +6,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 export const PERMISSION_LEVELS = ['none', 'read', 'read-write'] as const;
@@ -25,18 +26,29 @@ export class PermissionEntity {
   @Column({ type: 'enum', enum: PERMISSION_LEVELS })
   level: PermissionLevel;
 
-  @Column({ name: 'file_id', comment: 'File that this permission applies to' })
-  fileId: number;
+  @Column({
+    name: 'file_id',
+    comment: 'File that this permission applies to',
+    nullable: true,
+  })
+  fileId?: number;
 
   @ManyToOne(() => FileEntity)
-  file: FileEntity;
+  file?: FileEntity;
 
-  @Column({ name: 'dir_id', comment: 'Dir that this permission applies to' })
-  dirId: number;
+  @Column({
+    name: 'dir_id',
+    comment: 'Dir that this permission applies to',
+    nullable: true,
+  })
+  dirId?: number;
 
   @ManyToOne(() => DirEntity)
-  dir: DirEntity;
+  dir?: DirEntity;
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
