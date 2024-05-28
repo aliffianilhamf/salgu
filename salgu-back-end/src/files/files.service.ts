@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import AppError from 'src/errors/app-error';
 import { StorageService } from 'src/storage/storage.service';
 import { UsageSnapshotsService } from 'src/usage-snapshots/usage-snapshots.service';
+import { FileActionEntity } from 'src/file-actions/entities/file-action.entity';
 
 @Injectable()
 export class FilesService {
@@ -15,6 +16,8 @@ export class FilesService {
     private readonly fileRepo: Repository<FileEntity>,
     private readonly storageService: StorageService,
     private readonly usageSnapshotsService: UsageSnapshotsService,
+    @InjectRepository(FileActionEntity)
+    private readonly fileActionRepo: Repository<FileActionEntity>,
   ) {}
 
   async create(createFileDto: CreateFileDto, userId: number) {
@@ -31,6 +34,11 @@ export class FilesService {
       );
     }
 
+    // TODO: Wrap these in a transaction
+
+    // TODO: Synchronize the time of when this event happens.
+    // Currently, the `created_at`, and `executed_at` fields may not be in sync.
+
     const file = await this.fileRepo.save({
       ...createFileDto,
       size: 0,
@@ -42,6 +50,12 @@ export class FilesService {
       sizeDelta: 0,
       action: 'upload',
       userId,
+    });
+
+    await this.fileActionRepo.save({
+      actorId: userId,
+      fileId: file.id,
+      type: 'upload',
     });
 
     return file;
@@ -64,17 +78,32 @@ export class FilesService {
     return this.storageService.getFile(id.toString());
   }
 
-  update(id: number, updateFileDto: UpdateFileDto) {
+  async update(id: number, updateFileDto: UpdateFileDto, actorId?: number) {
+    if (!actorId)
+      actorId = (await this.fileRepo.findOneOrFail({ where: { id } })).ownerId;
+
+    // TODO: Wrap these in a transaction
+    this.fileActionRepo.save({
+      actorId,
+      fileId: id,
+      type: 'modify',
+    });
+
     return this.fileRepo.update({ id }, updateFileDto);
   }
 
-  async saveFileData(id: number, file: Express.Multer.File) {
+  async saveFileData(id: number, file: Express.Multer.File, actorId?: number) {
     const fileEntity = await this.fileRepo.findOneOrFail({ where: { id } });
     const prevSize = fileEntity.size;
     const newSize = file.size;
     const sizeDelta = newSize - prevSize;
 
     // TODO: Make these atomic.
+    await this.fileActionRepo.save({
+      actorId: actorId || fileEntity.ownerId,
+      fileId: id,
+      type: 'modify',
+    });
     await this.fileRepo.update({ id }, { size: newSize });
     await this.usageSnapshotsService.create({
       fileId: id,
@@ -88,7 +117,7 @@ export class FilesService {
     this.storageService.saveFile(file, id.toString(), { overwrite: true });
   }
 
-  async remove(id: number) {
+  async remove(id: number, actorId?: number) {
     const file = await this.fileRepo.findOneOrFail({
       where: { id },
       select: {
@@ -98,6 +127,11 @@ export class FilesService {
     });
 
     // TODO: Make these atomic
+    await this.fileActionRepo.save({
+      actorId: actorId || file.ownerId,
+      fileId: id,
+      type: 'delete',
+    });
     await this.usageSnapshotsService.create({
       fileId: id,
       sizeDelta: -file.size,
@@ -108,6 +142,12 @@ export class FilesService {
   }
 
   getFileHistory(fileId?: number) {
-    return this.fileRepo.find({ where: { id: fileId } });
+    return this.fileActionRepo.find({
+      where: { fileId },
+      relations: {
+        // TODO: Make this false and use a separate query to get the actor from the front end.
+        actor: true,
+      },
+    });
   }
 }
