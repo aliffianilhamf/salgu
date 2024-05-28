@@ -30,9 +30,14 @@ export class DirsController {
   }
 
   @Get()
-  findAll(@Query('path') path: string, @User() user: UserEntity) {
+  async findAll(
+    @Query('path') path: string,
+    @Query('recursive') isRecursive: boolean,
+    @User() user: UserEntity,
+  ) {
     if (!path) return this.dirsService.findAll(user.id);
-    return this.dirsService.findAllByPathPrefix(path, user.id);
+    if (isRecursive) return this.dirsService.findAllByPathPrefix(path, user.id);
+    return [await this.dirsService.findOneByPath(path, user.id)];
   }
 
   @Get(':id')
