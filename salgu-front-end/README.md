@@ -9,6 +9,10 @@
 $ pnpm install
 ```
 
+3. Jika belum ada file `/salgu-front-end/.env`, copy atau salin file `/salgu-front-end/.env.example` ke `/salgu-front-end/.env`.
+
+4. Cek secara berkala file `/salgu-front-end/.env.example`. Jika ada perubahan atau penambahan variabel pada `/salgu-front-end/.env.example`, terapkan juga perubahan tersebut pada `/salgu-front-end/.env`.
+
 ## Menjalankan
 
 ```bash
@@ -17,7 +21,7 @@ pnpm run dev
 
 ## Styling
 
-Anda tidak dapat menggunakan Bootstrap dan Tailwind sekaligus pada suatu halaman. Anda hanya bisa menggunakan salah satu saja.
+Anda dapat menggunakan Bootstrap dan Tailwind sekaligus pada suatu halaman.
 
 ### Bootstrap
 
@@ -33,4 +37,4 @@ Pada proyek SALGU ini, tersedia library [`react-bootstrap`](https://react-bootst
 
 ### Tailwind
 
-Jika Anda ingin menggunakan tailwind untuk men-style suatu halaman, Anda dapat langsung menggunakannya tanpa menambahkan apapun.
+Jika Anda ingin menggunakan tailwind untuk men-style suatu halaman, Anda perlu menambahkan prefix `tw-` sebelum tiap kelas tailwind. Contohnya, dari pada `text-left`, di proyek ini Anda perlu ketik `tw-text-left`.
