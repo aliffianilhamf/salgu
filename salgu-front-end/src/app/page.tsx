@@ -9,17 +9,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const LINKS = [
   "/drive/home",
-  "/drive/folders/0000",
-  "/drive/folders/0000/sharing",
-  "/drive/files/0000",
-  "/drive/files/0000/history",
-  "/drive/files/0000/sharing",
+  "/drive/folders/1",
+  "/drive/folders/1/sharing",
+  "/drive/files/1",
+  "/drive/files/1/history",
+  "/drive/files/1/sharing",
   "/drive/sign-up",
   "/drive/sign-in",
   "/drive/usage",
   "/drive/invoices",
-  "/drive/invoices/0000",
-  "/drive/invoices/0000/payment",
+  "/drive/invoices/1",
+  "/drive/invoices/1/payment",
 ];
 
 export default function Home() {
