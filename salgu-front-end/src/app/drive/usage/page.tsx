@@ -1,9 +1,31 @@
-'use client';
-import Container from 'react-bootstrap/Container';
-import { Dropdown, Nav, NavDropdown, Navbar, ProgressBar } from 'react-bootstrap';
-Dropdown;
+"use client";
+import Container from "react-bootstrap/Container";
+import {
+  Dropdown,
+  Nav,
+  NavDropdown,
+  Navbar,
+  ProgressBar,
+} from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { getFiles, getUsage } from "./actions";
+
+import { File, UsageData } from "@/types";
+import useUser from "@/hooks/use-user";
+import Link from "next/link";
 
 export default function Usage() {
+  const user = useUser();
+  const [files, setFiles] = useState<File[]>([]);
+  const [usage, setUsage] = useState<UsageData | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+
+    getFiles().then((files) => setFiles(files));
+    getUsage(user.sub).then((usage) => setUsage(usage));
+  }, [user]);
+
   return (
     <Container className="p-5">
       <div className="card">
@@ -20,7 +42,9 @@ export default function Usage() {
             </Dropdown.Menu>
           </Dropdown>
           <Dropdown className="d-inline">
-            <Dropdown.Toggle id="dropdown-autoclose-true">Modified</Dropdown.Toggle>
+            <Dropdown.Toggle id="dropdown-autoclose-true">
+              Modified
+            </Dropdown.Toggle>
 
             <Dropdown.Menu>
               <Dropdown.Item href="#">Menu Item</Dropdown.Item>
@@ -28,22 +52,36 @@ export default function Usage() {
               <Dropdown.Item href="#">Menu Item</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <p className="fs-1 pt-3">143.6 MB of usage </p>
+          <p className="fs-1 pt-3">{usage?.amount} bytes of usage </p>
           <div className="pb-3">
             <ProgressBar variant="info" now={20} />
           </div>
           <Navbar className="">
             <Container>
-              <Navbar.Brand href="#home">Files using Drive storage</Navbar.Brand>
+              <Navbar.Brand href="#home">
+                Files using Drive storage
+              </Navbar.Brand>
               <Navbar.Toggle />
               <Navbar.Collapse className="justify-content-end">
                 <Nav>
-                  <NavDropdown id="nav-dropdown-example" title="Storage Used" menuVariant="light">
-                    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                  <NavDropdown
+                    id="nav-dropdown-example"
+                    title="Storage Used"
+                    menuVariant="light"
+                  >
+                    <NavDropdown.Item href="#action/3.1">
+                      Action
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">
+                      Another action
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.3">
+                      Something
+                    </NavDropdown.Item>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.4">
+                      Separated link
+                    </NavDropdown.Item>
                   </NavDropdown>
                 </Nav>
               </Navbar.Collapse>
@@ -51,46 +89,14 @@ export default function Usage() {
           </Navbar>
           <table className="table pt-3">
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td className="mr-1">Tugas_Cloud-Computing_Shiva-Augusta.pdf</td>
-                <td className="justify-content-end text-center"> 123 Mb</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Tugas_Bahasa-Otomata_Shiva-Augusta.pdf</td>
-                <td className="justify-content-end text-center "> 123 kB </td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td className="mr-1">Tugas_Big-Data_Shiva-Augusta.pdf</td>
-                <td className="justify-content-end text-center"> 123 Mb</td>
-              </tr>
-              <tr>
-                <th scope="row">4</th>
-                <td>Tugas_Computer-Network_Shiva-Augusta.pdf</td>
-                <td className="justify-content-end text-center "> 123 kB </td>
-              </tr>
-              <tr>
-                <th scope="row">5</th>
-                <td className="mr-1">Tugas_CV_Shiva-Augusta.pdf</td>
-                <td className="justify-content-end text-center"> 123 Mb</td>
-              </tr>
-              <tr>
-                <th scope="row">6</th>
-                <td>Tugas_IEEE_Shiva-Augusta.pdf</td>
-                <td className="justify-content-end text-center "> 123 kB </td>
-              </tr>
-              <tr>
-                <th scope="row">7</th>
-                <td className="mr-1">Tugas_ML_Shiva-Augusta.pdf</td>
-                <td className="justify-content-end text-center"> 123 Mb</td>
-              </tr>
-              <tr>
-                <th scope="row">8</th>
-                <td>Tugas_Bahasa-Otomata_Shiva-Augusta.pdf</td>
-                <td className="justify-content-end text-center "> 123 kB </td>
-              </tr>
+              {files.map((file) => (
+                <tr key={file.id}>
+                  <td>
+                    <Link href={`/drive/files/${file.id}`}>{file.name}</Link>
+                  </td>
+                  <td>{file.size}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

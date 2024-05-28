@@ -19,3 +19,8 @@ export type File = {
   name: string;
   size: number;
 };
+
+export type UsageData = {
+  amount: number;
+  spendingPerSecond: number;
+};
