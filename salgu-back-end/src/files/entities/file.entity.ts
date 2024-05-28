@@ -7,6 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'file' })
@@ -32,4 +33,7 @@ export class FileEntity {
 
   @ManyToOne(() => UserEntity)
   owner: UserEntity;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

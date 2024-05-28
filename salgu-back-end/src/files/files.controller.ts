@@ -48,7 +48,7 @@ export class FilesController {
   async findOne(@Param('id') id: string, @User() user: UserEntity) {
     const file = await this.filesService.findOne(+id);
 
-    if (file?.ownerId !== user.id || !user.isAdmin)
+    if (file?.ownerId !== user.id && !user.isAdmin)
       return new UnauthorizedException();
 
     return file;
@@ -62,7 +62,7 @@ export class FilesController {
   ) {
     const file = await this.filesService.findOne(+id);
 
-    if (file?.ownerId !== user.id || !user.isAdmin)
+    if (file?.ownerId !== user.id && !user.isAdmin)
       return new UnauthorizedException();
 
     return this.filesService.update(+id, updateFileDto);
@@ -72,7 +72,7 @@ export class FilesController {
   async remove(@Param('id') id: string, @User() user: UserEntity) {
     const file = await this.filesService.findOne(+id);
 
-    if (file?.ownerId !== user.id || !user.isAdmin)
+    if (file?.ownerId !== user.id && !user.isAdmin)
       return new UnauthorizedException();
 
     return this.filesService.remove(+id);
