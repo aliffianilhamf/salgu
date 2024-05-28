@@ -17,5 +17,11 @@ import { FileActionsModule } from 'src/file-actions/file-actions.module';
     UsageSnapshotsModule,
     FileActionsModule,
   ],
+  exports: [
+    FilesService,
+    storageProvider,
+    UsageSnapshotsService,
+    TypeOrmModule,
+  ],
 })
 export class FilesModule {}
