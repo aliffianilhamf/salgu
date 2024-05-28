@@ -34,7 +34,6 @@ api.interceptors.request.use(async (config) => {
       /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
       "$1",
     );
-
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
