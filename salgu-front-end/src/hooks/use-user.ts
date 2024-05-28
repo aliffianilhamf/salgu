@@ -1,10 +1,8 @@
+import { AuthContext } from "@/providers/auth";
 import { UserData } from "@/types";
-import Cookies from "js-cookie";
+import { useContext } from "react";
 
 export default function useUser() {
-  const userData = Cookies.get("user");
-
-  if (!userData) return null;
-
-  return JSON.parse(userData) as UserData;
+  const { user } = useContext(AuthContext);
+  return user;
 }
