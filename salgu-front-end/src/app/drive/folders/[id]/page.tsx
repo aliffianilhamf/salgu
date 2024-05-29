@@ -29,7 +29,14 @@ export default function Folder({ params }: any) {
     <Container className="p-5">
       <h3 className="text-center">Halaman Folder</h3>
       <div className="card mt-3">
-        <Browser files={files} dirs={dirs} currPath={currPath} />
+        {currDir && (
+          <Browser
+            files={files}
+            dirs={dirs}
+            currPath={currPath}
+            currDir={currDir}
+          />
+        )}
       </div>
     </Container>
   );
