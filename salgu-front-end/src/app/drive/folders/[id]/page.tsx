@@ -3,8 +3,6 @@ import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
 import "bootstrap/dist/js/bootstrap.min.js";
-import Link from "next/link";
-import Button from "@/components/Button";
 import { getDir } from "./actions";
 import { Dir } from "@/types";
 import Browser from "@/components/Browser";

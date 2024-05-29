@@ -8,7 +8,6 @@ type Props = {
   files: File[];
   dirs: Dir[];
 };
-
 const Browser: FC<Props> = (props) => {
   const [fileSelected, setFileSelected] = useState<boolean[]>([]);
   const [dirSelected, setDirSelected] = useState<boolean[]>([]);
@@ -26,70 +25,82 @@ const Browser: FC<Props> = (props) => {
       >
         Upload File
       </Link>
-      <div>
-        <button onClick={selectAll}>Select all</button>
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Size</th>
+      <Link
+        href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${props.currDir?.id}/folder-creation`}
+        className="btn btn-outline-dark ms-2 my-2"
+      >
+        New Folder
+      </Link>
+      <button onClick={selectAll}>Select all</button>
+      <table>
+        <thead>
+          <tr>
+            <td>
+              <button
+                onClick={selectAll}
+                className="btn-link text-dark text-decoration-none"
+              >
+                Select all
+              </button>
+            </td>
+            <th>Name</th>
+            <th>Size</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.dirs.map((dir, i) => (
+            <tr key={`dir-${dir.id}`}>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={dirSelected[i]}
+                  onChange={() =>
+                    setDirSelected(
+                      dirSelected.map((val, index) =>
+                        index === i ? !val : val,
+                      ),
+                    )
+                  }
+                />
+              </td>
+              <td>
+                <Link
+                  href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${dir.id}`}
+                  className="text-dark"
+                >
+                  {dir.name}
+                </Link>
+              </td>
+              <td></td>
             </tr>
-          </thead>
-          <tbody>
-            {props.dirs.map((dir, i) => (
-              <tr key={`dir-${dir.id}`}>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={dirSelected[i]}
-                    onChange={() =>
-                      setDirSelected(
-                        dirSelected.map((val, index) =>
-                          index === i ? !val : val,
-                        ),
-                      )
-                    }
-                  />
-                </td>
-                <td>
-                  <Link
-                    href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${dir.id}`}
-                  >
-                    {dir.name}
-                  </Link>
-                </td>
-                <td></td>
-              </tr>
-            ))}
-            {props.files.map((file, i) => (
-              <tr key={`file-${file.id}`}>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={fileSelected[i]}
-                    onChange={() =>
-                      setFileSelected(
-                        fileSelected.map((val, index) =>
-                          index === i ? !val : val,
-                        ),
-                      )
-                    }
-                  />
-                </td>
-                <td>
-                  <Link
-                    href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${file.id}`}
-                  >
-                    {file.name}
-                  </Link>
-                </td>
-                <td>{file.size}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+          {props.files.map((file, i) => (
+            <tr key={`file-${file.id}`}>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={fileSelected[i]}
+                  onChange={() =>
+                    setFileSelected(
+                      fileSelected.map((val, index) =>
+                        index === i ? !val : val,
+                      ),
+                    )
+                  }
+                />
+              </td>
+              <td>
+                <Link
+                  href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${file.id}`}
+                >
+                  {file.name}
+                </Link>
+              </td>
+              <td>{file.size}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
