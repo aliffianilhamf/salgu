@@ -1,13 +1,15 @@
+import folderCreation from "@/app/drive/folders/[id]/folder-creation/page";
 import { Dir, File } from "@/types";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { FC, useState } from "react";
 
 type Props = {
+  currDir: Dir;
   currPath: string;
   files: File[];
   dirs: Dir[];
 };
-
 const Browser: FC<Props> = (props) => {
   const [fileSelected, setFileSelected] = useState<boolean[]>([]);
   const [dirSelected, setDirSelected] = useState<boolean[]>([]);
@@ -17,13 +19,19 @@ const Browser: FC<Props> = (props) => {
     setDirSelected(new Array(props.dirs.length).fill(true));
   };
 
+  // const router = useRouter();
+
+  // const createNewFolder = () => {
+  //   router.push("folder-creation");
+  // };
   return (
     <div>
-      <button onClick={selectAll}>Select all</button>
-      <table>
+      <Link href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${props.currDir.id}/folder-creation`} className="btn btn-outline-dark ms-2 my-2">New Folder</Link>
+
+      <table className="table table-bordered">
         <thead>
           <tr>
-            <th></th>
+            <td><button onClick={selectAll} className="btn-link text-dark text-decoration-none">Select all</button></td>
             <th>Name</th>
             <th>Size</th>
           </tr>
@@ -46,7 +54,7 @@ const Browser: FC<Props> = (props) => {
               </td>
               <td>
                 <Link
-                  href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${dir.id}`}
+                  href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${dir.id}`} className="text-dark"
                 >
                   {dir.name}
                 </Link>
@@ -71,7 +79,7 @@ const Browser: FC<Props> = (props) => {
               </td>
               <td>
                 <Link
-                  href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${file.id}`}
+                  href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${file.id}`} className="text-dark"
                 >
                   {file.name}
                 </Link>
