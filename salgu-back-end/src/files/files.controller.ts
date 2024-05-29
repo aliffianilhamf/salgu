@@ -24,12 +24,18 @@ import { UserEntity } from 'src/users/entities/user.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import AppError from 'src/errors/app-error';
 import { DRIVE_CONSTANTS } from 'src/config/constants';
+import { CaslAbilityFactory } from 'src/casl/casl-ability.factory/casl-ability.factory';
+import { PermissionsService } from 'src/permissions/permissions.service';
 
 @ApiTags('files')
 @Controller('files')
 @UseGuards(JwtAuthGuard)
 export class FilesController {
-  constructor(private readonly filesService: FilesService) {}
+  constructor(
+    private readonly filesService: FilesService,
+    private readonly permissionsService: PermissionsService,
+    private readonly abilityFactory: CaslAbilityFactory,
+  ) {}
 
   @Post()
   create(
@@ -47,9 +53,17 @@ export class FilesController {
   @Get(':id')
   async findOne(@Param('id') id: string, @User() user: UserEntity) {
     const file = await this.filesService.findOne(+id);
+    const permissions = await this.permissionsService.findAll(
+      'file',
+      +id,
+      true,
+    );
 
-    if (file?.ownerId !== user.id && !user.isAdmin)
-      return new UnauthorizedException();
+    file!.permissions = permissions;
+
+    const ability = this.abilityFactory.createForUser(user);
+
+    if (!ability.can('read', file!)) return new UnauthorizedException();
 
     return file;
   }

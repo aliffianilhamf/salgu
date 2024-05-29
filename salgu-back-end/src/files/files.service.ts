@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,6 +8,8 @@ import AppError from 'src/errors/app-error';
 import { StorageService } from 'src/storage/storage.service';
 import { UsageSnapshotsService } from 'src/usage-snapshots/usage-snapshots.service';
 import { FileActionEntity } from 'src/file-actions/entities/file-action.entity';
+import { PermissionsService } from 'src/permissions/permissions.service';
+import { CaslAbilityFactory } from 'src/casl/casl-ability.factory/casl-ability.factory';
 
 @Injectable()
 export class FilesService {
@@ -18,6 +20,9 @@ export class FilesService {
     private readonly usageSnapshotsService: UsageSnapshotsService,
     @InjectRepository(FileActionEntity)
     private readonly fileActionRepo: Repository<FileActionEntity>,
+    @Inject(forwardRef(() => PermissionsService))
+    private readonly permissionsService: PermissionsService,
+    private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   async create(createFileDto: CreateFileDto, userId: number) {

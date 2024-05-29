@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,6 +15,7 @@ export class PermissionsService {
     @InjectRepository(PermissionEntity)
     private readonly permissionRepo: Repository<PermissionEntity>,
     private readonly dirsService: DirsService,
+    @Inject(forwardRef(() => FilesService))
     private readonly filesService: FilesService,
   ) {}
   create(
