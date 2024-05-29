@@ -3,8 +3,6 @@ import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
 import "bootstrap/dist/js/bootstrap.min.js";
-import Link from "next/link";
-import Button from "@/components/Button";
 import { getDir } from "./actions";
 import { Dir } from "@/types";
 import Browser from "@/components/Browser";
@@ -29,7 +27,14 @@ export default function Folder({ params }: any) {
     <Container className="p-5">
       <h3 className="text-center">Halaman Folder</h3>
       <div className="card mt-3">
-        {currDir && <Browser files={files} dirs={dirs} currPath={currPath} currDir={currDir} />}
+        {currDir && (
+          <Browser
+            files={files}
+            dirs={dirs}
+            currPath={currPath}
+            currDir={currDir}
+          />
+        )}
       </div>
     </Container>
   );

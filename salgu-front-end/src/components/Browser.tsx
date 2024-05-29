@@ -1,11 +1,9 @@
-import folderCreation from "@/app/drive/folders/[id]/folder-creation/page";
 import { Dir, File } from "@/types";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { FC, useState } from "react";
 
 type Props = {
-  currDir: Dir;
+  currDir: Dir | null;
   currPath: string;
   files: File[];
   dirs: Dir[];
@@ -19,19 +17,32 @@ const Browser: FC<Props> = (props) => {
     setDirSelected(new Array(props.dirs.length).fill(true));
   };
 
-  // const router = useRouter();
-
-  // const createNewFolder = () => {
-  //   router.push("folder-creation");
-  // };
   return (
-    <div>
-      <Link href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${props.currDir.id}/folder-creation`} className="btn btn-outline-dark ms-2 my-2">New Folder</Link>
-
-      <table className="table table-bordered">
+    <div className="m-2">
+      <Link
+        href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${props.currDir?.id}/file-creation`}
+        className="btn btn-dark "
+      >
+        Upload File
+      </Link>
+      <Link
+        href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${props.currDir?.id}/folder-creation`}
+        className="btn btn-outline-dark ms-2 my-2"
+      >
+        New Folder
+      </Link>
+      <button onClick={selectAll}>Select all</button>
+      <table>
         <thead>
           <tr>
-            <td><button onClick={selectAll} className="btn-link text-dark text-decoration-none">Select all</button></td>
+            <td>
+              <button
+                onClick={selectAll}
+                className="btn-link text-dark text-decoration-none"
+              >
+                Select all
+              </button>
+            </td>
             <th>Name</th>
             <th>Size</th>
           </tr>
@@ -54,7 +65,8 @@ const Browser: FC<Props> = (props) => {
               </td>
               <td>
                 <Link
-                  href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${dir.id}`} className="text-dark"
+                  href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${dir.id}`}
+                  className="text-dark"
                 >
                   {dir.name}
                 </Link>
@@ -79,7 +91,7 @@ const Browser: FC<Props> = (props) => {
               </td>
               <td>
                 <Link
-                  href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${file.id}`} className="text-dark"
+                  href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${file.id}`}
                 >
                   {file.name}
                 </Link>

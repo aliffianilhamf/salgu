@@ -1,11 +1,11 @@
 "use client";
-import InputBlock from '@/components/Input/Form'
-import React, { useEffect, useState } from 'react'
+import InputBlock from "@/components/Input/Form";
+import React, { useEffect, useState } from "react";
 import api from "@/api";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { Dir } from "@/types";
-import { getDir } from '../actions';
+import { getDir } from "../actions";
 
 export default function FolderCreation({ params }: any) {
   const dirId: string = params.id;
@@ -17,35 +17,33 @@ export default function FolderCreation({ params }: any) {
       getDir(dirId).then((res) => {
         setParentPath(res.path);
       });
-  }, [dirId])
+  }, [dirId]);
 
   const handleSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const name = formData.get("name") as string;
-    const path = parentPath + '/' + name;
-    api.post('/dirs', { path }).then(() => {
-      router.push(`/drive/folders/${dirId}`)
+    const path = parentPath + "/" + name;
+    api.post("/dirs", { path }).then(() => {
+      router.push(`/drive/folders/${dirId}`);
     });
-  }
+  };
 
   return (
     <div>
       <div className="row">
         <div className="col-md-4">
-          <form className='mt-3' onSubmit={handleSubmit}>
+          <form className="mt-3" onSubmit={handleSubmit}>
             <p>Parent path: {parentPath}</p>
-            <InputBlock
-              name="name"
-              type="text"
-              placeholder='Enter Folder Name'
-            >
+            <InputBlock name="name" type="text" placeholder="Enter Folder Name">
               Name Path
             </InputBlock>
-            <button type="submit" className='btn btn-outline-dark mt-3'>Create</button>
+            <button type="submit" className="btn btn-outline-dark mt-3">
+              Create
+            </button>
           </form>
         </div>
       </div>
     </div>
-  )
+  );
 }
