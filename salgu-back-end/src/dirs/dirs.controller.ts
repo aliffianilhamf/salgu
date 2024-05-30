@@ -53,7 +53,8 @@ export class DirsController {
     const ability = this.abilityFactory.createForUser(user);
     if (!ability.can('read', dir)) return new UnauthorizedException();
 
-    return dir;
+    // This one has the children populated.
+    return this.dirsService.findOne(+id);
   }
 
   @Patch(':id')
