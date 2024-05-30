@@ -11,6 +11,7 @@ import {
   StreamableFile,
   UseInterceptors,
   Put,
+  NotFoundException,
 } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { CreateFileDto } from './dto/create-file.dto';
@@ -26,6 +27,7 @@ import AppError from 'src/errors/app-error';
 import { DRIVE_CONSTANTS } from 'src/config/constants';
 import { CaslAbilityFactory } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { PermissionsService } from 'src/permissions/permissions.service';
+import { FileActionsService } from './file-actions/file-actions.service';
 
 @ApiTags('files')
 @Controller('files')
@@ -35,6 +37,7 @@ export class FilesController {
     private readonly filesService: FilesService,
     private readonly permissionsService: PermissionsService,
     private readonly abilityFactory: CaslAbilityFactory,
+    private readonly fileActionsService: FileActionsService,
   ) {}
 
   @Post()
@@ -52,18 +55,11 @@ export class FilesController {
 
   @Get(':id')
   async findOne(@Param('id') id: string, @User() user: UserEntity) {
-    const file = await this.filesService.findOne(+id);
-    const permissions = await this.permissionsService.findAll(
-      'file',
-      +id,
-      true,
-    );
-
-    file!.permissions = permissions;
+    const file = await this.filesService.findOneWithPermissions(+id);
+    if (!file) return new NotFoundException();
 
     const ability = this.abilityFactory.createForUser(user);
-
-    if (!ability.can('read', file!)) return new UnauthorizedException();
+    if (!ability.can('read', file)) return new UnauthorizedException();
 
     return file;
   }
@@ -74,20 +70,22 @@ export class FilesController {
     @Body() updateFileDto: UpdateFileDto,
     @User() user: UserEntity,
   ) {
-    const file = await this.filesService.findOne(+id);
+    const file = await this.filesService.findOneWithPermissions(+id);
+    if (!file) return new NotFoundException();
 
-    if (file?.ownerId !== user.id && !user.isAdmin)
-      return new UnauthorizedException();
+    const ability = this.abilityFactory.createForUser(user);
+    if (!ability.can('update', file)) return new UnauthorizedException();
 
     return this.filesService.update(+id, updateFileDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string, @User() user: UserEntity) {
-    const file = await this.filesService.findOne(+id);
+    const file = await this.filesService.findOneWithPermissions(+id);
+    if (!file) return new NotFoundException();
 
-    if (file?.ownerId !== user.id && !user.isAdmin)
-      return new UnauthorizedException();
+    const ability = this.abilityFactory.createForUser(user);
+    if (!ability.can('delete', file)) return new UnauthorizedException();
 
     return this.filesService.remove(+id);
   }
@@ -98,31 +96,44 @@ export class FilesController {
       limits: { fileSize: DRIVE_CONSTANTS.maxFileSize },
     }),
   )
-  updateFileData(
+  async updateFileData(
     @Param('id') id: string,
+    @User() user: UserEntity,
     @UploadedFile() file?: Express.Multer.File,
   ) {
-    if (!file) return new AppError('No file provided', {}, 'NO_FILE_PROVIDED');
+    const fileEntity = await this.filesService.findOneWithPermissions(+id);
+    if (!fileEntity) return new NotFoundException();
 
-    const fileEntity = this.filesService.findOne(+id);
-    if (!fileEntity)
-      return new AppError('File not found', { id }, 'FILE_NOT_FOUND');
+    const ability = this.abilityFactory.createForUser(user);
+    if (!ability.can('update', fileEntity)) return new UnauthorizedException();
+
+    if (!file) return new AppError('No file provided', {}, 'NO_FILE_PROVIDED');
 
     return this.filesService.saveFileData(+id, file);
   }
 
   @Get(':id/data')
-  async getFileData(@Param('id') id: string) {
-    const file = await this.filesService.findOne(+id);
-    if (!file) return new AppError('File not found', { id }, 'FILE_NOT_FOUND');
-    if (file.size === 0) return new StreamableFile(Buffer.alloc(0));
+  async getFileData(@Param('id') id: string, @User() user: UserEntity) {
+    const fileEntity = await this.filesService.findOneWithPermissions(+id);
+    if (!fileEntity) return new NotFoundException();
+
+    const ability = this.abilityFactory.createForUser(user);
+    if (!ability.can('read', fileEntity)) return new UnauthorizedException();
+
+    if (fileEntity.size === 0) return new StreamableFile(Buffer.alloc(0));
 
     const readStream = this.filesService.getFile(+id);
     return new StreamableFile(readStream);
   }
 
   @Get(':id/history')
-  getFileHistory(@Param('id') file: FileEntity) {
-    return this.filesService.findAll(file.id);
+  async getFileHistory(@Param('id') id: string, @User() user: UserEntity) {
+    const fileEntity = await this.filesService.findOneWithPermissions(+id);
+    if (!fileEntity) return new NotFoundException();
+
+    const ability = this.abilityFactory.createForUser(user);
+    if (!ability.can('read', fileEntity)) return new UnauthorizedException();
+
+    return this.filesService.getFileHistory(+id);
   }
 }

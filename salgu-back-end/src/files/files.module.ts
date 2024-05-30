@@ -12,6 +12,7 @@ import { PermissionsModule } from 'src/permissions/permissions.module';
 import { CaslAbilityFactory } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { PermissionsService } from 'src/permissions/permissions.service';
 import { CaslModule } from 'src/casl/casl.module';
+import { FileActionsService } from './file-actions/file-actions.service';
 
 @Module({
   controllers: [FilesController],
@@ -21,6 +22,7 @@ import { CaslModule } from 'src/casl/casl.module';
     UsageSnapshotsService,
     PermissionsService,
     CaslAbilityFactory,
+    FileActionsService,
   ],
   imports: [
     TypeOrmModule.forFeature([FileEntity, FileActionEntity]),

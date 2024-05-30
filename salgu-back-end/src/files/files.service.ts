@@ -79,6 +79,18 @@ export class FilesService {
     });
   }
 
+  async findOneWithPermissions(id: number) {
+    const file = await this.fileRepo.findOneOrFail({ where: { id } });
+    const permissions = await this.permissionsService.findAll(
+      'file',
+      +id,
+      true,
+    );
+
+    file.permissions = permissions;
+    return file;
+  }
+
   getFile(id: number) {
     return this.storageService.getFile(id.toString());
   }
@@ -146,7 +158,7 @@ export class FilesService {
     return this.fileRepo.delete({ id });
   }
 
-  getFileHistory(fileId?: number) {
+  getFileHistory(fileId: number) {
     return this.fileActionRepo.find({
       where: { fileId },
       relations: {
