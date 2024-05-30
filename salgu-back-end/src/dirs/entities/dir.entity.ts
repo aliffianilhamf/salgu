@@ -1,5 +1,6 @@
 import { DRIVE_CONSTANTS } from 'src/config/constants';
 import { FileEntity } from 'src/files/entities/file.entity';
+import { PermissionEntity } from 'src/permissions/entities/permission.entity';
 import {
   Column,
   CreateDateColumn,
@@ -39,6 +40,9 @@ export class DirEntity {
 
   @OneToMany(() => FileEntity, (file) => file.dir)
   fileChildren?: FileEntity[];
+
+  @OneToMany(() => PermissionEntity, (permission) => permission.dir)
+  permissions: PermissionEntity[];
 
   @CreateDateColumn()
   createdAt: Date;

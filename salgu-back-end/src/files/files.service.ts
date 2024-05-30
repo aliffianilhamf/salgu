@@ -7,7 +7,9 @@ import { Repository } from 'typeorm';
 import AppError from 'src/errors/app-error';
 import { StorageService } from 'src/storage/storage.service';
 import { UsageSnapshotsService } from 'src/usage-snapshots/usage-snapshots.service';
-import { FileActionEntity } from 'src/file-actions/entities/file-action.entity';
+import { FileActionEntity } from 'src/files/file-actions/entities/file-action.entity';
+import { PermissionsService } from 'src/permissions/permissions.service';
+import { DirsService } from 'src/dirs/dirs.service';
 
 @Injectable()
 export class FilesService {
@@ -18,6 +20,8 @@ export class FilesService {
     private readonly usageSnapshotsService: UsageSnapshotsService,
     @InjectRepository(FileActionEntity)
     private readonly fileActionRepo: Repository<FileActionEntity>,
+    private readonly permissionsService: PermissionsService,
+    private readonly dirsService: DirsService,
   ) {}
 
   async create(createFileDto: CreateFileDto, userId: number) {
@@ -72,6 +76,21 @@ export class FilesService {
         dir: true,
       },
     });
+  }
+
+  async findOneWithPermissions(id: number) {
+    const file = await this.fileRepo.findOneOrFail({ where: { id } });
+    const permissions = await this.permissionsService.findAll(
+      'file',
+      +id,
+      this.dirsService.findOne.bind(this.dirsService),
+      this.dirsService.findOneByPath.bind(this.dirsService),
+      this.findOne.bind(this),
+      true,
+    );
+
+    file.permissions = permissions;
+    return file;
   }
 
   getFile(id: number) {
@@ -141,7 +160,7 @@ export class FilesService {
     return this.fileRepo.delete({ id });
   }
 
-  getFileHistory(fileId?: number) {
+  getFileHistory(fileId: number) {
     return this.fileActionRepo.find({
       where: { fileId },
       relations: {

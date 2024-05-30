@@ -8,5 +8,6 @@ import { FileActionEntity } from './entities/file-action.entity';
   controllers: [FileActionsController],
   providers: [FileActionsService],
   imports: [TypeOrmModule.forFeature([FileActionEntity]), FileActionsModule],
+  exports: [FileActionsService],
 })
 export class FileActionsModule {}

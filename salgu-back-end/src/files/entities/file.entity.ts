@@ -1,10 +1,12 @@
 import { DRIVE_CONSTANTS } from 'src/config/constants';
 import { DirEntity } from 'src/dirs/entities/dir.entity';
+import { PermissionEntity } from 'src/permissions/entities/permission.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
@@ -36,4 +38,7 @@ export class FileEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => PermissionEntity, (permission) => permission.file)
+  permissions: PermissionEntity[];
 }

@@ -10,8 +10,8 @@ export class FileActionsService {
   constructor(
     @InjectRepository(FileActionEntity)
     private readonly fileActionRepo: Repository<FileActionEntity>,
-  ) { }
-  
+  ) {}
+
   create(createFileActionDto: CreateFileActionDto) {
     return this.fileActionRepo.save(createFileActionDto);
   }

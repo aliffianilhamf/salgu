@@ -15,7 +15,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { InvoicesModule } from './invoices/invoices.module';
 import { AuthModule } from './auth/auth.module';
 import { StorageModule } from './storage/storage.module';
-import { FileActionsModule } from './file-actions/file-actions.module';
+import { FileActionsModule } from './files/file-actions/file-actions.module';
 import { PaymentModule } from './payment/payment.module';
 import { SchedulingService } from './scheduling/scheduling.service';
 
@@ -42,4 +42,4 @@ import { SchedulingService } from './scheduling/scheduling.service';
   controllers: [AppController],
   providers: [AppService, SchedulingService],
 })
-export class AppModule { }
+export class AppModule {}
