@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 import AppError from 'src/errors/app-error';
 import { StorageService } from 'src/storage/storage.service';
 import { UsageSnapshotsService } from 'src/usage-snapshots/usage-snapshots.service';
-import { FileActionEntity } from 'src/file-actions/entities/file-action.entity';
+import { FileActionEntity } from 'src/files/file-actions/entities/file-action.entity';
 import { PermissionsService } from 'src/permissions/permissions.service';
 import { CaslAbilityFactory } from 'src/casl/casl-ability.factory/casl-ability.factory';
 
