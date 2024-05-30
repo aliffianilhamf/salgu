@@ -8,17 +8,21 @@ import { Repository } from 'typeorm';
 export class UsageSnapshotsService {
   constructor(
     @InjectRepository(UsageSnapshotEntity)
-    private readonly fileRepo: Repository<UsageSnapshotEntity>,
+    private readonly snapRepo: Repository<UsageSnapshotEntity>,
   ) {}
   create(createUsageSnapshotDto: CreateUsageSnapshotDto) {
-    return this.fileRepo.save(createUsageSnapshotDto);
+    return this.snapRepo.save(createUsageSnapshotDto);
   }
 
   findAll() {
-    return this.fileRepo.find();
+    return this.snapRepo.find();
   }
 
   findOne(id: number) {
-    return this.fileRepo.findOne({ where: { id } });
+    return this.snapRepo.findOne({ where: { id } });
+  }
+
+  calculateUsage(userId: number) {
+    return this.snapRepo.sum('sizeDelta', { userId });
   }
 }

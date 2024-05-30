@@ -3,11 +3,11 @@ import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InvoiceEntity } from './entities/invoice.entity';
-import { Between, Repository } from 'typeorm';
+import { LessThanOrEqual, Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { UsageSnapshotEntity } from 'src/usage-snapshots/entities/usage-snapshot.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
-import { Duration, add } from 'date-fns';
+import { Duration, add, addSeconds } from 'date-fns';
 
 @Injectable()
 export class InvoicesService {
@@ -155,7 +155,7 @@ export class InvoicesService {
     const snaps = await this.usageSnapshotRepo.find({
       where: {
         userId,
-        capturedAt: Between(fro, to),
+        capturedAt: LessThanOrEqual(to),
       },
     });
 
@@ -174,7 +174,17 @@ export class InvoicesService {
       );
 
       cumSize += sizeDelta;
-      amount += cumSize * timeDelta * this.billingFactor;
+
+      if (snap.capturedAt < fro) {
+        // Overlap in seconds
+        const overlap =
+          (addSeconds(snap.capturedAt, timeDelta).getTime() - fro.getTime()) /
+          1000;
+
+        if (overlap > 0) amount += cumSize * overlap * this.billingFactor;
+      } else {
+        amount += cumSize * timeDelta * this.billingFactor;
+      }
     }
 
     return amount;
