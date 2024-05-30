@@ -1,6 +1,10 @@
 import { Dir, File } from "@/types";
 import Link from "next/link";
 import { FC, useState } from "react";
+import { FaFolder } from "react-icons/fa";
+import { FaFile } from "react-icons/fa";
+import { MdCheckBoxOutlineBlank } from "react-icons/md";
+import { MdCheckBox } from "react-icons/md";
 
 type Props = {
   currDir: Dir | null;
@@ -11,25 +15,37 @@ type Props = {
 const Browser: FC<Props> = (props) => {
   const [fileSelected, setFileSelected] = useState<boolean[]>([]);
   const [dirSelected, setDirSelected] = useState<boolean[]>([]);
+  const [selected, setSelected] = useState(false);
 
   const selectAll = () => {
-    setFileSelected(new Array(props.files.length).fill(true));
-    setDirSelected(new Array(props.dirs.length).fill(true));
+    if (!selected) {
+      setFileSelected(new Array(props.files.length).fill(true));
+      setDirSelected(new Array(props.dirs.length).fill(true));
+    } else {
+      setFileSelected(new Array(props.files.length).fill(false));
+      setDirSelected(new Array(props.dirs.length).fill(false));
+    }
+    setSelected(!selected);
   };
-
   return (
     <div className="m-2">
       <Link
         href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${props.currDir?.id}/file-creation`}
-        className="btn btn-dark "
+        className="btn btn-outline-dark"
       >
-        Upload File
+        <div className="d-flex align-items-center">
+          <FaFile />
+          <span className="ms-2">Upload File</span>
+        </div>
       </Link>
       <Link
         href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${props.currDir?.id}/folder-creation`}
         className="btn btn-outline-dark ms-2 my-2"
       >
-        New Folder
+        <div className="d-flex align-items-center">
+          <FaFolder />
+          <span className="ms-2">New Folder</span>
+        </div>
       </Link>
       <table className="table table-bordered">
         <thead>
@@ -39,7 +55,10 @@ const Browser: FC<Props> = (props) => {
                 onClick={selectAll}
                 className="btn-link text-dark"
               >
-                Select all
+                <div className="d-flex align-items-center">
+                  {selected ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
+                  <span className="ms-2">Select all</span>
+                </div>
               </button>
             </td>
             <th>Name</th>
@@ -65,9 +84,12 @@ const Browser: FC<Props> = (props) => {
               <td>
                 <Link
                   href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${dir.id}`}
-                  className="text-dark"
+                  className="text-dark text-decoration-none"
                 >
-                  {dir.name}
+                  <div className="d-flex align-items-center">
+                    <FaFolder />
+                    <span className="ms-2">{dir.name}</span>
+                  </div>
                 </Link>
               </td>
               <td></td>
@@ -91,8 +113,12 @@ const Browser: FC<Props> = (props) => {
               <td>
                 <Link
                   href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${file.id}`}
+                  className="btn-link text-dark text-decoration-none"
                 >
-                  {file.name}
+                  <div className="d-flex align-items-center">
+                    <FaFile />
+                    <span className="ms-2">{file.name}</span>
+                  </div>
                 </Link>
               </td>
               <td>{file.size}</td>
