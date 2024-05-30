@@ -14,8 +14,8 @@ import { DirsModule } from 'src/dirs/dirs.module';
   imports: [
     TypeOrmModule.forFeature([PermissionEntity]),
     forwardRef(() => FilesModule),
-    DirsModule,
+    forwardRef(() => DirsModule),
   ],
-  exports: [PermissionsService, TypeOrmModule, DirsModule],
+  exports: [PermissionsService, TypeOrmModule, DirsModule, FilesModule],
 })
 export class PermissionsModule {}

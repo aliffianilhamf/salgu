@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { CreateDirDto } from './dto/create-dir.dto';
 import { UpdateDirDto } from './dto/update-dir.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,12 +8,15 @@ import { Like, Repository } from 'typeorm';
 import { DRIVE_CONSTANTS } from 'src/config/constants';
 import AppError from 'src/errors/app-error';
 import { getParentPath, stripTrailingSlashes } from 'src/utils/path';
+import { PermissionsService } from 'src/permissions/permissions.service';
 
 @Injectable()
 export class DirsService {
   constructor(
     @InjectRepository(DirEntity)
     private readonly dirRepo: Repository<DirEntity>,
+    @Inject(forwardRef(() => PermissionsService))
+    private readonly permissionsService: PermissionsService,
   ) {}
 
   async create(createDirDto: CreateDirDto, ownerId: number) {
@@ -74,6 +77,17 @@ export class DirsService {
         fileChildren: true,
       },
     });
+  }
+
+  async findOneWithPermissions(id: number) {
+    const dir = await this.dirRepo.findOneOrFail({
+      where: { id },
+      relations: ['permissions'],
+    });
+    const permissions = await this.permissionsService.findAll('dir', id, true);
+
+    dir.permissions = permissions;
+    return dir;
   }
 
   findOneByPath(path: string, ownerId: number) {

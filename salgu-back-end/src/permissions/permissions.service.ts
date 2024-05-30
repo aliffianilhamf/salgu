@@ -14,6 +14,7 @@ export class PermissionsService {
   constructor(
     @InjectRepository(PermissionEntity)
     private readonly permissionRepo: Repository<PermissionEntity>,
+    @Inject(forwardRef(() => DirsService))
     private readonly dirsService: DirsService,
     @Inject(forwardRef(() => FilesService))
     private readonly filesService: FilesService,
