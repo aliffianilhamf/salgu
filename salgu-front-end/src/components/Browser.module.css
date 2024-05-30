@@ -1,0 +1,8 @@
+.Browser table {
+  table-layout: auto;
+}
+
+/* td first child width is minimal */
+.Browser td:first-child {
+  width: 2rem;
+}

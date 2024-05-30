@@ -3,8 +3,7 @@ import Link from "next/link";
 import { FC, useState } from "react";
 import { FaFolder } from "react-icons/fa";
 import { FaFile } from "react-icons/fa";
-import { MdCheckBoxOutlineBlank } from "react-icons/md";
-import { MdCheckBox } from "react-icons/md";
+import css from "./Browser.module.css";
 
 type Props = {
   currDir: Dir | null;
@@ -28,7 +27,7 @@ const Browser: FC<Props> = (props) => {
     setSelected(!selected);
   };
   return (
-    <div className="m-2">
+    <div className={"m-2 " + css.Browser}>
       <Link
         href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${props.currDir?.id}/file-creation`}
         className="btn btn-outline-dark"
@@ -50,17 +49,13 @@ const Browser: FC<Props> = (props) => {
       <table className="table table-bordered">
         <thead>
           <tr>
-            <td>
-              <button
-                onClick={selectAll}
-                className="btn-link text-dark"
-              >
-                <div className="d-flex align-items-center">
-                  {selected ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
-                  <span className="ms-2">Select all</span>
-                </div>
-              </button>
-            </td>
+            <th>
+              <input
+                type="checkbox"
+                checked={selected}
+                onChange={() => selectAll()}
+              />
+            </th>
             <th>Name</th>
             <th>Size</th>
           </tr>
