@@ -1,4 +1,4 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,18 +6,14 @@ import { PermissionEntity } from './entities/permission.entity';
 import { Repository } from 'typeorm';
 import { Subject } from './types';
 import { GetPermissionDto } from './dto/get-permission.dto';
-import { DirsService } from 'src/dirs/dirs.service';
-import { FilesService } from 'src/files/files.service';
+import { DirEntity } from 'src/dirs/entities/dir.entity';
+import { FileEntity } from 'src/files/entities/file.entity';
 
 @Injectable()
 export class PermissionsService {
   constructor(
     @InjectRepository(PermissionEntity)
     private readonly permissionRepo: Repository<PermissionEntity>,
-    @Inject(forwardRef(() => DirsService))
-    private readonly dirsService: DirsService,
-    @Inject(forwardRef(() => FilesService))
-    private readonly filesService: FilesService,
   ) {}
   create(
     subject: Subject,
@@ -35,10 +31,20 @@ export class PermissionsService {
 
   /**
    * Find all permissions bound to a subject.
+   *
+   * The `findOne-` functions are temporarily used
+   * to avoid circular dependencies.
    */
   async findAll(
     subject: Subject,
     subjectId: number,
+    // TODO: Use a better way to get the dir and file entities.
+    findOneDir: (id: number) => Promise<DirEntity | null>,
+    findOneDirByPath: (
+      path: string,
+      ownerId: number,
+    ) => Promise<DirEntity | null>,
+    findOneFile?: ((id: number) => Promise<FileEntity | null>) | null,
     includeInherited = false,
   ): Promise<GetPermissionDto[]> {
     /**
@@ -68,11 +74,12 @@ export class PermissionsService {
     let ownerId: number;
 
     if (subject === 'dir') {
-      const dir = await this.dirsService.findOne(subjectId);
+      const dir = await findOneDir(subjectId);
       dirPath = dir!.path;
       ownerId = dir!.ownerId;
     } else {
-      const file = await this.filesService.findOne(subjectId);
+      if (!findOneFile) throw new Error('findOneFile is required for files');
+      const file = await findOneFile(subjectId);
       dirPath = file!.dir.path;
       ownerId = file!.ownerId;
     }
@@ -94,9 +101,7 @@ export class PermissionsService {
     if (subject === 'dir') pathsToSearch.pop();
 
     const dirs = await Promise.all(
-      pathsToSearch.map((path) =>
-        this.dirsService.findOneByPath(path, ownerId),
-      ),
+      pathsToSearch.map((path) => findOneDirByPath(path, ownerId)),
     );
 
     const inheritedPermissionDtos: GetPermissionDto[] = [];

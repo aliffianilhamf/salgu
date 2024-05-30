@@ -13,6 +13,8 @@ import { CaslAbilityFactory } from 'src/casl/casl-ability.factory/casl-ability.f
 import { PermissionsService } from 'src/permissions/permissions.service';
 import { CaslModule } from 'src/casl/casl.module';
 import { FileActionsService } from './file-actions/file-actions.service';
+import { DirsService } from 'src/dirs/dirs.service';
+import { DirsModule } from 'src/dirs/dirs.module';
 
 @Module({
   controllers: [FilesController],
@@ -23,6 +25,7 @@ import { FileActionsService } from './file-actions/file-actions.service';
     PermissionsService,
     CaslAbilityFactory,
     FileActionsService,
+    DirsService,
   ],
   imports: [
     TypeOrmModule.forFeature([FileEntity, FileActionEntity]),
@@ -30,6 +33,7 @@ import { FileActionsService } from './file-actions/file-actions.service';
     FileActionsModule,
     CaslModule,
     forwardRef(() => PermissionsModule),
+    DirsModule,
   ],
   exports: [
     FilesService,

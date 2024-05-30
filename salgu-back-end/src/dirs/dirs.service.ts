@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateDirDto } from './dto/create-dir.dto';
 import { UpdateDirDto } from './dto/update-dir.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,7 +15,6 @@ export class DirsService {
   constructor(
     @InjectRepository(DirEntity)
     private readonly dirRepo: Repository<DirEntity>,
-    @Inject(forwardRef(() => PermissionsService))
     private readonly permissionsService: PermissionsService,
   ) {}
 
@@ -84,7 +83,14 @@ export class DirsService {
       where: { id },
       relations: ['permissions'],
     });
-    const permissions = await this.permissionsService.findAll('dir', id, true);
+    const permissions = await this.permissionsService.findAll(
+      'dir',
+      id,
+      this.findOne.bind(this),
+      this.findOneByPath.bind(this),
+      null,
+      true,
+    );
 
     dir.permissions = permissions;
     return dir;

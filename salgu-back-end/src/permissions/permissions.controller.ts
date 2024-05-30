@@ -14,11 +14,17 @@ import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { getSubjectAndId } from './utils';
 import { GetPermissionDto } from './dto/get-permission.dto';
+import { FilesService } from 'src/files/files.service';
+import { DirsService } from 'src/dirs/dirs.service';
 
 @ApiTags('permissions')
 @Controller(['dirs/:dirId/permissions', 'files/:fileId/permissions'])
 export class PermissionsController {
-  constructor(private readonly permissionsService: PermissionsService) {}
+  constructor(
+    private readonly permissionsService: PermissionsService,
+    private readonly filesService: FilesService,
+    private readonly dirsService: DirsService,
+  ) {}
 
   @Post()
   create(
@@ -45,6 +51,9 @@ export class PermissionsController {
     return this.permissionsService.findAll(
       subject,
       subjectId,
+      this.dirsService.findOne.bind(this.dirsService),
+      this.dirsService.findOneByPath.bind(this.dirsService),
+      this.filesService.findOne.bind(this.filesService),
       includeInherited,
     );
   }
