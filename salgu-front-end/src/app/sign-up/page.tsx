@@ -5,6 +5,7 @@ import InputBlock from "../../components/Input/Form";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/api";
+import Image from "next/image";
 
 export default function SignIn() {
   const [error, setError] = useState<string | null>("");
@@ -39,7 +40,7 @@ export default function SignIn() {
   return (
     <div className="tw-flex tw-justify-center tw-items-center tw-min-h-screen tw-flex-col">
       <div className="tw-flex tw-justify-center tw-items-center tw-flex-col">
-        <img src="img/user-icon.png" alt="" />
+        <Image src="img/user-icon.png" alt="" />
         <h1 className=" tw-font-bold">Sign Up</h1>
       </div>
       <form

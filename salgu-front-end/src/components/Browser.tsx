@@ -31,14 +31,13 @@ const Browser: FC<Props> = (props) => {
       >
         New Folder
       </Link>
-      <button onClick={selectAll}>Select all</button>
-      <table>
+      <table className="table table-bordered">
         <thead>
           <tr>
             <td>
               <button
                 onClick={selectAll}
-                className="btn-link text-dark text-decoration-none"
+                className="btn-link text-dark"
               >
                 Select all
               </button>
