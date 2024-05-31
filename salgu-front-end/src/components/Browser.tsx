@@ -20,7 +20,7 @@ const Browser: FC<Props> = (props) => {
   useEffect(() => {
     setFileSelected(new Array(props.files.length).fill(false));
     setDirSelected(new Array(props.dirs.length).fill(false));
-  }, [props.files, props.dirs])
+  }, [props.files, props.dirs]);
 
   const selectAll = () => {
     if (!selected) {
@@ -33,17 +33,23 @@ const Browser: FC<Props> = (props) => {
     setSelected(!selected);
   };
 
-  const selectedDirIds = props.dirs.filter((dir, i) => dirSelected[i]).map(dir => dir.id);
-  const selectedFileIds = props.files.filter((file, i) => fileSelected[i]).map(file => file.id);
+  const selectedDirIds = props.dirs
+    .filter((dir, i) => dirSelected[i])
+    .map((dir) => dir.id);
+  const selectedFileIds = props.files
+    .filter((file, i) => fileSelected[i])
+    .map((file) => file.id);
 
   const handleDelete = () => {
     deleteDirsById(selectedDirIds);
     deleteFilesById(selectedFileIds);
-  }
+  };
 
-  if (fileSelected.length !== props.files.length ||
+  if (
+    fileSelected.length !== props.files.length ||
     dirSelected.length !== props.dirs.length
-  ) return null;
+  )
+    return null;
 
   return (
     <div className={"m-2 " + css.Browser}>
@@ -65,10 +71,7 @@ const Browser: FC<Props> = (props) => {
           <span className="ms-2">New Folder</span>
         </div>
       </Link>
-      <button
-        className="btn btn-outline-dark ms-2 my-2"
-        onClick={handleDelete}
-      >
+      <button className="btn btn-outline-dark ms-2 my-2" onClick={handleDelete}>
         <div className="d-flex align-items-center">
           <FaTrashAlt />
           <span className="ms-2">Delete</span>

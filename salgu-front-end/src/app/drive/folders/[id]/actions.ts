@@ -8,11 +8,13 @@ export const getDir = async (id: string) => {
 };
 
 export const deleteDirsById = async (ids: string[]) => {
-  const deletePromises = ids.map(id => api.delete(`${process.env.NEXT_PUBLIC_API_URL}/dirs/${id}`));
+  const deletePromises = ids.map((id) =>
+    api.delete(`${process.env.NEXT_PUBLIC_API_URL}/dirs/${id}`),
+  );
   try {
     await Promise.all(deletePromises);
-    console.log('All selected directories have been deleted');
+    console.log("All selected directories have been deleted");
   } catch (error) {
-    console.error('Error deleting directories:', error);
+    console.error("Error deleting directories:", error);
   }
-}
+};
