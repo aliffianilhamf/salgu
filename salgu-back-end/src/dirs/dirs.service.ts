@@ -148,16 +148,34 @@ export class DirsService {
   remove(id: number) {
     // Delete the directory and all its children
     return this.dirRepo.manager.transaction(async (manager) => {
-      const dir = await manager.findOneOrFail(DirEntity, { where: { id } });
+      const dir = await manager.findOneOrFail(DirEntity, {
+        where: { id },
+        select: { fileChildren: true },
+      });
 
       const pathPrefix = `${dir.path}/`;
 
       const children = await manager.find(DirEntity, {
         where: { path: Like(`${pathPrefix}%`), ownerId: dir.ownerId },
+        relations: { fileChildren: true },
       });
+      children.sort((a, b) => a.path.length - b.path.length);
 
-      await manager.remove(children);
-      await manager.remove(dir);
+      const fileIds = new Set<number>();
+
+      for (const child of children) {
+        for (const file of child.fileChildren || []) {
+          fileIds.add(file.id);
+        }
+      }
+
+      // TODO: Make this apart of transaction
+      for (const fileId of fileIds) {
+        await this.filesService.remove(fileId);
+      }
+
+      await manager.softRemove(children);
+      await manager.softRemove(dir);
     });
   }
 }

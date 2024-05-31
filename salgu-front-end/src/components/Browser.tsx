@@ -11,6 +11,7 @@ type Props = {
   currPath: string;
   files: File[];
   dirs: Dir[];
+  onRefreshRequired?: () => void;
 };
 const Browser: FC<Props> = (props) => {
   const [fileSelected, setFileSelected] = useState<boolean[]>([]);
@@ -43,6 +44,13 @@ const Browser: FC<Props> = (props) => {
   const handleDelete = () => {
     deleteDirsById(selectedDirIds);
     deleteFilesById(selectedFileIds);
+
+    // We set a timeout to allow the server
+    // to delete the files before refreshing
+    // TODO: Find a better way to handle this.
+    setTimeout(() => {
+      props.onRefreshRequired?.();
+    }, 500);
   };
 
   if (

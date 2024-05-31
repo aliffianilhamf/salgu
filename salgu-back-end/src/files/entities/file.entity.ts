@@ -4,16 +4,17 @@ import { PermissionEntity } from 'src/permissions/entities/permission.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'file' })
-@Unique(['name', 'dirId', 'ownerId'])
+// TODO: Handle unique and soft delete
+// @Unique(['name', 'dirId', 'ownerId'])
 export class FileEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -41,4 +42,7 @@ export class FileEntity {
 
   @OneToMany(() => PermissionEntity, (permission) => permission.file)
   permissions: PermissionEntity[];
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

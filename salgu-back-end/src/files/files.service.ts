@@ -157,7 +157,8 @@ export class FilesService {
       action: 'delete',
       userId: file.ownerId,
     });
-    return this.fileRepo.delete({ id });
+    await this.fileRepo.update({ id }, { size: 0 });
+    return this.fileRepo.softDelete({ id });
   }
 
   getFileHistory(fileId: number) {
