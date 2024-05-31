@@ -169,6 +169,7 @@ export class PermissionsService {
   }
 
   private async findUserEmailsByIds(ids: number[]) {
+    if (ids.length === 0) return [];
     return this.userRepo
       .find({
         select: { email: true },
@@ -178,6 +179,7 @@ export class PermissionsService {
   }
 
   private async findUserIdsByEmails(emails: string[]) {
+    if (emails.length === 0) return [];
     return this.userRepo
       .find({
         select: { id: true },
