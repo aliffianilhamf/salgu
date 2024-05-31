@@ -66,6 +66,24 @@ export class UsersService {
       .getOne();
   }
 
+  findIdsByEmails(emails: string[]) {
+    return this.userRepo
+      .find({
+        select: { id: true },
+        where: emails.map((email) => ({ email })),
+      })
+      .then((users) => users.map((user) => user.id));
+  }
+
+  findEmailsByIds(ids: number[]) {
+    return this.userRepo
+      .find({
+        select: { email: true },
+        where: ids.map((id) => ({ id })),
+      })
+      .then((users) => users.map((user) => user.email));
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return this.userRepo.update({ id }, updateUserDto);
   }

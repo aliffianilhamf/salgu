@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsIn, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
 import {
   PERMISSION_LEVELS,
   PermissionLevel,
@@ -8,8 +8,15 @@ import {
 export class CreatePermissionDto {
   @IsArray()
   @IsNumber({}, { each: true })
+  @IsOptional()
   @ApiProperty({ type: [Number] })
-  userIds: number[];
+  userIds?: number[];
+
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  @ApiProperty({ type: [String] })
+  userEmails?: string[];
 
   @IsArray()
   @IsString({ each: true })
