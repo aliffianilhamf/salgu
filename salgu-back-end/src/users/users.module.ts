@@ -8,6 +8,7 @@ import { InvoicesService } from 'src/invoices/invoices.service';
 import { InvoicesModule } from 'src/invoices/invoices.module';
 import { DirsService } from 'src/dirs/dirs.service';
 import { DirsModule } from 'src/dirs/dirs.module';
+import { FilesModule } from 'src/files/files.module';
 
 @Module({
   controllers: [UsersController],
@@ -17,6 +18,7 @@ import { DirsModule } from 'src/dirs/dirs.module';
     TypeOrmModule.forFeature([UserEntity, FileEntity]),
     InvoicesModule,
     DirsModule,
+    FilesModule,
   ],
 })
 export class UsersModule {}

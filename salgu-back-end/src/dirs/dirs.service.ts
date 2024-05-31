@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { CreateDirDto } from './dto/create-dir.dto';
 import { UpdateDirDto } from './dto/update-dir.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,6 +9,7 @@ import { DRIVE_CONSTANTS } from 'src/config/constants';
 import AppError from 'src/errors/app-error';
 import { getParentPath, stripTrailingSlashes } from 'src/utils/path';
 import { PermissionsService } from 'src/permissions/permissions.service';
+import { FilesService } from 'src/files/files.service';
 
 @Injectable()
 export class DirsService {
@@ -16,6 +17,8 @@ export class DirsService {
     @InjectRepository(DirEntity)
     private readonly dirRepo: Repository<DirEntity>,
     private readonly permissionsService: PermissionsService,
+    @Inject(forwardRef(() => FilesService))
+    private readonly filesService: FilesService,
   ) {}
 
   async create(createDirDto: CreateDirDto, ownerId: number) {

@@ -7,6 +7,7 @@ import { PermissionsModule } from 'src/permissions/permissions.module';
 import { PermissionsService } from 'src/permissions/permissions.service';
 import { CaslAbilityFactory } from 'src/casl/casl-ability.factory/casl-ability.factory';
 import { CaslModule } from 'src/casl/casl.module';
+import { FilesModule } from 'src/files/files.module';
 
 @Module({
   controllers: [DirsController],
@@ -15,6 +16,7 @@ import { CaslModule } from 'src/casl/casl.module';
     TypeOrmModule.forFeature([DirEntity]),
     forwardRef(() => PermissionsModule),
     CaslModule,
+    forwardRef(() => FilesModule),
   ],
   exports: [DirsService, TypeOrmModule, PermissionsService],
 })
