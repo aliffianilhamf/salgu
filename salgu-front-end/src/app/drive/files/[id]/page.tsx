@@ -1,6 +1,8 @@
 "use client";
 import api from "@/api";
 import { useEffect, useMemo, useState } from "react";
+import Browser from "@/components/Browser";
+import Link from "next/link";
 import Container from "react-bootstrap/Container";
 import { filetypemime } from "magic-bytes.js";
 import isutf8 from "isutf8";
@@ -46,10 +48,22 @@ export default function File({ params }: any) {
 
   return (
     <Container className="p-5">
-      <div id="container">
+      <div id="tw-flex tw-gap-2">
         <a className="btn btn-outline-dark ms-2 my-2" href={blobUrl} download>
           Download
         </a>
+        <Link
+          href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${id}/sharing`}
+          className="btn btn-dark"
+        >
+          Sharing
+        </Link>
+        <Link
+          href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${id}/history`}
+          className="btn btn-light border"
+        >
+          History
+        </Link>
         <p>Mime type: {mime}</p>
         <div>
           {mediaType === "image" && <img src={blobUrl} alt="User file" />}

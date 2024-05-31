@@ -1,28 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { getFileHistory } from "@/app/drive/files/[id]/actions";
+import { parseISO, formatDistanceToNow, format } from "date-fns";
 
-interface Activity {
+interface Action {
   type: string;
-  timestamp: string;
+  executedAt: string;
+  actor: {
+    email: string;
+  };
 }
+type Props = {
+  // currDir: Dir | null;
+  id: string;
+};
 
-export default function Filehistory() {
-  const [activities, setActivities] = useState<Activity[]>([]);
+const Filehistory: FC<Props> = (props) => {
+  const { id } = props;
+  const [actions, setActions] = useState<Action[]>([]);
 
   useEffect(() => {
-    // Simulasi data aktivitas, dalam aplikasi nyata Anda akan mengambil data ini dari API
-    const mockActivities: Activity[] = [
-      { type: "created", timestamp: "20240520 09.41" },
-      { type: "modified", timestamp: "20240520 10.41" },
-      { type: "modified", timestamp: "20240520 11.41" },
-      { type: "modified", timestamp: "20240520 14.41" },
-    ];
-
-    setActivities(mockActivities);
-  }, []);
+    getFileHistory(id).then((res) => {
+      console.log(res);
+      setActions(res);
+    });
+  }, [id]);
 
   return (
     <Container className="p-5">
@@ -39,19 +44,31 @@ export default function Filehistory() {
           <tr>
             <th>#</th>
             <th>Tipe</th>
+            <th>When</th>
             <th>Timestamp</th>
+            <th>Actor</th>
           </tr>
         </thead>
         <tbody>
-          {activities.map((activity, index) => (
+          {actions.map((activity, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
               <td>{activity.type}</td>
-              <td>{activity.timestamp}</td>
+              <td>
+                {formatDistanceToNow(parseISO(activity.executedAt), {
+                  addSuffix: true,
+                })}
+              </td>
+              <td>
+                {format(parseISO(activity.executedAt), "dd MMM yyyy HH:mm")}
+              </td>
+              <td>{activity.actor.email}</td>
             </tr>
           ))}
         </tbody>
       </Table>
     </Container>
   );
-}
+};
+
+export default Filehistory;
