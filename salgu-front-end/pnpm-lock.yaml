@@ -19,9 +19,15 @@ importers:
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
+      isutf8:
+        specifier: ^4.0.0
+        version: 4.0.0
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
+      magic-bytes.js:
+        specifier: ^1.10.0
+        version: 1.10.0
       next:
         specifier: 14.2.3
         version: 14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1711,6 +1717,13 @@ packages:
         integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==,
       }
 
+  isutf8@4.0.0:
+    resolution:
+      {
+        integrity: sha512-mJtsQGFfAphKdVuRitEpc0eon4v5fuaB6v9ZJIrLnIyybh02sIIwJ2RQbLMp6UICVCfquezllupZIVcqzGzCPg==,
+      }
+    engines: { node: ">= 12" }
+
   iterator.prototype@1.1.2:
     resolution:
       {
@@ -1855,6 +1868,12 @@ packages:
         integrity: sha512-9hp3Vp2/hFQUiIwKo8XCeFVnrg8Pk3TYNPIR7tJADKi5YfcF7vEaK7avFHTlSy3kOKYaJQaalfEo6YuXdceBOQ==,
       }
     engines: { node: 14 || >=16.14 }
+
+  magic-bytes.js@1.10.0:
+    resolution:
+      {
+        integrity: sha512-/k20Lg2q8LE5xiaaSkMXk4sfvI+9EGEykFS4b0CHHGWqDYU0bGUFSwchNOMA56D7TCs9GwVTkqe9als1/ns8UQ==,
+      }
 
   merge2@1.4.1:
     resolution:
@@ -4002,6 +4021,8 @@ snapshots:
 
   isexe@2.0.0: {}
 
+  isutf8@4.0.0: {}
+
   iterator.prototype@1.1.2:
     dependencies:
       define-properties: 1.2.1
@@ -4075,6 +4096,8 @@ snapshots:
       js-tokens: 4.0.0
 
   lru-cache@10.2.2: {}
+
+  magic-bytes.js@1.10.0: {}
 
   merge2@1.4.1: {}
 
