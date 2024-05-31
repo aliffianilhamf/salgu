@@ -27,7 +27,6 @@ export default function Folder({ params }: any) {
 
   return (
     <Container className="p-5">
-      <h3 className="text-center">Halaman Folder</h3>
       <div className="card mt-3">
         {currDir && (
           <Browser

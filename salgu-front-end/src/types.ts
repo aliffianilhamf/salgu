@@ -24,3 +24,14 @@ export type UsageData = {
   amount: number;
   spendingPerSecond: number;
 };
+
+export type Invoice = {
+  id: number;
+  startedAt: string;
+  endedAt: string;
+  amount: number;
+  paid: boolean;
+  isFinal: boolean;
+  lastUpdatedAt: string;
+  userId: number;
+};

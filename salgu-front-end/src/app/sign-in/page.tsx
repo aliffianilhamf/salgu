@@ -20,7 +20,7 @@ export default function SignIn() {
 
     signIn({ email, password })
       .then(() => {
-        router.push("/");
+        router.push("/drive/home");
       })
       .catch((err) => {
         setError(err?.message || "An error occurred");
