@@ -2,6 +2,11 @@
 
 import api from "@/api";
 
+export const getFile = async (id: string) => {
+  const res = await api.get(`/files/${id}`);
+  return res.data;
+};
+
 export const getFileHistory = async (id: string) => {
   const res = await api.get(`/files/${id}/history`);
   return res.data;

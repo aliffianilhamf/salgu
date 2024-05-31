@@ -1,7 +1,7 @@
 import { Dir, File } from "@/types";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
-import { FaFile, FaTrashAlt, FaFolder } from "react-icons/fa";
+import { FaFile, FaTrashAlt, FaFolder, FaShare } from "react-icons/fa";
 import css from "./Browser.module.css";
 import { deleteDirsById } from "@/app/drive/folders/[id]/actions";
 import { deleteFilesById } from "@/app/drive/files/[id]/actions";
@@ -61,6 +61,9 @@ const Browser: FC<Props> = (props) => {
 
   return (
     <div className={"m-2 " + css.Browser}>
+      <div>
+        <span>{props.currPath}</span>
+      </div>
       <Link
         href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${props.currDir?.id}/file-creation`}
         className="btn btn-outline-dark"
@@ -77,6 +80,15 @@ const Browser: FC<Props> = (props) => {
         <div className="d-flex align-items-center">
           <FaFolder />
           <span className="ms-2">New Folder</span>
+        </div>
+      </Link>
+      <Link
+        href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${props.currDir?.id}/sharing`}
+        className="btn btn-outline-dark ms-2 my-2"
+      >
+        <div className="d-flex align-items-center">
+          <FaShare />
+          <span className="ms-2">Sharing</span>
         </div>
       </Link>
       <button className="btn btn-outline-dark ms-2 my-2" onClick={handleDelete}>
