@@ -10,13 +10,15 @@ import Browser from "@/components/Browser";
 export default function Folder({ params }: any) {
   const dirId: string | undefined = params.id;
   const [currDir, setCurrDir] = useState<Dir | null>(null);
+  // Increment this flag to refresh.
+  const [refreshFlag, setRefreshFlag] = useState(0);
 
   useEffect(() => {
     if (dirId)
       getDir(dirId).then((res) => {
         setCurrDir(res);
       });
-  }, [dirId]);
+  }, [dirId, refreshFlag]);
 
   const currPath = currDir ? currDir.path : "/My Drive/";
 
@@ -33,6 +35,7 @@ export default function Folder({ params }: any) {
             dirs={dirs}
             currPath={currPath}
             currDir={currDir}
+            onRefreshRequired={() => setRefreshFlag(refreshFlag + 1)}
           />
         )}
       </div>

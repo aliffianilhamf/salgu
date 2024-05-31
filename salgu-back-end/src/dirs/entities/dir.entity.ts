@@ -4,18 +4,19 @@ import { PermissionEntity } from 'src/permissions/entities/permission.entity';
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  Unique,
 } from 'typeorm';
 
 export const PERMISSION_LEVELS = ['none', 'read', 'read-write'] as const;
 export type PermissionLevel = (typeof PERMISSION_LEVELS)[number];
 
 @Entity({ name: 'dir' })
-@Unique(['path', 'ownerId'])
+// TODO: Handle unique and soft delete
+// @Unique(['path', 'ownerId'])
 export class DirEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -46,4 +47,7 @@ export class DirEntity {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }
