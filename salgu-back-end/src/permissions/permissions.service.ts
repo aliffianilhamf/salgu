@@ -8,20 +8,35 @@ import { Subject } from './types';
 import { GetPermissionDto } from './dto/get-permission.dto';
 import { DirEntity } from 'src/dirs/entities/dir.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
+import { UserEntity } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class PermissionsService {
   constructor(
     @InjectRepository(PermissionEntity)
     private readonly permissionRepo: Repository<PermissionEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepo: Repository<UserEntity>,
   ) {}
-  create(
+
+  async create(
     subject: Subject,
     subjectId: number,
     createPermissionDto: CreatePermissionDto,
   ) {
     let permission = new PermissionEntity();
+
+    const userIds = permission.userIds || [];
+    if (createPermissionDto.userEmails) {
+      const ids = await this.findUserIdsByEmails(
+        createPermissionDto.userEmails,
+      );
+      userIds.push(...ids);
+    }
     permission = Object.assign(permission, createPermissionDto);
+    // @ts-expect-error userEmails is not in the PermissionEntity type
+    delete permission.userEmails;
+    permission.userIds = userIds;
 
     if (subject === 'dir') permission.dirId = subjectId;
     else permission.fileId = subjectId;
@@ -61,11 +76,12 @@ export class PermissionsService {
         where: { fileId: subjectId },
       });
 
-    const originalPermissionDtos: GetPermissionDto[] = originalPermissions.map(
-      (permission) => ({
+    const originalPermissionDtos: GetPermissionDto[] = await Promise.all(
+      originalPermissions.map(async (permission) => ({
         ...permission,
         isInherited: false,
-      }),
+        userEmails: await this.findUserEmailsByIds(permission.userIds),
+      })),
     );
 
     if (!includeInherited) return originalPermissionDtos;
@@ -115,6 +131,7 @@ export class PermissionsService {
         for (const p of ps) {
           inheritedPermissionDtos.push({
             ...p,
+            userEmails: await this.findUserEmailsByIds(p.userIds),
             isInherited: true,
             sourceDir: dir,
           });
@@ -129,11 +146,43 @@ export class PermissionsService {
     return this.permissionRepo.findOne({ where: { id } });
   }
 
-  update(id: number, updatePermissionDto: UpdatePermissionDto) {
-    return this.permissionRepo.update({ id }, updatePermissionDto);
+  async update(id: number, updatePermissionDto: UpdatePermissionDto) {
+    let permission = new PermissionEntity();
+
+    const userIds = permission.userIds || [];
+    if (updatePermissionDto.userEmails) {
+      const ids = await this.findUserIdsByEmails(
+        updatePermissionDto.userEmails,
+      );
+      userIds.push(...ids);
+    }
+    permission = Object.assign(permission, updatePermissionDto);
+    // @ts-expect-error userEmails is not in the PermissionEntity type
+    delete permission.userEmails;
+    permission.userIds = userIds;
+
+    return this.permissionRepo.update({ id }, permission);
   }
 
   remove(id: number) {
     return this.permissionRepo.delete({ id });
+  }
+
+  private async findUserEmailsByIds(ids: number[]) {
+    return this.userRepo
+      .find({
+        select: { email: true },
+        where: ids.map((id) => ({ id })),
+      })
+      .then((users) => users.map((user) => user.email));
+  }
+
+  private async findUserIdsByEmails(emails: string[]) {
+    return this.userRepo
+      .find({
+        select: { id: true },
+        where: emails.map((email) => ({ email })),
+      })
+      .then((users) => users.map((user) => user.id));
   }
 }
