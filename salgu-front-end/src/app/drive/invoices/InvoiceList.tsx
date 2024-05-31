@@ -10,7 +10,7 @@ type Props = {
 export default function InvoiceList(props: Props) {
   return (
     <div>
-      <table className="table table-bordered">
+      <table className="table table-bordered rounded-3 overflow-hidden ">
         <thead>
           <tr>
             <th>Title</th>
@@ -27,7 +27,10 @@ export default function InvoiceList(props: Props) {
               key={invoice.id}
               style={{ display: "table-row" }}
             >
-              <td>{invoice.id}</td>
+              <td>
+                Usage from {format(parseISO(invoice.startedAt), "MMMM")}
+                {" to "} {format(parseISO(invoice.endedAt), "MMMM")}
+              </td>
               <td>
                 {format(parseISO(invoice.startedAt), "dd MMM yyyy HH:mm")}
               </td>

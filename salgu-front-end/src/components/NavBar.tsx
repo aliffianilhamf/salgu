@@ -13,11 +13,7 @@ export default function Navbar({ Toggle }: NavbarProps) {
   if (!user) return null;
 
   return (
-    <nav className="navbar navbar-expand-sm navbar-dark tw-bg-white px-3">
-      <i
-        className="navbar-brand bi bi-justify-left fs-4 text-black"
-        onClick={Toggle}
-      ></i>
+    <nav className="navbar navbar-expand-sm navbar-dark tw-bg-white px-3 rounded-2 ">
       <button
         className="navbar-toggler d-lg-none"
         type="button"

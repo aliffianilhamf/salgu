@@ -11,6 +11,7 @@ import { getInvoice } from "../actions";
 import { Invoice } from "@/types";
 import { parseISO, format } from "date-fns";
 import { rupiah } from "@/utils";
+import Button from "@/components/Button";
 
 export default function InvoiceDetail({ params }: any) {
   const id: string = params.id;
@@ -25,9 +26,14 @@ export default function InvoiceDetail({ params }: any) {
       setInvoice(res);
     });
   }, [id]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const name = (formData.get("file") as File).name;
+  };
   return (
     <div className="tw-w-10/12 tw-mx-auto">
-      <NavInvoice></NavInvoice>
       <div className="tw-flex tw-justify-center tw-items-center tw-min-h-auto tw-mt-12 tw-flex-col">
         <div className="tw-flex tw-justify-center tw-flex-col  tw-bg-gray-500 tw-rounded tw-p-5 tw-w-full tw-max-w-lg tw-text-white">
           <h2 className="tw-font-bold">SALGU</h2>
@@ -69,6 +75,30 @@ export default function InvoiceDetail({ params }: any) {
                   ? "Waiting Payment"
                   : "Nonfinal"}
             </p>
+          </div>
+          <div>
+            <form action="" className="tw-max-w-2xl" onSubmit={handleSubmit}>
+              <label
+                className="tw-block tw-mb-2 tw-text-md tw-font-medium tw-text-gray-900 dark:tw-text-white"
+                htmlFor="large_size"
+              >
+                Submit Proof of Payment
+              </label>
+              <ol className="tw-list-decimal">
+                <li>Transfer your money to following account</li>
+                <li>Upload your proof of payment</li>
+                <li>Wait confirmation for your payment</li>
+              </ol>
+              <input
+                className="tw-block tw-w-full tw-text-lg tw-text-gray-900 tw-border tw-border-gray-300 tw-rounded-lg tw-cursor-pointer tw-bg-gray-50 dark:tw-text-gray-400 focus:tw-outline-none dark:tw-bg-gray-700 dark:tw-border-gray-600 dark:tw-placeholder-gray-400"
+                id="large_size"
+                type="file"
+                name="file"
+              />
+              <Button variant="tw-bg-blue-500" type="submit">
+                Upload
+              </Button>
+            </form>
           </div>
           <div className="tw-flex tw-flex-col tw-mt-5">
             <Link

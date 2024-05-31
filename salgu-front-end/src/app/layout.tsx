@@ -21,14 +21,16 @@ export default function RootLayout({
       <html>
         <body>
           <Container fluid className="d-flex">
-            <div className="container-fluid tw-bg-white min-vh-100">
+            <div className="container-fluid tw-bg-gray-200 min-vh-100">
               <div className="row">
-                {toggle && (
-                  <div className="col-2 bg-white vh-100">
-                    <Sidebar />
-                  </div>
-                )}
-                <div className="col">
+                <NoSsr>
+                  <Sidebar />
+                </NoSsr>
+
+                <div
+                  className="col"
+                  style={{ maxHeight: "100vh", overflowY: "auto" }}
+                >
                   <NoSsr>
                     <Homepage Toggle={Toggle} />
                   </NoSsr>
