@@ -35,3 +35,17 @@ export type Invoice = {
   lastUpdatedAt: string;
   userId: number;
 };
+
+export type Permission = {
+  id: number;
+  userIds?: number[];
+  domains: string[];
+  level: "none" | "read" | "read-write";
+  fileId?: number | null;
+  dirId?: number | null;
+  createdAt?: string;
+  updatedAt?: string;
+  userEmails?: string[];
+  isInherited?: boolean;
+  sourceDir?: Dir;
+};
