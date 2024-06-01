@@ -6,9 +6,12 @@ import Link from "next/link";
 import Container from "react-bootstrap/Container";
 import { filetypemime } from "magic-bytes.js";
 import isutf8 from "isutf8";
+import { saveAs } from "file-saver";
+import { File } from "@/types";
 
-export default function File({ params }: any) {
+export default function FilePage({ params }: any) {
   const id: string = params.id;
+  const [file, setFile] = useState<File | null>(null);
   const [blobUrl, setBlobUrl] = useState("");
   const [mime, setMime] = useState("");
   const mediaType = mime.split("/")[0] || "";
@@ -21,6 +24,16 @@ export default function File({ params }: any) {
 
   useEffect(() => {
     let url: string;
+
+    api
+      .get(`/files/${id}`)
+      .then((res) => {
+        setFile(res.data);
+      })
+      .catch((err) => {
+        throw err;
+      });
+
     api.get(`/files/${id}/data`, { responseType: "blob" }).then((res) => {
       const blob: Blob = res.data;
       url = window.URL.createObjectURL(blob);
@@ -49,12 +62,23 @@ export default function File({ params }: any) {
   return (
     <Container className="p-5">
       <div id="tw-flex tw-gap-2">
-        <a className="btn btn-outline-dark ms-2 my-2" href={blobUrl} download>
+        <button
+          className="btn btn-outline-dark ms-2 my-2"
+          onClick={() => {
+            saveAs(blobUrl, file?.name || id);
+          }}
+        >
           Download
-        </a>
+        </button>
+        <Link
+          href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${id}/update`}
+          className="btn btn-outline-dark"
+        >
+          Update
+        </Link>
         <Link
           href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${id}/sharing`}
-          className="btn btn-dark"
+          className="btn btn-outline-dark"
         >
           Sharing
         </Link>

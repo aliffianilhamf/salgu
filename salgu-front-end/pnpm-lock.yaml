@@ -22,6 +22,9 @@ importers:
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
+      file-saver:
+        specifier: ^2.0.5
+        version: 2.0.5
       isutf8:
         specifier: ^4.0.0
         version: 4.0.0
@@ -47,6 +50,9 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1(react@18.3.1)
     devDependencies:
+      "@types/file-saver":
+        specifier: ^2.0.7
+        version: 2.0.7
       "@types/js-cookie":
         specifier: ^3.0.6
         version: 3.0.6
@@ -355,6 +361,12 @@ packages:
     resolution:
       {
         integrity: sha512-KGYxvIOXcceOAbEk4bi/dVLEK9z8sZ0uBB3Il5b1rhfClSpcX0yfRO0KmTkqR2cnQDymwLB+25ZyMzICg/cm/A==,
+      }
+
+  "@types/file-saver@2.0.7":
+    resolution:
+      {
+        integrity: sha512-dNKVfHd/jk0SkR/exKGj2ggkB45MAkzvWCaqLUUgkyjITkGNzH8H+yUwr+BLJUBjZOe9w8X3wgmXhZDRg1ED6A==,
       }
 
   "@types/js-cookie@3.0.6":
@@ -1245,6 +1257,12 @@ packages:
         integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==,
       }
     engines: { node: ^10.12.0 || >=12.0.0 }
+
+  file-saver@2.0.5:
+    resolution:
+      {
+        integrity: sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==,
+      }
 
   fill-range@7.0.1:
     resolution:
@@ -3064,6 +3082,8 @@ snapshots:
       "@swc/counter": 0.1.3
       tslib: 2.6.2
 
+  "@types/file-saver@2.0.7": {}
+
   "@types/js-cookie@3.0.6": {}
 
   "@types/json5@0.0.29": {}
@@ -3766,6 +3786,8 @@ snapshots:
   file-entry-cache@6.0.1:
     dependencies:
       flat-cache: 3.2.0
+
+  file-saver@2.0.5: {}
 
   fill-range@7.0.1:
     dependencies:
