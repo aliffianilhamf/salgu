@@ -80,12 +80,10 @@ const Permission: FC<Props> = (props) => {
             <p className="tw-text-sm tw-text-gray-600">
               Inherited from{" "}
               <Link
+                className="tw-text-blue-500 tw-hover:tw-underline"
                 href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${props.data.sourceDir!.id}`}
-                passHref
               >
-                <a className="tw-text-blue-500 tw-hover:tw-underline">
-                  {props.data.sourceDir!.path}
-                </a>
+                {props.data.sourceDir!.path}
               </Link>
             </p>
           )}
@@ -101,7 +99,8 @@ const Permission: FC<Props> = (props) => {
           id={id + "roles"}
           className="tw-form-select tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border-gray-300"
           disabled={readonly}
-          onChange={handleSubmit}
+          onChange={() => handleSubmit()}
+          value={props.data.level}
         >
           {ROLES.map((role) => (
             <option key={role} value={role}>
