@@ -34,6 +34,7 @@ export type Invoice = {
   isFinal: boolean;
   lastUpdatedAt: string;
   userId: number;
+  isConfirmed: boolean;
 };
 
 export type Permission = {

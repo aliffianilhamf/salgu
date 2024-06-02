@@ -35,6 +35,9 @@ export class InvoiceEntity {
   })
   isFinal: boolean;
 
+  @Column({ type: 'longblob', nullable: true, comment: 'Payment proof image' })
+  paymentProofImage?: Buffer;
+
   @UpdateDateColumn()
   lastUpdatedAt: Date;
 

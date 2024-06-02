@@ -5,7 +5,9 @@ import {
   Param,
   Patch,
   UnauthorizedException,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { InvoicesService } from './invoices.service';
 import { ApiTags } from '@nestjs/swagger';
@@ -13,6 +15,8 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from 'src/users/user.decorator';
 import { UserEntity } from 'src/users/entities/user.entity';
 import AppError from 'src/errors/app-error';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { DRIVE_CONSTANTS } from 'src/config/constants';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('invoices')
@@ -32,7 +36,16 @@ export class InvoicesController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @User() user: UserEntity) {
+  @UseInterceptors(
+    FileInterceptor('paymentProofImage', {
+      limits: { fileSize: DRIVE_CONSTANTS.maxFileSize },
+    }),
+  )
+  async update(
+    @Param('id') id: string,
+    @User() user: UserEntity,
+    @UploadedFile() paymentProofImage?: Express.Multer.File,
+  ) {
     const invoice = await this.invoicesService.findOne(+id);
     if (!invoice) throw new NotFoundException('Invoice not found');
     if (invoice.userId !== user.id) {
@@ -42,6 +55,9 @@ export class InvoicesController {
       throw new AppError('Invoice is not final yet', 400);
     }
 
-    return this.invoicesService.update(+id, { paid: true });
+    return this.invoicesService.update(+id, {
+      paid: true,
+      paymentProofImage: paymentProofImage?.buffer,
+    });
   }
 }

@@ -12,6 +12,7 @@ import { Invoice } from "@/types";
 import { parseISO, format } from "date-fns";
 import { rupiah } from "@/utils";
 import Button from "@/components/Button";
+import api from "@/api";
 
 export default function InvoiceDetail({ params }: any) {
   const id: string = params.id;
@@ -30,8 +31,19 @@ export default function InvoiceDetail({ params }: any) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const name = (formData.get("file") as File).name;
+    api
+      .patch(`/invoices/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          alert("Success");
+        }
+      });
   };
+
   return (
     <div className="tw-w-10/12 tw-mx-auto">
       <div className="tw-flex tw-justify-center tw-items-center tw-min-h-auto tw-mt-12 tw-flex-col">
@@ -69,11 +81,16 @@ export default function InvoiceDetail({ params }: any) {
           <div>
             <p>
               Status :{" "}
-              {invoice?.paid === true && invoice?.isFinal === true
-                ? "Paid"
-                : invoice?.paid === false && invoice?.isFinal === true
-                  ? "Waiting Payment"
-                  : "Nonfinal"}
+              {invoice?.paid &&
+                invoice?.isFinal &&
+                invoice?.isConfirmed &&
+                "Paid"}
+              {invoice?.paid &&
+                invoice?.isFinal &&
+                !invoice?.isConfirmed &&
+                "Waiting Confirmation"}
+              {!invoice?.paid && invoice?.isFinal && "Waiting Payment"}
+              {!invoice?.isFinal && "Nonfinal"}
             </p>
           </div>
           <div>
@@ -93,7 +110,7 @@ export default function InvoiceDetail({ params }: any) {
                 className="tw-block tw-w-full tw-text-lg tw-text-gray-900 tw-border tw-border-gray-300 tw-rounded-lg tw-cursor-pointer tw-bg-gray-50 dark:tw-text-gray-400 focus:tw-outline-none dark:tw-bg-gray-700 dark:tw-border-gray-600 dark:tw-placeholder-gray-400"
                 id="large_size"
                 type="file"
-                name="file"
+                name="paymentProofImage"
               />
               <Button variant="tw-bg-blue-500" type="submit">
                 Upload

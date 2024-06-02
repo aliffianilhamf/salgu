@@ -76,7 +76,7 @@ export class FilesController {
     const ability = this.abilityFactory.createForUser(user);
     if (!ability.can('update', file)) throw new UnauthorizedException();
 
-    return this.filesService.update(+id, updateFileDto);
+    return this.filesService.update(+id, updateFileDto, user.id);
   }
 
   @Delete(':id')
@@ -109,7 +109,7 @@ export class FilesController {
 
     if (!file) throw new AppError('No file provided', {}, 'NO_FILE_PROVIDED');
 
-    return this.filesService.saveFileData(+id, file);
+    return this.filesService.saveFileData(+id, file, user.id);
   }
 
   @Get(':id/data')

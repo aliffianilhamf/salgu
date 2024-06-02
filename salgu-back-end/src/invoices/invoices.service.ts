@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InvoiceEntity } from './entities/invoice.entity';
 import { LessThanOrEqual, Repository } from 'typeorm';
@@ -41,8 +40,8 @@ export class InvoicesService {
     return this.invoiceRepo.findOne({ where: { id } });
   }
 
-  update(id: number, updateInvoiceDto: UpdateInvoiceDto) {
-    return this.invoiceRepo.update({ id }, updateInvoiceDto);
+  update(id: number, updatePatch: Partial<InvoiceEntity>) {
+    return this.invoiceRepo.update({ id }, updatePatch);
   }
 
   remove(id: number) {
