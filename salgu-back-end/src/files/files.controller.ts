@@ -56,10 +56,10 @@ export class FilesController {
   @Get(':id')
   async findOne(@Param('id') id: string, @User() user: UserEntity) {
     const file = await this.filesService.findOneWithPermissions(+id);
-    if (!file) return new NotFoundException();
+    if (!file) throw new NotFoundException();
 
     const ability = this.abilityFactory.createForUser(user);
-    if (!ability.can('read', file)) return new UnauthorizedException();
+    if (!ability.can('read', file)) throw new UnauthorizedException();
 
     return file;
   }

@@ -21,8 +21,11 @@ export class InvoiceEntity {
   @Column()
   amount: number;
 
-  @Column()
+  @Column({ default: false })
   paid: boolean;
+
+  @Column({ default: false })
+  isConfirmed: boolean;
 
   @Column({
     comment:

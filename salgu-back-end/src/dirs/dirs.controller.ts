@@ -48,10 +48,10 @@ export class DirsController {
   @Get(':id')
   async findOne(@Param('id') id: string, @User() user: UserEntity) {
     const dir = await this.dirsService.findOneWithPermissions(+id);
-    if (!dir) return new NotFoundException();
+    if (!dir) throw new NotFoundException();
 
     const ability = this.abilityFactory.createForUser(user);
-    if (!ability.can('read', dir)) return new UnauthorizedException();
+    if (!ability.can('read', dir)) throw new UnauthorizedException();
 
     // This one has the children populated.
     return this.dirsService.findOne(+id);

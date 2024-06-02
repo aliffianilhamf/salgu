@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InvoiceEntity } from './entities/invoice.entity';
@@ -32,10 +31,6 @@ export class InvoicesService {
     this.billingPeriod = this.configService.getOrThrow<Duration>(
       'drive.billing_period',
     );
-  }
-
-  create(createInvoiceDto: CreateInvoiceDto) {
-    return this.invoiceRepo.save(createInvoiceDto);
   }
 
   findAll(userId?: number) {
