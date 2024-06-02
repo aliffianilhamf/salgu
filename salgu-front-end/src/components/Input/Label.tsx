@@ -10,7 +10,7 @@ export default function Label(props: LabelProps) {
   return (
     <label
       htmlFor={htmlFor}
-      className="tw-block tw-text-sm tw-font-blod tw-mb-2"
+      className="tw-block tw-text-md tw-font-blod tw-mb-2"
     >
       {children}
     </label>
