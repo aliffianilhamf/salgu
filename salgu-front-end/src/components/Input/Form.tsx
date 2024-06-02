@@ -15,7 +15,7 @@ export default function InputBlock(props: FormProps) {
   const { name, options, children, ...others } = props;
   return (
     <>
-      <div className="tw-block">
+      <div className="tw-block tw-mb-5 ">
         <Label htmlFor={name}>{children}</Label>
         {others.type === "select" && <Select name={name} opts={options!} />}
         {others.type !== "select" && <Input name={name} {...others} />}
