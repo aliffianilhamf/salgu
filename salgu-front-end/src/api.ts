@@ -47,7 +47,7 @@ api.interceptors.response.use(
     return response;
   },
   async (error) => {
-    let newMessage: string = `HTTP Error ${error.response.status}`;
+    let newMessage: string = `HTTP Error ${error?.response?.status}`;
     if (Array.isArray(error.response.data.message))
       newMessage = error.response.data.message.join("\n");
     else if (typeof error.response.data.message === "string")

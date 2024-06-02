@@ -4,10 +4,12 @@ import { useEffect, useMemo, useState } from "react";
 import Browser from "@/components/Browser";
 import Link from "next/link";
 import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
 import { filetypemime } from "magic-bytes.js";
 import isutf8 from "isutf8";
 import { saveAs } from "file-saver";
 import { File } from "@/types";
+import { FaDownload, FaEdit, FaShare, FaHistory } from "react-icons/fa";
 import { useErrorBoundary } from "react-error-boundary";
 
 export default function FilePage({ params }: any) {
@@ -64,48 +66,71 @@ export default function FilePage({ params }: any) {
 
   return (
     <Container className="p-5">
-      <div id="tw-flex tw-gap-2">
-        <button
-          className="btn btn-outline-dark ms-2 my-2"
+      <h1 className="mb-4">{file?.name || "File Detail"}</h1>
+      <div className="d-flex flex-wrap gap-2 mb-3">
+        <Button
+          variant="outline-dark"
           onClick={() => {
             saveAs(blobUrl, file?.name || id);
           }}
+          className="d-flex align-items-center"
         >
-          Download
-        </button>
+          <FaDownload className="me-2" /> Download
+        </Button>
         <Link
           href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${id}/update`}
-          className="btn btn-outline-dark"
+          passHref
         >
-          Update
+          <Button
+            variant="outline-dark"
+            className="d-flex align-items-center tw-no-underline"
+          >
+            <FaEdit className="me-2" /> Update
+          </Button>
         </Link>
         <Link
           href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${id}/sharing`}
-          className="btn btn-outline-dark"
+          passHref
         >
-          Sharing
+          <Button
+            variant="outline-dark"
+            className="d-flex align-items-center tw-no-underline"
+          >
+            <FaShare className="me-2" /> Sharing
+          </Button>
         </Link>
         <Link
           href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${id}/history`}
-          className="btn btn-light border"
+          passHref
         >
-          History
+          <Button
+            variant="light"
+            className="border d-flex align-items-center tw-no-underline"
+          >
+            <FaHistory className="me-2" /> History
+          </Button>
         </Link>
-        <p>Mime type: {mime}</p>
-        <div>
-          {mediaType === "image" && <img src={blobUrl} alt="User file" />}
-          {mediaType === "text" && <pre>{textContent}</pre>}
-          {mediaType === "video" && (
-            <video controls style={{ maxWidth: 200 }}>
-              <source src={blobUrl} type={mime} />
-            </video>
-          )}
-          {mediaType === "audio" && (
-            <audio controls>
-              <source src={blobUrl} type={mime} />
-            </audio>
-          )}
-        </div>
+      </div>
+      <p>
+        <strong>Mime type:</strong> {mime}
+      </p>
+      <div className="mt-4">
+        {mediaType === "image" && (
+          <img src={blobUrl} alt="User file" className="img-fluid" />
+        )}
+        {mediaType === "text" && (
+          <pre className="bg-light p-3 border">{textContent}</pre>
+        )}
+        {mediaType === "video" && (
+          <video controls className="w-100">
+            <source src={blobUrl} type={mime} />
+          </video>
+        )}
+        {mediaType === "audio" && (
+          <audio controls className="w-100">
+            <source src={blobUrl} type={mime} />
+          </audio>
+        )}
       </div>
     </Container>
   );

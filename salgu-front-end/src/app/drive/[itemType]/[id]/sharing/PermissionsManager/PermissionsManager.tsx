@@ -10,7 +10,7 @@ type Props = {
 
 const PermissionsManager: FC<Props> = (props) => {
   return (
-    <div>
+    <div className="tw-flex tw-flex-col tw-items-center">
       {props.permissions.map((permission, i) => (
         <Permission
           key={i}
@@ -25,26 +25,31 @@ const PermissionsManager: FC<Props> = (props) => {
           }}
         />
       ))}
-      <button
-        className="btn btn-outline-dark"
-        onClick={() => {
-          props.onChange?.([
-            ...props.permissions,
-            {
-              id: -1,
-              domains: [],
-              level: "none",
-              fileId: null,
-              dirId: null,
-            },
-          ]);
-        }}
-      >
-        Add Permission Entry
-      </button>
-      <button className="btn btn-outline-dark" onClick={() => props.onSave?.()}>
-        Save
-      </button>
+      <div className="tw-flex tw-mt-4">
+        <button
+          className="btn btn-outline-dark tw-mr-2"
+          onClick={() => {
+            props.onChange?.([
+              ...props.permissions,
+              {
+                id: -1,
+                domains: [],
+                level: "none",
+                fileId: null,
+                dirId: null,
+              },
+            ]);
+          }}
+        >
+          Add Permission Entry
+        </button>
+        <button
+          className="btn btn-outline-dark"
+          onClick={() => props.onSave?.()}
+        >
+          Save
+        </button>
+      </div>
     </div>
   );
 };

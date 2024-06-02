@@ -72,26 +72,34 @@ const Permission: FC<Props> = (props) => {
     <form
       onSubmit={handleSubmit}
       ref={formRef}
-      className="card border-black border-2"
+      className="tw-border tw-border-gray-300 tw-rounded-lg tw-p-4"
     >
       <div>
         <div>
           {props.data.isInherited && (
-            <span>
+            <p className="tw-text-sm tw-text-gray-600">
               Inherited from{" "}
               <Link
                 href={`${process.env.NEXT_PUBLIC_HOST}/drive/folders/${props.data.sourceDir!.id}`}
+                passHref
               >
-                {props.data.sourceDir!.path}
+                <a className="tw-text-blue-500 tw-hover:tw-underline">
+                  {props.data.sourceDir!.path}
+                </a>
               </Link>
-            </span>
+            </p>
           )}
         </div>
-        <label htmlFor={id + "roles"}>Role</label>
+        <label
+          htmlFor={id + "roles"}
+          className="tw-block tw-font-medium tw-text-sm tw-text-gray-700"
+        >
+          Role
+        </label>
         <select
           name="roles"
           id={id + "roles"}
-          className="form-select"
+          className="tw-form-select tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border-gray-300"
           disabled={readonly}
           onChange={handleSubmit}
         >
@@ -102,18 +110,18 @@ const Permission: FC<Props> = (props) => {
           ))}
         </select>
       </div>
-      <table className="table table-bordered">
+      <table className="tw-table-auto tw-w-full tw-mt-4">
         <thead>
           <tr>
-            <th>Subject(s)</th>
-            <th>Variant</th>
-            <th>Actions</th>
+            <th className="tw-px-4 tw-py-2 tw-text-left">Subject(s)</th>
+            <th className="tw-px-4 tw-py-2 tw-text-left">Variant</th>
+            <th className="tw-px-4 tw-py-2 tw-text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
           {entries.map((entry, i) => (
             <tr key={i}>
-              <td>
+              <td className="tw-border tw-px-4 tw-py-2">
                 <input
                   type="text"
                   value={entry.value}
@@ -125,10 +133,13 @@ const Permission: FC<Props> = (props) => {
                   }}
                   onBlur={() => handleSubmit()}
                   disabled={readonly}
+                  className="tw-w-full tw-border-gray-300 tw-rounded-md tw-px-3 tw-py-2"
                 />
               </td>
-              <td>{entry.type === "email" ? "Email" : "Domain"}</td>
-              <td>
+              <td className="tw-border tw-px-4 tw-py-2">
+                {entry.type === "email" ? "Email" : "Domain"}
+              </td>
+              <td className="tw-border tw-px-4 tw-py-2">
                 <button
                   className="btn btn-outline-dark"
                   onClick={() => {
@@ -142,13 +153,12 @@ const Permission: FC<Props> = (props) => {
               </td>
             </tr>
           ))}
-          <tr className="flex-row"></tr>
         </tbody>
       </table>
       {!readonly && (
-        <div className="btn-group">
+        <div className="tw-flex tw-justify-between tw-mt-4">
           <button
-            className="btn btn-outline-dark"
+            className="tw-flex-1 tw-mr-2 btn btn-outline-dark"
             onClick={() => {
               setEntries([...entries, { type: "email", value: "" }]);
             }}
@@ -157,7 +167,7 @@ const Permission: FC<Props> = (props) => {
             Add Email
           </button>
           <button
-            className="btn btn-outline-dark"
+            className="tw-flex-1 btn btn-outline-dark"
             onClick={() => {
               setEntries([...entries, { type: "domain", value: "" }]);
             }}
@@ -169,7 +179,7 @@ const Permission: FC<Props> = (props) => {
       )}
       {!readonly && (
         <button
-          className="btn btn-outline-dark"
+          className="tw-mt-4 btn btn-outline-dark tw-w-full"
           disabled={readonly}
           onClick={props.onDelete}
         >
