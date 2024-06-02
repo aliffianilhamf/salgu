@@ -56,10 +56,10 @@ export class FilesController {
   @Get(':id')
   async findOne(@Param('id') id: string, @User() user: UserEntity) {
     const file = await this.filesService.findOneWithPermissions(+id);
-    if (!file) return new NotFoundException();
+    if (!file) throw new NotFoundException();
 
     const ability = this.abilityFactory.createForUser(user);
-    if (!ability.can('read', file)) return new UnauthorizedException();
+    if (!ability.can('read', file)) throw new UnauthorizedException();
 
     return file;
   }
@@ -71,10 +71,10 @@ export class FilesController {
     @User() user: UserEntity,
   ) {
     const file = await this.filesService.findOneWithPermissions(+id);
-    if (!file) return new NotFoundException();
+    if (!file) throw new NotFoundException();
 
     const ability = this.abilityFactory.createForUser(user);
-    if (!ability.can('update', file)) return new UnauthorizedException();
+    if (!ability.can('update', file)) throw new UnauthorizedException();
 
     return this.filesService.update(+id, updateFileDto);
   }
@@ -82,10 +82,10 @@ export class FilesController {
   @Delete(':id')
   async remove(@Param('id') id: string, @User() user: UserEntity) {
     const file = await this.filesService.findOneWithPermissions(+id);
-    if (!file) return new NotFoundException();
+    if (!file) throw new NotFoundException();
 
     const ability = this.abilityFactory.createForUser(user);
-    if (!ability.can('delete', file)) return new UnauthorizedException();
+    if (!ability.can('delete', file)) throw new UnauthorizedException();
 
     return this.filesService.remove(+id);
   }
@@ -102,12 +102,12 @@ export class FilesController {
     @UploadedFile() file?: Express.Multer.File,
   ) {
     const fileEntity = await this.filesService.findOneWithPermissions(+id);
-    if (!fileEntity) return new NotFoundException();
+    if (!fileEntity) throw new NotFoundException();
 
     const ability = this.abilityFactory.createForUser(user);
-    if (!ability.can('update', fileEntity)) return new UnauthorizedException();
+    if (!ability.can('update', fileEntity)) throw new UnauthorizedException();
 
-    if (!file) return new AppError('No file provided', {}, 'NO_FILE_PROVIDED');
+    if (!file) throw new AppError('No file provided', {}, 'NO_FILE_PROVIDED');
 
     return this.filesService.saveFileData(+id, file);
   }
@@ -115,10 +115,10 @@ export class FilesController {
   @Get(':id/data')
   async getFileData(@Param('id') id: string, @User() user: UserEntity) {
     const fileEntity = await this.filesService.findOneWithPermissions(+id);
-    if (!fileEntity) return new NotFoundException();
+    if (!fileEntity) throw new NotFoundException();
 
     const ability = this.abilityFactory.createForUser(user);
-    if (!ability.can('read', fileEntity)) return new UnauthorizedException();
+    if (!ability.can('read', fileEntity)) throw new UnauthorizedException();
 
     if (fileEntity.size === 0) return new StreamableFile(Buffer.alloc(0));
 
@@ -129,10 +129,10 @@ export class FilesController {
   @Get(':id/history')
   async getFileHistory(@Param('id') id: string, @User() user: UserEntity) {
     const fileEntity = await this.filesService.findOneWithPermissions(+id);
-    if (!fileEntity) return new NotFoundException();
+    if (!fileEntity) throw new NotFoundException();
 
     const ability = this.abilityFactory.createForUser(user);
-    if (!ability.can('read', fileEntity)) return new UnauthorizedException();
+    if (!ability.can('read', fileEntity)) throw new UnauthorizedException();
 
     return this.filesService.getFileHistory(+id);
   }

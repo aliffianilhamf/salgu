@@ -20,6 +20,16 @@ export default function ItemSharing({ params }: any) {
   const [currPath, setCurrPath] = useState<string | null>(null);
   const originalPermissions = useRef<Permission[]>([]);
 
+  const processPermissions = (permissions: Permission[]) => {
+    permissions.sort((a, b) => {
+      if (a.isInherited && !b.isInherited) return -1;
+      if (!a.isInherited && b.isInherited) return 1;
+      return 0;
+    });
+    setPermissions(permissions);
+    originalPermissions.current = permissions;
+  };
+
   useEffect(() => {
     if (!id || isNotFound) return;
 
@@ -27,15 +37,7 @@ export default function ItemSharing({ params }: any) {
       getDir(id).then((dir) => setCurrPath(dir.path));
     else getFile(id).then((file) => setCurrPath(file.name));
 
-    getPermissions(itemTypePlural, id).then((permissions) => {
-      permissions.sort((a, b) => {
-        if (a.isInherited && !b.isInherited) return -1;
-        if (!a.isInherited && b.isInherited) return 1;
-        return 0;
-      });
-      setPermissions(permissions);
-      originalPermissions.current = permissions;
-    });
+    getPermissions(itemTypePlural, id).then(processPermissions);
   }, [id, isNotFound, itemTypePlural]);
 
   // Remove the s from `itemType`
@@ -53,7 +55,7 @@ export default function ItemSharing({ params }: any) {
       id,
       originalPermissions.current,
       permissions,
-    );
+    ).then(processPermissions);
   };
 
   return (

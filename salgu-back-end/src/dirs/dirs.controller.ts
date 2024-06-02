@@ -48,10 +48,10 @@ export class DirsController {
   @Get(':id')
   async findOne(@Param('id') id: string, @User() user: UserEntity) {
     const dir = await this.dirsService.findOneWithPermissions(+id);
-    if (!dir) return new NotFoundException();
+    if (!dir) throw new NotFoundException();
 
     const ability = this.abilityFactory.createForUser(user);
-    if (!ability.can('read', dir)) return new UnauthorizedException();
+    if (!ability.can('read', dir)) throw new UnauthorizedException();
 
     // This one has the children populated.
     return this.dirsService.findOne(+id);
@@ -64,10 +64,10 @@ export class DirsController {
     @User() user: UserEntity,
   ) {
     const dir = await this.dirsService.findOneWithPermissions(+id);
-    if (!dir) return new NotFoundException();
+    if (!dir) throw new NotFoundException();
 
     const ability = this.abilityFactory.createForUser(user);
-    if (!ability.can('update', dir)) return new UnauthorizedException();
+    if (!ability.can('update', dir)) throw new UnauthorizedException();
 
     return this.dirsService.update(+id, updateDirDto);
   }
@@ -75,10 +75,10 @@ export class DirsController {
   @Delete(':id')
   async remove(@Param('id') id: string, @User() user: UserEntity) {
     const dir = await this.dirsService.findOneWithPermissions(+id);
-    if (!dir) return new NotFoundException();
+    if (!dir) throw new NotFoundException();
 
     const ability = this.abilityFactory.createForUser(user);
-    if (!ability.can('delete', dir)) return new UnauthorizedException();
+    if (!ability.can('delete', dir)) throw new UnauthorizedException();
 
     return this.dirsService.remove(+id);
   }
