@@ -32,7 +32,7 @@ const Filehistory: FC<Props> = (props) => {
   return (
     <Container className="p-5">
       <Button
-        variant="primary"
+        variant="dark"
         className="mb-3"
         onClick={() => window.history.back()}
       >

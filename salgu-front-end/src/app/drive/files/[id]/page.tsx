@@ -127,10 +127,13 @@ export default function FilePage({ params }: any) {
             />
           )}
           {mediaType === "text" && (
-            <pre className="bg-light p-3 border">{textContent}</pre>
+            <pre className="bg-light p-3 border rounded-2">{textContent}</pre>
           )}
           {mediaType === "video" && (
-            <video controls className="w-100">
+            <video
+              controls
+              className="w-100 tw-max-h-screen tw-p-3 tw-rounded-2xl"
+            >
               <source src={blobUrl} type={mime} />
             </video>
           )}
