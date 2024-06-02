@@ -62,4 +62,6 @@ export const updatePermissions = async (
       `/${subjectCollection}/${subjectId}/permissions/${permission.id}`,
     );
   }
+
+  return getPermissions(subjectCollection, subjectId);
 };

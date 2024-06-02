@@ -13,7 +13,7 @@ const api = axios.create({
 export class ApiError extends Error {
   constructor(
     message: string,
-    public status: number,
+    public status?: number,
     public originalError?: any,
   ) {
     super(message);
@@ -53,7 +53,7 @@ api.interceptors.response.use(
     else if (typeof error.response.data.message === "string")
       newMessage = error.response.data.message;
 
-    const newError = new ApiError(newMessage, error.response.status, error);
+    const newError = new ApiError(newMessage, error?.response?.status, error);
 
     return Promise.reject(newError);
   },

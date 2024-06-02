@@ -6,6 +6,8 @@ import Homepage from "@/components/HomePage";
 import { useState } from "react";
 import NoSsr from "@/components/NoSsr";
 import { AuthProvider } from "@/providers/auth";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "@/components/ErrorFallback";
 
 export default function RootLayout({
   children,
@@ -34,7 +36,9 @@ export default function RootLayout({
                   <NoSsr>
                     <Homepage Toggle={Toggle} />
                   </NoSsr>
-                  {children}
+                  <ErrorBoundary fallbackRender={ErrorFallback}>
+                    {children}
+                  </ErrorBoundary>
                 </div>
               </div>
             </div>

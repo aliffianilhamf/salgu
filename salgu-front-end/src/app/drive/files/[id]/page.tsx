@@ -8,9 +8,11 @@ import { filetypemime } from "magic-bytes.js";
 import isutf8 from "isutf8";
 import { saveAs } from "file-saver";
 import { File } from "@/types";
+import { useErrorBoundary } from "react-error-boundary";
 
 export default function FilePage({ params }: any) {
   const id: string = params.id;
+  const { showBoundary } = useErrorBoundary();
   const [file, setFile] = useState<File | null>(null);
   const [blobUrl, setBlobUrl] = useState("");
   const [mime, setMime] = useState("");
@@ -30,29 +32,30 @@ export default function FilePage({ params }: any) {
       .then((res) => {
         setFile(res.data);
       })
+      .then(() => {
+        api.get(`/files/${id}/data`, { responseType: "blob" }).then((res) => {
+          const blob: Blob = res.data;
+          url = window.URL.createObjectURL(blob);
+          setBlobUrl(url);
+
+          blob.arrayBuffer().then((buffer) => {
+            const arr = new Uint8Array(buffer);
+            let m: string;
+            const mimes = filetypemime(arr);
+
+            if (mimes.length === 0 && isutf8(arr)) m = "text/plain";
+            else m = mimes[0];
+            setMime(m);
+
+            if (m.split("/")[0] === "text") {
+              blob.text().then((text) => setTextContent(text));
+            }
+          });
+        });
+      })
       .catch((err) => {
-        throw err;
+        showBoundary(err);
       });
-
-    api.get(`/files/${id}/data`, { responseType: "blob" }).then((res) => {
-      const blob: Blob = res.data;
-      url = window.URL.createObjectURL(blob);
-      setBlobUrl(url);
-
-      blob.arrayBuffer().then((buffer) => {
-        const arr = new Uint8Array(buffer);
-        let m: string;
-        const mimes = filetypemime(arr);
-
-        if (mimes.length === 0 && isutf8(arr)) m = "text/plain";
-        else m = mimes[0];
-        setMime(m);
-
-        if (m.split("/")[0] === "text") {
-          blob.text().then((text) => setTextContent(text));
-        }
-      });
-    });
 
     return () => {
       window.URL.revokeObjectURL(url);

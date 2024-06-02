@@ -6,18 +6,24 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import { getDir } from "./actions";
 import { Dir } from "@/types";
 import Browser from "@/components/Browser";
+import { useErrorBoundary } from "react-error-boundary";
 
 export default function Folder({ params }: any) {
   const dirId: string | undefined = params.id;
   const [currDir, setCurrDir] = useState<Dir | null>(null);
   // Increment this flag to refresh.
   const [refreshFlag, setRefreshFlag] = useState(0);
+  const { showBoundary } = useErrorBoundary();
 
   useEffect(() => {
     if (dirId)
-      getDir(dirId).then((res) => {
-        setCurrDir(res);
-      });
+      getDir(dirId)
+        .then((res) => {
+          setCurrDir(res);
+        })
+        .catch((err) => {
+          showBoundary(err);
+        });
   }, [dirId, refreshFlag]);
 
   const currPath = currDir ? currDir.path : "/My Drive/";
