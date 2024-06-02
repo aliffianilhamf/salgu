@@ -78,19 +78,21 @@ export default function FilePage({ params }: any) {
           <FaDownload className="me-2" /> Download
         </Button>
         <Link
+          className="tw-no-underline"
           href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${id}/update`}
           passHref
         >
           <Button
             variant="outline-dark"
-            className="d-flex align-items-center tw-no-underline"
+            className="d-flex align-items-center text-decoration-none list-sty"
           >
-            <FaEdit className="me-2" /> Update
+            <FaEdit className="me-2 " /> Update
           </Button>
         </Link>
         <Link
           href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${id}/sharing`}
           passHref
+          className="tw-no-underline"
         >
           <Button
             variant="outline-dark"
@@ -102,10 +104,11 @@ export default function FilePage({ params }: any) {
         <Link
           href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${id}/history`}
           passHref
+          className="tw-no-underline"
         >
           <Button
-            variant="light"
-            className="border d-flex align-items-center tw-no-underline"
+            variant="outline-dark"
+            className="d-flex align-items-center tw-no-underline"
           >
             <FaHistory className="me-2" /> History
           </Button>
@@ -114,23 +117,29 @@ export default function FilePage({ params }: any) {
       <p>
         <strong>Mime type:</strong> {mime}
       </p>
-      <div className="mt-4">
-        {mediaType === "image" && (
-          <img src={blobUrl} alt="User file" className="img-fluid" />
-        )}
-        {mediaType === "text" && (
-          <pre className="bg-light p-3 border">{textContent}</pre>
-        )}
-        {mediaType === "video" && (
-          <video controls className="w-100">
-            <source src={blobUrl} type={mime} />
-          </video>
-        )}
-        {mediaType === "audio" && (
-          <audio controls className="w-100">
-            <source src={blobUrl} type={mime} />
-          </audio>
-        )}
+      <div className="mt-4 tw-flex tw-justify-center tw-items-center ">
+        <div className="tw-flex tw-justify-center tw-items-center tw-w-2/3 tw-max-h-screen tw-rounded-md tw-border-dotted tw-border-gray-900 tw-border-2 tw-p-2">
+          {mediaType === "image" && (
+            <img
+              src={blobUrl}
+              alt="User file"
+              className="tw-max-h-screen tw-p-3 tw-rounded-2xl"
+            />
+          )}
+          {mediaType === "text" && (
+            <pre className="bg-light p-3 border">{textContent}</pre>
+          )}
+          {mediaType === "video" && (
+            <video controls className="w-100">
+              <source src={blobUrl} type={mime} />
+            </video>
+          )}
+          {mediaType === "audio" && (
+            <audio controls className="w-100">
+              <source src={blobUrl} type={mime} />
+            </audio>
+          )}
+        </div>
       </div>
     </Container>
   );

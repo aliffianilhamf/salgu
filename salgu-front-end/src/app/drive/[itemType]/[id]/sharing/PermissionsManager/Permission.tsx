@@ -72,7 +72,7 @@ const Permission: FC<Props> = (props) => {
     <form
       onSubmit={handleSubmit}
       ref={formRef}
-      className="tw-border tw-border-gray-300 tw-rounded-lg tw-p-4"
+      className="tw-border-2 tw-border-dotted tw-border-gray-800 tw-rounded-lg tw-p-4"
     >
       <div>
         <div>
@@ -90,7 +90,7 @@ const Permission: FC<Props> = (props) => {
         </div>
         <label
           htmlFor={id + "roles"}
-          className="tw-block tw-font-medium tw-text-sm tw-text-gray-700"
+          className="tw-block tw-font-medium tw-text-md tw-text-gray-700"
         >
           Role
         </label>
@@ -140,7 +140,7 @@ const Permission: FC<Props> = (props) => {
               </td>
               <td className="tw-border tw-px-4 tw-py-2">
                 <button
-                  className="btn btn-outline-dark"
+                  className="btn btn-dark"
                   onClick={() => {
                     setEntries(entries.filter((_, index) => index !== i));
                     handleSubmit();
@@ -178,7 +178,7 @@ const Permission: FC<Props> = (props) => {
       )}
       {!readonly && (
         <button
-          className="tw-mt-4 btn btn-outline-dark tw-w-full"
+          className="tw-mt-4 btn btn-dark tw-w-full"
           disabled={readonly}
           onClick={props.onDelete}
         >

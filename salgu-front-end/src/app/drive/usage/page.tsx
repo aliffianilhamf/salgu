@@ -30,9 +30,9 @@ export default function Usage() {
     <Container className="p-5">
       <div className="card">
         <div className="card-body">
-          <h1 className="mb-3 pb-3">Storage</h1>
+          <h1 className="mb-3 pb-3">Storage Usage</h1>
 
-          <Dropdown className="d-inline mx-1">
+          {/* <Dropdown className="d-inline mx-1">
             <Dropdown.Toggle id="dropdown-autoclose-true">Type</Dropdown.Toggle>
 
             <Dropdown.Menu>
@@ -51,10 +51,36 @@ export default function Usage() {
               <Dropdown.Item href="#">Menu Item</Dropdown.Item>
               <Dropdown.Item href="#">Menu Item</Dropdown.Item>
             </Dropdown.Menu>
-          </Dropdown>
-          <p className="fs-1 pt-3">{usage?.amount} bytes of usage </p>
+          </Dropdown> */}
+          <p className="fs-1 pt-3">
+            {usage?.amount} bytes (b) or <br />{" "}
+            {usage?.amount ? usage?.amount / 1000 : ""} kilobyte (kb) or <br />
+            {usage?.amount ? usage?.amount / 1000000 : ""} megabyte (mb) or{" "}
+            <br />
+            {usage?.amount ? usage?.amount / 1000000000 : ""} gigabyte (gb) of
+            usage{" "}
+          </p>
           <div className="pb-3">
-            <ProgressBar variant="info" now={20} />
+            {usage?.amount && usage?.amount <= 2000000000 ? (
+              <ProgressBar
+                variant="info"
+                now={usage?.amount}
+                max={1000000000}
+                animated={true}
+                label={`${usage?.amount} bytes`}
+              />
+            ) : (
+              ""
+            )}
+            {usage?.amount && usage?.amount > 2000000000 ? (
+              <ProgressBar
+                variant="info"
+                now={usage?.amount}
+                max={1000000000000}
+              />
+            ) : (
+              ""
+            )}
           </div>
           <Navbar className="">
             <Container>
@@ -94,7 +120,15 @@ export default function Usage() {
                   <td>
                     <Link href={`/drive/files/${file.id}`}>{file.name}</Link>
                   </td>
-                  <td>{file.size}</td>
+                  <td>
+                    {file.size >= 1000 && file.size <= 1000000
+                      ? `${file.size / 1000} kb `
+                      : file.size > 1000000 && file.size <= 1000000000
+                        ? `${file.size / 1000000} mb `
+                        : file.size > 1000000000
+                          ? `${file.size / 1000000000} mb `
+                          : `${file.size} b `}
+                  </td>
                 </tr>
               ))}
             </tbody>

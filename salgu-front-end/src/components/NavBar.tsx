@@ -25,7 +25,7 @@ export default function Navbar({ Toggle }: NavbarProps) {
       >
         <span className="navbar-toggler-icon "></span>
       </button>
-      <form className="d-flex my-2 my-lg-0">
+      {/* <form className="d-flex my-2 my-lg-0">
         <input
           className="form-control me-sm-2"
           type="text"
@@ -34,7 +34,7 @@ export default function Navbar({ Toggle }: NavbarProps) {
         <Button variant="secondary" className="my-2 my-sm-0" type="submit">
           Search
         </Button>
-      </form>
+      </form> */}
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav ms-auto mt-2 mt-lg-0 ">
           <li className="nav-item">
