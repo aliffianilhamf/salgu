@@ -150,7 +150,9 @@ export class DirsService {
     return this.dirRepo.manager.transaction(async (manager) => {
       const dir = await manager.findOneOrFail(DirEntity, {
         where: { id },
-        select: { fileChildren: true },
+        relations: {
+          fileChildren: true,
+        },
       });
 
       const pathPrefix = `${dir.path}/`;
@@ -161,7 +163,7 @@ export class DirsService {
       });
       children.sort((a, b) => a.path.length - b.path.length);
 
-      const fileIds = new Set<number>();
+      const fileIds = new Set<number>(dir.fileChildren?.map((file) => file.id));
 
       for (const child of children) {
         for (const file of child.fileChildren || []) {
