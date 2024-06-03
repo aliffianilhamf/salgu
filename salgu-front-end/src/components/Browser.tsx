@@ -167,7 +167,15 @@ const Browser: FC<Props> = (props) => {
                   </div>
                 </Link>
               </td>
-              <td>{file.size}</td>
+              <td>
+                {file.size >= 1000 && file.size <= 1000000
+                  ? `${file.size / 1000} kb `
+                  : file.size > 1000000 && file.size <= 1000000000
+                    ? `${file.size / 1000000} mb `
+                    : file.size > 1000000000
+                      ? `${file.size / 1000000000} mb `
+                      : `${file.size} b `}
+              </td>
             </tr>
           ))}
         </tbody>

@@ -43,10 +43,7 @@ const PermissionsManager: FC<Props> = (props) => {
         >
           Add Permission Entry
         </button>
-        <button
-          className="btn btn-outline-dark"
-          onClick={() => props.onSave?.()}
-        >
+        <button className="btn btn-dark" onClick={() => props.onSave?.()}>
           Save
         </button>
       </div>
