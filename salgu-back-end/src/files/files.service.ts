@@ -3,7 +3,7 @@ import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FileEntity } from './entities/file.entity';
-import { IsNull, Not, Repository } from 'typeorm';
+import { IsNull, LessThanOrEqual, Not, Repository } from 'typeorm';
 import AppError from 'src/errors/app-error';
 import { StorageService } from 'src/storage/storage.service';
 import { UsageSnapshotsService } from 'src/usage-snapshots/usage-snapshots.service';
@@ -63,6 +63,18 @@ export class FilesService {
     });
 
     return file;
+  }
+
+  async deleteFilesPastRetentionPeriod() {
+    const now = new Date();
+    const filesToDelete = await this.fileRepo.find({
+      where: { deletedAt: IsNull(), retainedUntil: LessThanOrEqual(now) },
+      select: { id: true },
+    });
+
+    console.log(`Deleting ${filesToDelete.length} files`);
+
+    return Promise.all(filesToDelete.map((file) => this.remove(file.id)));
   }
 
   findDeleted(ownerId: number) {
