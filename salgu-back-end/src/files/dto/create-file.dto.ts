@@ -1,6 +1,11 @@
-import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateString, IsNumber, IsString, MaxLength } from 'class-validator';
+import {
+  IsDateString,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 import { DRIVE_CONSTANTS } from 'src/config/constants';
 
 export class CreateFileDto {
@@ -14,6 +19,6 @@ export class CreateFileDto {
   dirId: number;
 
   @IsDateString()
-  @Optional()
+  @IsOptional()
   retainedUntil?: Date | null;
 }

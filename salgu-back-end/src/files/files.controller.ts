@@ -12,6 +12,7 @@ import {
   UseInterceptors,
   Put,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { CreateFileDto } from './dto/create-file.dto';
@@ -49,7 +50,11 @@ export class FilesController {
   }
 
   @Get()
-  findAll(@User() user: UserEntity) {
+  findAll(
+    @User() user: UserEntity,
+    @Query('onlyDeleted') onlyDeleted: boolean,
+  ) {
+    if (onlyDeleted) return this.filesService.findDeleted(user.id);
     return this.filesService.findAll(user.id);
   }
 

@@ -1,29 +1,32 @@
-import React, { useState } from "react";
+import api from "@/api";
+import { File } from "@/types";
+import { format } from "date-fns";
+import React, { useEffect, useState } from "react";
 import { FaFile, FaFolder, FaTrashAlt, FaTrashRestore } from "react-icons/fa";
 
 interface DeletedItem {
-  id: number;
+  id: string;
   name: string;
   type: "file" | "folder";
-  deletedDate: string;
+  deletedAt: Date;
 }
 
 const DeletedItems: React.FC = () => {
-  const [deletedFiles, setDeletedFiles] = useState<DeletedItem[]>([
-    { id: 1, name: "file1.txt", type: "file", deletedDate: "2023-06-01" },
-    { id: 2, name: "Folder1", type: "folder", deletedDate: "2023-06-09" },
-    { id: 3, name: "file2.png", type: "file", deletedDate: "2023-06-15" },
-  ]);
+  const [deletedItems, setDeletedItems] = useState<DeletedItem[]>([]);
 
-  const handleRestore = (id: number) => {
-    // Implement restore logic here
-    console.log(`Restoring item with id ${id}`);
-  };
-
-  const handleDeletePermanently = (id: number) => {
-    // Implement delete permanently logic here
-    console.log(`Deleting permanently item with id ${id}`);
-  };
+  useEffect(() => {
+    api.get("/files", { params: { onlyDeleted: true } }).then((res) => {
+      const files: File[] = res.data;
+      setDeletedItems(
+        files.map((file) => ({
+          id: file.id,
+          type: "file",
+          name: file.name,
+          deletedAt: new Date(file.deletedAt!),
+        })),
+      );
+    });
+  }, []);
 
   return (
     <div className="tw-overflow-x-auto">
@@ -38,15 +41,12 @@ const DeletedItems: React.FC = () => {
               Name
             </th>
             <th className="tw-px-4 tw-py-2 tw-border-b tw-border-gray-200">
-              Deleted Date
-            </th>
-            <th className="tw-px-4 tw-py-2 tw-border-b tw-border-gray-200">
-              Actions
+              Deletion Time
             </th>
           </tr>
         </thead>
         <tbody>
-          {deletedFiles.map((item) => (
+          {deletedItems.map((item) => (
             <tr key={item.id}>
               <td className="tw-px-4 tw-py-2 tw-border-b tw-border-gray-200">
                 {item.type === "file" ? <FaFile /> : <FaFolder />}
@@ -55,9 +55,9 @@ const DeletedItems: React.FC = () => {
                 {item.name}
               </td>
               <td className="tw-px-4 tw-py-2 tw-border-b tw-border-gray-200">
-                {item.deletedDate}
+                {format(item.deletedAt, "yyyy-MM-dd HH:mm:ss")}
               </td>
-              <td className="tw-px-4 tw-py-2 tw-border-b tw-border-gray-200">
+              {/* <td className="tw-px-4 tw-py-2 tw-border-b tw-border-gray-200">
                 <div className="tw-flex tw-gap-2">
                   <button
                     onClick={() => handleRestore(item.id)}
@@ -72,7 +72,7 @@ const DeletedItems: React.FC = () => {
                     <FaTrashAlt className="tw-mr-2" /> Delete Permanently
                   </button>
                 </div>
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>

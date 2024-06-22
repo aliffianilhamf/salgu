@@ -3,7 +3,7 @@ import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FileEntity } from './entities/file.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import AppError from 'src/errors/app-error';
 import { StorageService } from 'src/storage/storage.service';
 import { UsageSnapshotsService } from 'src/usage-snapshots/usage-snapshots.service';
@@ -63,6 +63,13 @@ export class FilesService {
     });
 
     return file;
+  }
+
+  findDeleted(ownerId: number) {
+    return this.fileRepo.find({
+      withDeleted: true,
+      where: { ownerId, deletedAt: Not(IsNull()) },
+    });
   }
 
   findAll(userId: number) {

@@ -18,6 +18,7 @@ export type File = {
   id: string;
   name: string;
   size: number;
+  deletedAt?: string | Date;
 };
 
 export type UsageData = {
