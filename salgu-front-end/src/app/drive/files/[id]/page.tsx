@@ -9,7 +9,13 @@ import { filetypemime } from "magic-bytes.js";
 import isutf8 from "isutf8";
 import { saveAs } from "file-saver";
 import { File } from "@/types";
-import { FaDownload, FaEdit, FaShare, FaHistory } from "react-icons/fa";
+import {
+  FaDownload,
+  FaEdit,
+  FaShare,
+  FaHistory,
+  FaClock,
+} from "react-icons/fa";
 import { useErrorBoundary } from "react-error-boundary";
 
 export default function FilePage({ params }: any) {
@@ -111,6 +117,15 @@ export default function FilePage({ params }: any) {
             className="d-flex align-items-center tw-no-underline"
           >
             <FaHistory className="me-2" /> History
+          </Button>
+        </Link>
+        <Link
+          href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${id}/retention`}
+          passHref
+          className="tw-no-underline"
+        >
+          <Button variant="outline-dark" className="d-flex align-items-center">
+            <FaClock className="me-2" /> Retention
           </Button>
         </Link>
       </div>

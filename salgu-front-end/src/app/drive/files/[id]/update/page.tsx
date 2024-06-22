@@ -67,25 +67,5 @@ export default function FileUpdate({ params }: any) {
         </Button>
       </form>
     </div>
-
-    // <div className="tw-flex justify-content-center tw-items-center tw-w-full">
-    //   <form action="" className="tw-max-w-2xl" onSubmit={handleSubmit}>
-    //     <label
-    //       className="tw-block tw-mb-2 tw-text-sm tw-font-medium tw-text-gray-900"
-    //       htmlFor="large_size"
-    //     >
-    //       Upload and update {fileName ? ` ${fileName}` : "file"}
-    //     </label>
-    //     <input
-    //       className="tw-block tw-w-full tw-text-lg tw-text-gray-900 tw-border tw-border-gray-300 tw-rounded-lg tw-cursor-pointer tw-bg-gray-50 dark:tw-text-gray-400 focus:tw-outline-none dark:tw-bg-gray-700 dark:tw-border-gray-600 dark:tw-placeholder-gray-400"
-    //       id="large_size"
-    //       type="file"
-    //       name="file"
-    //     />
-    //     <Button variant="tw-bg-blue-500" type="submit">
-    //       Upload
-    //     </Button>
-    //   </form>
-    // </div>
   );
 }

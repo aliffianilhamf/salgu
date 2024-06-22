@@ -2,12 +2,14 @@ import { Injectable, Logger, Scope } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
+import { FilesService } from 'src/files/files.service';
 import { InvoicesService } from 'src/invoices/invoices.service';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class SchedulingService {
   constructor(
     private readonly invoicesService: InvoicesService,
+    private readonly filesService: FilesService,
     private readonly configService: ConfigService,
     private readonly schedulerRegistry: SchedulerRegistry,
   ) {
@@ -22,6 +24,10 @@ export class SchedulingService {
       [
         'createMissingInvoices',
         () => this.invoicesService.createMissingInvoices(),
+      ],
+      [
+        'deleteFilesPastRetentionPeriod',
+        () => this.filesService.deleteFilesPastRetentionPeriod(),
       ],
     ];
 

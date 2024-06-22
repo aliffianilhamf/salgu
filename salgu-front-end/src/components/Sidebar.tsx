@@ -45,6 +45,13 @@ export default function Sidebar({}) {
               <i className="bi bi-activity fs-5 me-3"></i>
               <span className="fs-5">Invoice</span>
             </Link>
+            <Link
+              href="/drive/trash"
+              className="list-group-item py-1 mb-2  border-0"
+            >
+              <i className="bi bi-trash fs-5 me-3"></i>
+              <span className="fs-5">Trash</span>
+            </Link>
             <hr />
             <div className="tw-px-4">
               <button onClick={handleSignOut} className="  mb-2  ">

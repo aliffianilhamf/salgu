@@ -45,4 +45,11 @@ export class FileEntity {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @Column({
+    type: 'datetime',
+    comment: 'File will be deleted after this date',
+    nullable: true,
+  })
+  retainedUntil: Date | null;
 }
