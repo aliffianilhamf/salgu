@@ -1,7 +1,7 @@
 import { Dir, File } from "@/types";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
-import { FaFile, FaTrashAlt, FaFolder, FaShare } from "react-icons/fa";
+import { FaFile, FaTrashAlt, FaFolder, FaShare, FaClock } from "react-icons/fa";
 import css from "./Browser.module.css";
 import { deleteDirsById } from "@/app/drive/folders/[id]/actions";
 import { deleteFilesById } from "@/app/drive/files/[id]/actions";

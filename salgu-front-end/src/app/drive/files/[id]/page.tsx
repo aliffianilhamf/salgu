@@ -120,7 +120,7 @@ export default function FilePage({ params }: any) {
           </Button>
         </Link>
         <Link
-          href="/drive/folders/1/retention"
+          href={`${process.env.NEXT_PUBLIC_HOST}/drive/files/${id}/retention`}
           passHref
           className="tw-no-underline"
         >

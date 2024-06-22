@@ -4,7 +4,7 @@ import React from "react";
 import { NextPage } from "next";
 import DeletedItems from "@/components/DeletedItems";
 
-const RetentionPage: NextPage = () => {
+const TrashPage: NextPage = () => {
   return (
     <div className="tw-bg-gray-100 tw-min-h-screen tw-flex tw-items-center tw-justify-center">
       <DeletedItems />
@@ -12,4 +12,4 @@ const RetentionPage: NextPage = () => {
   );
 };
 
-export default RetentionPage;
+export default TrashPage;
